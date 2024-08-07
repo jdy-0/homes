@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+ section {
+    position: relative;
+    top: 10px;
+    left: 20px;
+    margin: auto;
+    width: 1400px;
+}
+ 
+header {
+    width: 800px;
+}
+
+nav {
+    background-color: skyblue;
+}
+
+nav li {
+    list-style-type: none;
+    display: inline;
+    margin-left: 10px;
+}
+
+#main {
+    width: 300px;
+   float:left;
+}
+
+#main img {
+    width: 300px;
+    height: 200px;
+    
+}
+
+#main ul{
+    list-style-type: none;
+}
+
+#main h3 {
+    text-align: center;
+}
+
+hr {
+    border: 1px solid #ddd; /* 기본 테두리 스타일 설정 */
+    margin: 20px 0; /* 위와 아래 여백을 추가 */
+}
+
+
+#hr{
+   clear:both;
+   
+}
+/* 호스트 북킹 jsp페이지~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+li{
+    list-style-type: none;
+}
+
+/* hostbooking css */
+#contentWrapper {
+    display: flex;
+    align-items: flex-start; /* 상단 정렬 */
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+}
+#contenWrapper article{
+   
+   flex: 1; /* 모든 article이 동일한 비율로 차지하도록 설정 */
+    margin-right: 20px; /* 각 article 사이의 간격 */
+    height: 200px; /* 고정 높이 설정 */
+    box-sizing: border-box; /* 패딩과 테두리가 요소의 전체 너비에 포함되도록 설정 */
+}
+#contentWrapper article:last-child {
+    margin-right: 0;
+}
+
+
+
+
+;
