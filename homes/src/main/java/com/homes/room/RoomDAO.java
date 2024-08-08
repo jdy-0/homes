@@ -9,6 +9,8 @@ public class RoomDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
+	
+	
 	//다영버전
 	
 	/**검색된 숙소 가져오기(조건: 지역)*/
