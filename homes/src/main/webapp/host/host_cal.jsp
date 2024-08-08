@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import ="com.homes.host.*" %>
+<%@ page import ="com.homes.host.ScheduleDTO" %>
 <%@ page import ="java.util.*" %>
 <jsp:useBean id="sdao" class="com.homes.host.ScheduleDAO"></jsp:useBean>
 <style>
@@ -32,7 +32,7 @@
     font-size:25px;
 }
 .calendar {
-	position: absolute;
+	position: static;
 	top: 90%;
 	left: -30px;
 	width: 615px;
@@ -143,62 +143,131 @@
 	font-size:20px;
 }
 </style>
+<%
+String s_room = request.getParameter("room");
 
-<div class="calendar" id="calendar" style="display: block;">
-	<div class="month">
-		<button class="prev-month">‹</button>
-		<span class="month-year">초기화</span>
-		<button class="next-month">›</button>
-	</div>
-	<div class="side_cal">
-		<!-- 날짜가 여기에 동적으로 추가됩니다 -->
+int room=0;
+if(s_room!=null && !s_room.equals("")){
+	room = Integer.parseInt(s_room);
+}
+
+String seq = request.getParameter("seq");
+ArrayList<ScheduleDTO> cal_arr = sdao.showAllSchdule(room);
+String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
+%>
+
+<div class="date-picker">
+
+	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
+	<%
+
+
+
+	if(cal_arr!=null || cal_arr.size()!=0){
+		
+	
+		for(int j=0; j<cal_arr.size(); j++){
+		%>
+			<input type="text" class="schedule" data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
+			<input type="text" class="schedule" data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
+		<%
+		}
+	}
+		%>
+		<div class="month">
+			<button class="prev-month">‹</button>
+			<span class="month-year">초기화</span>
+			<button class="next-month">›</button>
+		</div>
+		<div class="side_cal">
+			<!-- 날짜가 여기에 동적으로 추가됩니다 -->
+		</div>
 	</div>
 </div>
 
-<%
-ArrayList cal_arr = sdao.getSchedule(1);
 
-
-for(int i=0; i<cal_arr.size(); i++){
-%>
-	<input type="text" value="<%=cal_arr.get(i)%>" >
-<%
-}
-%>
 <script>
-    const dateInput = document.getElementById('date-input');
-    const from = document.getElementById('check_in');
-    const to = document.getElementById('check_out');
-    const calendar = document.getElementById('calendar');
-    const reset = calendar.querySelector('.month-year');
+document.addEventListener("DOMContentLoaded", function() {
+    const uuid = '<%=uuid%>';
+
+    const calendar = document.getElementById('calendar_' + uuid);
     const prevMonthBtn = calendar.querySelector('.prev-month');
     const nextMonthBtn = calendar.querySelector('.next-month');
     const side_cal = calendar.querySelector('.side_cal');
+    
 	var cals = [];
 	var date_from_to = [];
     let currentDate = new Date();
     let nextDate = new Date();
     var loc = 0;
     
-    reset.addEventListener('click', () => {
-        side_cal.querySelectorAll('.line').forEach(el => el.setAttribute('class', 'none'));
-		from.value='';
-		to.value='';
-		
-    });
-	
     
-    document.addEventListener('DOMContentLoaded', () => {
-        
-
+    atStart();
+    
+    function atStart(){
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
-        
+        setAllSchedule();
+    }
+    
 
-        
-        
+	
+    function getAllScheduleToId(){
+    	
+    	const startInputs = calendar.querySelectorAll('input[data-type="start"]');
+        const endInputs = calendar.querySelectorAll('input[data-type="end"]');
+		
+        let all_sch = [];
+        startInputs.forEach((input, index) => {
+            const startDate = input.value;
+            const endDate = endInputs[index].value;
+			let one_sch = [];
+			one_sch[0] = startDate.replaceAll('-','');
+			one_sch[1] = endDate.replaceAll('-','');
+			all_sch.push(one_sch);
         });
+        
+/*         all_sch.forEach((one_sch) =>{
+        	alert(one_sch[0]);
+        	alert(one_sch[1]);
+        });  
+         */
+        return all_sch;
+    }
+    
+	function setAllSchedule(){
+    	
+    	let all_sch = getAllScheduleToId();
+    	
+    	
+    	for(let i=0; i<all_sch.length; i++){
+
+	    	 const firstDate = all_sch[i][0];
+	         const lastDate  = all_sch[i][1];
+	 			
+	             const allDays = side_cal.querySelectorAll('span');
+	             
+	             allDays.forEach(dayElement => {
+	                 const dayId = dayElement.id;
+	                 if(dayId!=null && dayId!=""){
+							
+	                	 currentDate = dayId.replaceAll('d','');
+	                	 if (currentDate == firstDate || currentDate == lastDate){
+	                		 dayElement.classList.add('selected');
+	                	 } else if (currentDate > firstDate && currentDate < lastDate) {
+	                		
+	                		dayElement.classList.add('line');
+	                	 }
+	                     
+	                 }
+	             });
+
+    	}
+		
+    } 
+    
+    
 
     prevMonthBtn.addEventListener('click', () => {
     	if(loc==0) return;
@@ -206,7 +275,6 @@ for(int i=0; i<cal_arr.size(); i++){
 
 		
 		for(var i=0; i<cals.length; i++){
-			
 			cals[i].style.display='none';
 		}
  		cals[loc+1].style.display='none';
@@ -229,7 +297,10 @@ for(int i=0; i<cal_arr.size(); i++){
         
         if(loc+2==cals.length){
         	renderCalendar(nextDate);
+            setAllSchedule();
+
             cals[loc+1].style.display='block';
+
         } else {
             cals[loc+1].style.display='block';
             cals[loc+2].style.display='block';
@@ -253,50 +324,33 @@ for(int i=0; i<cal_arr.size(); i++){
 
 	}
 	
-    function addWeekdays(){
+	function chooseWeeks(tag){
+		one_month_cal.querySelectorAll('.days .none')
+		
+		
+	}
+	
+    function addWeekdays(one_month_cal){
 
     	const weekdays  = document.createElement('div');
 		weekdays.classList.add('weekdays');
+       const weekOfDays = ['일', '월', '화', '수', '목', '금', '토'];
 
-        for(let i =0; i<7; i++ ){
+		for(let i=0; i<weekOfDays.length; i++){
         	const dow_span = document.createElement('span');
         	weekdays.appendChild(dow_span);
-        }
-        
+        	dow_span.textContent = weekOfDays[i];
+        	if(weekOfDays[i]=='일'){
+    			dow_span.setAttribute('class','sunday');
+        	}
+        	
+        	dow_span.addEventListener('click', () => {   	
+				chooseWeeks(dow_span,one_month_cal);
+            });
+
+		}
 		one_month_cal.appendChild(weekdays);
         side_cal.appendChild(one_month_cal);
-        
-
-		for(let i=0; i<document.querySelectorAll(".weekdays>span").length; i++){
-			switch (i%7) {
-			case 0:
-				document.querySelectorAll(".weekdays>span")[i].textContent='일';
-				document.querySelectorAll(".weekdays>span")[i].setAttribute('class','sunday');
-
-				break;
-			case 1:
-				document.querySelectorAll(".weekdays>span")[i].textContent='월';
-				break;
-			case 2:
-				document.querySelectorAll(".weekdays>span")[i].textContent='화';
-				break;
-			case 3:
-				document.querySelectorAll(".weekdays>span")[i].textContent='수';
-				break;
-			case 4:
-				document.querySelectorAll(".weekdays>span")[i].textContent='목';
-				break;
-			case 5:
-				document.querySelectorAll(".weekdays>span")[i].textContent='금';
-				break;
-			case 6:
-				document.querySelectorAll(".weekdays>span")[i].textContent='토';
-				break;
-			default:
-				break;
-			}
-		}
-
         return one_month_cal;
     }
     
@@ -353,8 +407,7 @@ for(int i=0; i<cal_arr.size(); i++){
 
             dayElement.textContent = day;
             dayElement.id = 'd' + year + (month + 1).toString().padStart(2, '0') + (day.toString().padStart(2, '0'));
-            
-
+ 
 
             dayElement.addEventListener('click', () => {   	
 				chooseDate(year, month, day, dayElement);
@@ -559,11 +612,5 @@ for(int i=0; i<cal_arr.size(); i++){
 		}
     
 
-
-    document.addEventListener('click', (event) => {
-        if (!document.querySelector('.date-picker').contains(event.target)) {
-            calendar.style.display = 'none';
-        }
-    });
-    
+})
 </script>

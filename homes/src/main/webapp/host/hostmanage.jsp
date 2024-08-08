@@ -41,11 +41,16 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 		</article>
 		<article id="maininfo">
 			<h3><%=arr.get(i).getRoom_name() %></h3>
-				<ul>
+ 				<ul>
 					<li>시작날짜:<%=arr.get(i).getStartday()%></li>
 					<li>끝 날짜:<%=arr.get(i).getEndday()%></li>
 					<li>결제 상태:<%=arr.get(i).getReason()%></li>
 				</ul>
+						<!-- pjw part -->
+	  <%--  <div class="date-picker">
+			<%@ include file="host_cal.jsp"%>
+		</div> --%>
+					
 		</article>
 	</div>
 		<div id="hr">
@@ -55,21 +60,7 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 			}
 		}
 	%>
-	   <div class="date-picker">
 
-			<div id="date-input">
-				<div class="search_item">
-					<label for="checkin">체크인</label> <input type="text"
-						id="check_in" class="date" required readonly="readonly"
-						id="from">
-				</div>
-				<div class="search_item">
-					<label for="checkin">체크아웃</label> <input type="text"
-						id="check_out" class="date" required readonly="readonly"
-						id="to">
-				</div>
-			</div>
-		</div>
 </section>
 </body>
 </html>
