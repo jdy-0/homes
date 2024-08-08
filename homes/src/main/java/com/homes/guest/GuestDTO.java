@@ -8,15 +8,15 @@ public class GuestDTO {
 	private String bday;
 	private String email, tel;
 	private java.sql.Date joindate;
+	private String img;
+	private int state;
 	
-	//기본생성자
 	public GuestDTO() {
 		
 	}
-	
-	//인자생성자
+
 	public GuestDTO(int idx, String id, String pwd, String name, String nickname, String bday, String email, String tel,
-			Date joindate) {
+			Date joindate, String img, int state) {
 		super();
 		this.idx = idx;
 		this.id = id;
@@ -27,6 +27,8 @@ public class GuestDTO {
 		this.email = email;
 		this.tel = tel;
 		this.joindate = joindate;
+		this.img = img;
+		this.state = state;
 	}
 
 	public int getIdx() {
@@ -68,7 +70,7 @@ public class GuestDTO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public String getBday() {
 		return bday;
 	}
@@ -100,6 +102,21 @@ public class GuestDTO {
 	public void setJoindate(java.sql.Date joindate) {
 		this.joindate = joindate;
 	}
-	
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
 	
 }

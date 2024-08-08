@@ -59,7 +59,7 @@ public class GuestDAO {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
 			
-			String sql="INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, SYSDATE)";
+			String sql="INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, SYSDATE, '/homes/guest/profileimg/default_profile.png', 1)";
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, dto.getId());
 			ps.setString(2, dto.getPwd());
@@ -147,7 +147,31 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	
+	//계정 profile_img src 가져오기
+	public String getImgSrc(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT IMG FROM HOMES_MEMBER WHERE IDX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			rs=ps.executeQuery();
+			String img = "";
+			if(rs.next()) {
+				img = rs.getString("img");
+				
+			}		
+			return img;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 	//계정 정보 보기 메소드
 	public GuestDTO getUserProfile(String id){
 		try {
@@ -169,8 +193,10 @@ public class GuestDAO {
 				String email=rs.getString("email");
 				String tel=rs.getString("tel");
 				java.sql.Date joindate = rs.getDate("joindate");
+				String img=rs.getString("img");
+				int state = rs.getInt("state");
 				
-				dto = new GuestDTO(idx, id, pwd, name, nickname, bday_s, email, tel, joindate);
+				dto = new GuestDTO(idx, id, pwd, name, nickname, bday_s, email, tel, joindate, img, state);
 			}
 			return dto;
 		} catch (Exception e) {

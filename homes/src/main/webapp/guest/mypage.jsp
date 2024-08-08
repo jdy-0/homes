@@ -80,8 +80,19 @@ section{
 	border-radius:500px;
 	margin:30px;
 }
-
+input[type="file"] {display: none;}
 </style>
+<script>
+// 이미지 클릭 시 파일 선택 창 열기
+document.getElementById("profileImg").addEventListener("click", function() {
+    document.getElementById("fileInput").click();
+});
+
+// 파일 선택 시 자동으로 폼 전송
+document.getElementById("fileInput").addEventListener("change", function() {
+    document.getElementById("uploadForm").submit();
+});
+</script>
 </head>
 <body>
 <%@include file="/header.jsp" %>
@@ -92,7 +103,14 @@ section{
 	</fieldset>
 	<div id="myPage_main_div">
 		<fieldset id="myPageMain_fs">
-			<a href="updateProfile.jsp"><img src="/homes/img/HY_picture.jpg" alt="profile_img"></a>
+		<%
+		int useridx=(Integer)session.getAttribute("useridx");
+		String img = gdao.getImgSrc(useridx);
+		%>
+			<img src="<%=img %>" alt="profile_img" id="profileImg">
+			<form action="profileUpload.jsp" method="post" enctype="multipart/form-data" id="uploadForm">
+            	<input type="file" name="profileImg" id="fileInput" accept="image/*">
+        	</form>
 			<div>
 			
 			</div>
