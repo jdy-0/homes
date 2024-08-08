@@ -29,11 +29,10 @@
 		</tr>
 		<tr>
 			<th>닉네임</th>
-			<td><%=dto.getNickname() %></td>
-		</tr>
-		<tr>
-			<th>비밀번호</th>
-			<td><%=dto.getPwd() %></td>
+			<td>
+				<input type="text" name="nickname" value="<%=dto.getNickname() %>" readonly/>
+				<a href="javascript:openUpdateNick();">변경하기</a>
+			</td>
 		</tr>
 		<tr>
 			<th>생년월일</th>

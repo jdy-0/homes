@@ -147,7 +147,10 @@ public class RoomDAO {
         return room;
     }
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> HY
 	//다영버전
 	
 	/**검색된 숙소 수 가져오기(조건: 지역)*/

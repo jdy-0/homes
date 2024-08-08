@@ -15,7 +15,7 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	%>
 	<script>
 	window.alert('아이디 또는 비밀번호를 확인해주세요.');
-	window.location.href='login_popup.jsp';
+	window.location.href='login.jsp';
 	</script>
 	<%
 } else if(result == gdao.Login_ok){
@@ -44,15 +44,14 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	%>
 	<script>
 	window.alert('<%=usernickname%>님 로그인되었습니다.');
-	opener.window.location.reload();
-	window.self.close();
+	window.location.href='/homes';
 	</script>
 	<%
 } else{
 	%>
 	<script>
 	window.alert('고객센터 연락 바람');
-	window.self.close();
+	window.location.href='/homes';
 	</script>
 	<%
 }
