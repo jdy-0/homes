@@ -8,7 +8,6 @@ public class RoomDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-<<<<<<< HEAD
 
 	public List<RoomDTO> getAllRooms() {
         List<RoomDTO> roomList = new ArrayList<>();
@@ -149,11 +148,6 @@ public class RoomDAO {
     }
 
     
-=======
-	
-	
-	
->>>>>>> JH
 	//다영버전
 	
 	/**검색된 숙소 수 가져오기(조건: 지역)*/
@@ -163,10 +157,11 @@ public class RoomDAO {
 			String sql="select count(*) "
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
-					+ "where ( rg.lev=2 and rg.parent_idx=? ) "
-					+ "or ( rg.lev=1 and rg.region_idx=? )";
+					+ "where rg.lev=2 "
+					+ "and rg.parent_idx=(select region_idx from region where region_idx=? and lev=1)";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
+
 			ps.setInt(2, p_region_idx);
 			rs=ps.executeQuery();
 			int count=0;
@@ -208,6 +203,7 @@ public class RoomDAO {
 			ps.setInt(2, p_region_idx);
 			ps.setInt(3, start);
 			ps.setInt(4, end);
+
 			rs=ps.executeQuery();
 			ArrayList<RoomDTO> room= new ArrayList<>();
 			if(rs.next()) {

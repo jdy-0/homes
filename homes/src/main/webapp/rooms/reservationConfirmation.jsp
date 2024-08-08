@@ -8,7 +8,7 @@
 <style>
     /* 기본 스타일 설정 */
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
         margin: 20px;
         background-color: #f8f9fa;
     }
@@ -16,8 +16,8 @@
         max-width: 600px;
         margin: 0 auto;
         padding: 20px;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        background-color: #e2dccc;
+        border: 4px solid black;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         text-align: center;
@@ -26,6 +26,10 @@
         font-size: 24px;
         margin-bottom: 20px;
         text-align: left;
+        background-color: #dec022;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
     }
     .info-section, .price-section, .terms-section, .payment-section {
         text-align: left;
@@ -33,11 +37,14 @@
     }
     .info-section p, .price-section p {
         margin: 5px 0;
+        border-bottom: 2px solid black;
+        padding-bottom: 5px;
     }
     .price-section {
-        border: 1px solid #000;
+        border: 2px solid black;
         padding: 10px;
         border-radius: 10px;
+        background-color: #fff;
     }
     .price-section p span {
         float: right;
@@ -53,23 +60,25 @@
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
-        border: 1px solid #ccc;
+        border: 2px solid black;
     }
     .payment-button {
         display: block;
         width: 100%;
         padding: 15px;
-        background-color: #ff4d4d;
-        color: white;
-        border: 2px solid #ff4d4d;
+        background-color: #dec022;
+        color: black;
+        border: 2px solid black;
         cursor: pointer;
         text-align: center;
         border-radius: 5px;
-        font-size: 18px;
+        font-family: 'SBAggroB', Arial, sans-serif;
+        font-size: 20px;
         margin-top: 20px;
     }
     .payment-button:hover {
-        background-color: #ff3333;
+        background-color: #e2dccc;
+        transition: 0.5s;
     }
     .note {
         color: red;
@@ -80,11 +89,18 @@
         margin-bottom: 20px;
     }
     .back-link a {
-        color: #007BFF;
+        color: black;
         text-decoration: none;
+        background-color: #dec022;
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-family: 'SBAggroB', Arial, sans-serif;
+        font-size: 18px;
     }
     .back-link a:hover {
-        text-decoration: underline;
+        background-color: #e2dccc;
+        transition: 0.5s;
     }
     /* 모달 창 스타일 */
     .modal {
@@ -99,19 +115,22 @@
         background-color: rgba(0, 0, 0, 0.5); /* 배경을 어둡게 처리 */
     }
     .modal-content {
-        background-color: #fff;
+        background-color: #e2dccc;
         margin: 15% auto;
         padding: 20px;
-        border: 1px solid #888;
+        border: 4px solid black;
         width: 80%;
         max-width: 500px; /* 최대 너비를 설정하여 중앙에 고정 */
         border-radius: 10px;
     }
     .close-button {
-        color: white;
+        color: black;
         float: right;
         font-size: 28px;
         font-weight: bold;
+        border: none;
+        background: none;
+        cursor: pointer;
     }
     .close-button:hover,
     .close-button:focus {
@@ -122,20 +141,23 @@
     .modal-header {
         font-size: 20px;
         margin-bottom: 15px;
+        font-family: 'SBAggroB', Arial, sans-serif;
     }
     .modal-footer {
         text-align: right;
     }
     .modal-footer button {
         padding: 10px 20px;
-        background-color: #007BFF;
-        color: white;
-        border: none;
+        background-color: #dec022;
+        color: black;
+        border: 2px solid black;
         cursor: pointer;
         border-radius: 5px;
+        font-family: 'SBAggroB', Arial, sans-serif;
     }
     .modal-footer button:hover {
-        background-color: #0056b3;
+        background-color: #e2dccc;
+        transition: 0.5s;
     }
 </style>
 </head>
@@ -176,7 +198,7 @@
             </label>
         </div>
         <!-- 결제하기 버튼이 새로운 JSP 페이지로 POST 요청을 보냄 -->
-        <form id="payment-form" action="pay/homesPayment.jsp" method="POST">
+        <form id="payment-form" action="/homes/pay/homesPayment.jsp" method="POST">
             <input type="hidden" name="checkin" value="<%= checkin %>">
             <input type="hidden" name="checkout" value="<%= checkout %>">
             <input type="hidden" name="guests" value="<%= guests %>">
