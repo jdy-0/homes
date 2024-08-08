@@ -9,37 +9,74 @@
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
 
 <style>
-    /* 사이드바 스타일 설정 */
+    body {
+        font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
+        margin: 20px;
+        background-color: #f8f9fa;
+    }
+    header, footer {
+        text-align: center;
+        background-color: #dec022;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+    }
+    header h1 {
+        font-size: 32px;
+        margin: 0;
+    }
+    footer {
+        margin-top: 20px;
+    }
     #sidebar {
-        width: 200px; /* 사이드바 너비 설정 */
-        float: left; /* 사이드바를 왼쪽에 배치 */
+        width: 200px;
+        float: left;
+        padding: 20px;
+        background-color: #e2dccc;
+        border: 3px solid black;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        min-height: 600px; /* 최소 높이 설정 */
     }
-    
-    /* 콘텐츠 영역 스타일 설정 */
+    #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    #sidebar ul li {
+        margin-bottom: 10px;
+    }
+    #sidebar ul li a {
+        text-decoration: none;
+        color: black;
+        background-color: #dec022;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+    }
+    #sidebar ul li a:hover {
+        background-color: #e2dccc;
+        transition: 0.5s;
+    }
     #content {
-        margin-left: 210px; /* 사이드바 공간을 확보하기 위해 왼쪽 여백 설정 */
-        padding: 20px; /* 콘텐츠 내부 여백 설정 */
-        min-height: 600px; /* 화면이 작을 때도 최소 높이 설정 */
+        margin-left: 230px;
+        padding: 20px;
+        background-color: #fff;
+        border: 3px solid black;
+        border-radius: 10px;
+        min-height: 600px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
-    /* 콘텐츠 영역의 제목 스타일 */
     #content h2 {
-        font-size: 24px; /* 제목의 폰트 크기 설정 */
-        margin-bottom: 20px; /* 제목과 콘텐츠 사이의 여백 설정 */
+        font-size: 24px;
+        margin-bottom: 20px;
     }
 </style>
 
 <script>
-    /**
-     * loadContent 함수는 선택한 메뉴에 따라 콘텐츠 영역을 동적으로 변경하는 역할을 합니다.
-     *
-     * @param {string} contentType - 표시할 콘텐츠 유형 ('dashboard', 'member', 'property', 'reviews', 'qna')
-     */
     function loadContent(contentType) {
-        // 콘텐츠를 표시할 div 요소를 가져옵니다.
         var contentDiv = document.getElementById('content');
-        
-        // 선택된 콘텐츠 유형에 따라 다른 내용을 로드합니다.
         switch(contentType) {
             case 'dashboard':
                 contentDiv.innerHTML = '<h2>대시보드</h2><p>여기에 대시보드 내용을 표시합니다.</p>';
@@ -63,17 +100,16 @@
     }
 </script>
 </head>
-<body onload="loadContent('dashboard')"> <!-- 페이지가 로드될 때 기본적으로 대시보드 내용을 표시합니다. -->
+<body onload="loadContent('dashboard')">
 
     <!-- 헤더 영역 -->
     <header>
-        <h1>관리자 페이지</h1> <!-- 페이지 제목 -->
+        <h1>관리자 페이지</h1>
     </header>
 
     <!-- 사이드바 영역 -->
     <div id="sidebar">
         <ul>
-            <!-- 사이드바 메뉴 항목 -->
             <li><a href="javascript:void(0);" onclick="loadContent('dashboard')">대시보드</a></li>
             <li><a href="javascript:void(0);" onclick="loadContent('member')">회원 관리</a></li>
             <li><a href="javascript:void(0);" onclick="loadContent('property')">숙소 관리</a></li>
@@ -84,12 +120,12 @@
 
     <!-- 콘텐츠 영역 -->
     <div id="content">
-        <!-- 이곳에 선택된 메뉴에 따른 내용이 동적으로 표시됩니다. -->
+        <!-- 선택된 메뉴에 따른 내용이 동적으로 표시됩니다. -->
     </div>
 
     <!-- 푸터 영역 -->
     <footer>
-        Copyright © Homes. All Rights Reserved. <!-- 저작권 정보 표시 -->
+        Copyright © Homes. All Rights Reserved.
     </footer>
 
 </body>

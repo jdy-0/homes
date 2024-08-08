@@ -8,7 +8,6 @@ public class RoomDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-<<<<<<< HEAD
 
 	public List<RoomDTO> getAllRooms() {
         List<RoomDTO> roomList = new ArrayList<>();
@@ -149,11 +148,6 @@ public class RoomDAO {
     }
 
     
-=======
-	
-	
-	
->>>>>>> JH
 	//다영버전
 	
 	/**검색된 숙소 가져오기(조건: 지역)*/
@@ -164,67 +158,10 @@ public class RoomDAO {
 			String sql="select * "
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
-					+ "where ( rg.lev=2 and rg.parent_idx=? ) "
-					+ "or ( rg.lev=1 and rg.region_idx=? )";
+					+ "where rg.lev=2 "
+					+ "and rg.parent_idx=(select region_idx from region where region_idx=? and lev=1)";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
-			ps.setInt(2, p_region_idx);
-			rs=ps.executeQuery();
-			ArrayList<RoomDTO> room= new ArrayList<>();
-			if(rs.next()) {
-				do {
-					int room_idx=rs.getInt("room_idx");
-					int host_idx=rs.getInt("host_idx");
-					int region_idx=rs.getInt("region_idx");
-					String room_name=rs.getString("room_name");
-					String goodthing=rs.getString("goodthing");
-					String addr_detail=rs.getString("addr_detail");
-					int price=rs.getInt("price");
-					String map_url=rs.getString("map_url");
-					String image=rs.getString("image");
-					
-					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
-					room.add(dto);
-				}while(rs.next());
-				
-				rddao.countUpdate(p_region_idx);
-			}
-			
-			return room;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				if(rs!=null) rs.close();
-				if(ps!=null) ps.close();
-				if(conn!=null) conn.close();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-	}
-	
-	/**검색된 숙소 가져오기(조건: 지역)*/
-	public ArrayList<RoomDTO> getRoom(int p_region_idx, int cp, int ls) {
-		Region_DetailDAO rddao = new Region_DetailDAO();
-		int start=(cp-1)*ls+1;
-		int end=cp*ls;
-		System.out.println("cp:"+cp+" ls:"+ls+" start:"+start+" end:"+end);
-		try {
-			conn=com.homes.db.HomesDB.getConn();
-			String sql="select * from "
-					+ "(select rownum as rnum, r.* "
-					+ "from room r \r\n"
-					+ "join region rg on r.region_idx=rg.region_idx "
-					+ "where (( rg.lev=2 and rg.parent_idx=? ) "
-					+ "or ( rg.lev=1 and rg.region_idx=? ))) a "
-					+ "where rnum >=? and rnum <=?";
-			ps=conn.prepareStatement(sql);
-			ps.setInt(1, p_region_idx);
-			ps.setInt(2, p_region_idx);
-			ps.setInt(3, start);
-			ps.setInt(4, end);
 			rs=ps.executeQuery();
 			ArrayList<RoomDTO> room= new ArrayList<>();
 			if(rs.next()) {

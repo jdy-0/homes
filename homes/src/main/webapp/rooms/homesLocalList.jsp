@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.homes.room.RoomDAO, com.homes.room.RoomDTO, java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>숙소 리스트</title>
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -44,9 +46,9 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         position: relative;
-        cursor: pointer; /* 이미지 클릭 가능하도록 설정 */
-        text-decoration: none; /* 링크에서 텍스트 데코레이션 제거 */
-        color: inherit; /* 링크 클릭시 텍스트 색상 유지 */
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
     }
     .home-card img {
         width: 100%;
@@ -80,39 +82,37 @@
 </style>
 </head>
 <body>
+<%@ include file="/header.jsp"%>
     <div class="container">
         <div class="filter">
             <button>필터</button>
         </div>
         <div class="homes-list">
-            <a href="information.jsp?home=부산+아파트&price=152000" class="home-card">
-                <img src="img/apartment.jpg" alt="숙소 이미지">
+            <% 
+                RoomDAO roomDAO = new RoomDAO();
+                List<RoomDTO> rooms = roomDAO.getAllRooms(); // 모든 방 데이터를 가져옴
+                if (rooms != null && !rooms.isEmpty()) {
+                    for (RoomDTO room : rooms) {
+            %>
+            <a href="information.jsp?room_idx=<%= room.getRoom_idx() %>" class="home-card">
+                <img src="<%= room.getImage() %>" alt="숙소 이미지">
                 <div class="favorite">
                     <img src="favorite_icon.png" alt="즐겨찾기">
                 </div>
-                <h3>부산 아파트</h3>
-                <p>오션뷰 / 해운대역 도보 10분</p>
-                <p class="price">152,000원/1박</p>
+                <h3><%= room.getRoom_name() %></h3>
+                <p><%= room.getGoodthing() %></p>
+                <p class="price"><%= room.getPrice() %>원/1박</p>
             </a>
-            <a href="information.jsp?home=부산+아파트&price=152000" class="home-card">
-                <img src="img/farm.jpg" alt="숙소 이미지">
-                <div class="favorite">
-                    <img src="favorite_icon.png" alt="즐겨찾기">
-                </div>
-                <h3>부산 아파트</h3>
-                <p>오션뷰 / 해운대역 도보 10분</p>
-                <p class="price">152,000원/1박</p>
-            </a>
-            <a href="information.jsp?home=부산+아파트&price=152000" class="home-card">
-                <img src="img/hotel.jpg" alt="숙소 이미지">
-                <div class="favorite">
-                    <img src="favorite_icon.png" alt="즐겨찾기">
-                </div>
-                <h3>부산 아파트</h3>
-                <p>오션뷰 / 해운대역 도보 10분</p>
-                <p class="price">152,000원/1박</p>
-            </a>
+            <% 
+                    }
+                } else {
+            %>
+            <p>해당 지역에 대한 숙소 데이터가 없습니다.</p>
+            <% 
+                }
+            %>
         </div>
     </div>
+    <%@ include file="/footer.jsp"%>
 </body>
 </html>

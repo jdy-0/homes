@@ -3,6 +3,7 @@ package com.homes.room;
 
 import java.sql.*;
 
+
 public class RoomDTO {
 	private int room_idx;
 	private int host_idx;

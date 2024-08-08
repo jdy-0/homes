@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
         margin: 20px;
         background-color: #f8f9fa;
         text-align: center;
@@ -16,27 +16,34 @@
         max-width: 600px;
         margin: 100px auto;
         padding: 20px;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        background-color: #e2dccc;
+        border: 4px solid black;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
     }
     .message {
         font-size: 24px;
         margin-bottom: 20px;
+        font-family: 'SBAggroB', Arial, sans-serif;
+        background-color: #dec022;
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px solid black;
     }
     .home-button {
         padding: 10px 20px;
-        font-size: 16px;
-        background-color: #007BFF;
-        color: white;
-        border: none;
+        font-size: 20px;
+        background-color: #dec022;
+        color: black;
+        border: 2px solid black;
         border-radius: 5px;
         cursor: pointer;
         text-decoration: none;
+        font-family: 'SBAggroB', Arial, sans-serif;
     }
     .home-button:hover {
-        background-color: #0056b3;
+        background-color: #e2dccc;
+        transition: 0.5s;
     }
 </style>
 </head>
@@ -45,7 +52,6 @@
     <div class="container">
         <div id="loading-message" class="message">결제 처리 중...</div>
         <div id="completion-message" class="message" style="display:none;">결제가 완료되었습니다.</div>
-        <!-- 경로를 절대 경로로 수정 -->
         <a href="/homes/index.jsp" id="home-button" class="home-button" style="display:none;">홈으로</a>
     </div>
 
@@ -57,6 +63,6 @@
             document.getElementById('home-button').style.display = 'inline-block';
         }, 3000); // 3초 후 결제 완료 메시지 표시
     </script>
-</body>
 <%@ include file="/footer.jsp"%>
+</body>
 </html>
