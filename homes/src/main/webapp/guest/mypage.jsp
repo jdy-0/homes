@@ -1,22 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+if(session.getAttribute("userid")==null || session.getAttribute("userid")==""){
+%>
+<script>
+window.location.href='/homes';
+</script>
+<%
+}
+%>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
-#mypage_profile{
+/* #mypage_profile{
 	width:800px;
 	height:70px;
 	margin:20px auto;  
 }
 #mypage_profile fieldset{
-	
+	background-color:#dec022;
 	display: flex;
-	border-radius:100px;
-	border:3px solid black;
+	border:5px solid black;
+	font-family: 'SBAggroB';
 }
 #mypage_profile img{
 	width:80px;
@@ -37,19 +46,66 @@
 	border: 1px solid black;
 	width:800px;
 	height:50px;
-	border-radius:100px;
-	
 }
 #mypage_list a{
 	margin:10px;
 	color:black;
 	text-decoration:none;
+} */
+section{
+	display:flex;
 }
+#myPageMain{
+	width:1000px;
+	border-right:5px solid black;
+}
+#myPageNav{
+	width:400px;
+}
+.label_fs{
+	background-color:#dec022;
+	color:black;
+	border-bottom:5px solid black;
+	margin:0px;
+	font-family: 'SBAggroB';
+}
+#myPageMain_fs{
+	margin:50px auto;
+	width:800px;
+	text-align:center;
+}
+#myPageMain_fs img{ 
+	width:150px;
+	border:4px solid black;
+	border-radius:500px;
+	margin:30px;
+}
+
 </style>
 </head>
 <body>
 <%@include file="/header.jsp" %>
 <section>
+<article id="myPageMain">
+	<fieldset class="label_fs">
+		<h3><%=session.getAttribute("usernickname") %>님의 페이지</h3>
+	</fieldset>
+	<div id="myPage_main_div">
+		<fieldset id="myPageMain_fs">
+			<a href="updateProfile.jsp"><img src="/homes/img/HY_picture.jpg" alt="profile_img"></a>
+			<div>
+			
+			</div>
+		</fieldset>
+	</div>
+</article>
+<article id="myPageNav">
+	<fieldset class="label_fs">
+		<h3>MENU</h3>
+	</fieldset>
+</article>
+</section>
+<%-- <section>
 	<article id="mypage_profile">
 		<fieldset>
 			<img src="/homes/img/default_profile.png" alt="profile_image">
@@ -68,7 +124,7 @@
 		</li>
 		<li>
 		<fieldset>
-			<a href="#">예약 확인</a>
+			<a href="/homes/guest/reserveHistory.jsp">예약 목록 보기</a>
 		</fieldset>
 		</li>
 		
@@ -90,7 +146,7 @@
 		
 	</ul>
 	</article>
-</section>
+</section> --%>
 <%@include file="/footer.jsp" %>
 </body>
 </html>

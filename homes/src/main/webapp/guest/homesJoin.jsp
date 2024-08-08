@@ -145,7 +145,7 @@ function setTel(){
 		</tr>
 		<tr>
 			<th>닉네임</th>
-			<td><input type="text" name="nickname" class="textfield_solo" required="required"></td>
+			<td><input type="text" name="nickname" class="textfield_solo" required="required" size="10"></td>
 		</tr>
 		<tr>
 			<th>생년월일</th>

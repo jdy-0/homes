@@ -33,7 +33,7 @@ function openLoginPopup(){
 		if(usernickname == null || usernickname == ""){
 			%>
 			<div id="header_top_right_login">
-				<a href="javascript:openLoginPopup();">LOGIN</a>
+				<a href="/homes/guest/login.jsp">LOGIN</a>
 				<a href="/homes/guest/homesJoin.jsp">JOIN US</a>
 			</div>
 			<%
@@ -63,7 +63,7 @@ function openLoginPopup(){
 	<table id="table_barcode">
 		<tr>
 			<%
-			for(int i=1;i<=35;i++){
+			for(int i=1;i<=30;i++){
 			%>
 			<th> </th>
 			<td> </td>

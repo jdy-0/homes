@@ -211,7 +211,7 @@
 }
 #recommend_region_table{
 	margin:50px auto;
-	width:1600px;
+	width:1400px;
 	border-spacing:0px;
 }
 #recommend_region_table td{
@@ -220,14 +220,14 @@
 }
 
 #recommend_region_table td img{
-	width:232px;
-	height:232px;
+	width:160px;
+	height:160px;
 	margin:28px;
 }
 #recommend_region_table td a img:hover{
-	width:260px;
-	height:260px;
-	margin:14px;
+	width:180px;
+	height:180px;
+	margin:18px;
 }
 .td_arrow{
 	text-align:center;
@@ -241,7 +241,7 @@
 }
 #recommend_room_table{
 	margin:50px auto;
-	width:1550px;
+	width:1400px;
 	height:1020px;
 }
 #recommend_room_table td{
@@ -249,13 +249,13 @@
 	height:510px;
 }
 #recommend_room_table td img{
-	width:480px;
-	height:480px;
+	width:380px;
+	height:380px;
 	margin:15px;
 }
 #recommend_room_table td img:hover{
-	width:495px;
-	height:495px;
+	width:400px;
+	height:400px;
 	margin:0px;
 }
 </style>
