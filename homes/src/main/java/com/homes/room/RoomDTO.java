@@ -14,17 +14,39 @@ public class RoomDTO {
 	private String map_url;
 	private String image;
 	
+	private int room_min;
+	private int room_max;
+	
 	private java.sql.Date startday;
 	private java.sql.Date endday;
 	private String reason; 
 	private int state;
 	
+
+
 	public RoomDTO() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
+			int price, String map_url, String image, String state,int room_min,int room_max) {
+		this.room_idx = room_idx;
+		this.host_idx = host_idx;
+		this.region_idx = region_idx;
+		this.room_name = room_name;
+		this.goodthing = goodthing;
+		this.addr_detail = addr_detail;
+		this.price = price;
+		this.map_url = map_url;
+		this.image = image;
+		this.room_min= room_min;
+		this.room_max= room_max;
+	}
+	
+	
+	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
 			int price, String map_url, String image) {
+		super();
 		this.room_idx = room_idx;
 		this.host_idx = host_idx;
 		this.region_idx = region_idx;
@@ -35,7 +57,7 @@ public class RoomDTO {
 		this.map_url = map_url;
 		this.image = image;
 	}
-	
+
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
 			int price, String map_url, String image,int state) {
 		super();
@@ -150,6 +172,20 @@ public class RoomDTO {
 	public void setUrl(String image) {
 		this.image = image;
 	}
-	
+	public int getRoom_min() {
+		return room_min;
+	}
+
+	public void setRoom_min(int room_min) {
+		this.room_min = room_min;
+	}
+
+	public int getRoom_max() {
+		return room_max;
+	}
+
+	public void setRoom_max(int room_max) {
+		this.room_max = room_max;
+	}
 	
 }

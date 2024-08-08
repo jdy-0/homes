@@ -52,11 +52,50 @@
         }
         
     </style>
+       <script>
+        function FileSelect(event) {
+        	  const fileInput = event.target;
+              const file = fileInput.files[0];
+
+              if (file) {
+                  const reader = new FileReader();
+
+                  // 새로고침 
+                  
+                  reader.onload = function (e) {
+                	  //파일 선택을 누른 타겟의 url
+                      const imageUrl = e.target.result;
+                     
+                      // 이미지 URL을 로컬 저장소에 저장
+                      localStorage.setItem('selectedImageUrl', imageUrl);
+                      
+                      // 이미지 미리보기 업데이트
+                      document.getElementById('selectedImage').src = imageUrl;
+                  };
+                  // 파일을 데이터 URL로 읽기
+                  reader.readAsDataURL(file);
+              }
+        }
+        
+        //새로고침 함수
+   /*      window.onload = function () {
+            
+            const savedImageUrl = localStorage.getItem('selectedImageUrl');
+            if (savedImageUrl) {
+                document.getElementById('selectedImage').src = savedImageUrl;
+            }
+        }; */
+        
+    </script>
+    
 </head>
 	<%@include file="../header.jsp"%>
 	<%
-	String name = (String) session.getAttribute("userid");
-
+	String name = (String)session.getAttribute("userid");
+	
+	Integer useridx = (Integer)session.getAttribute("useridx");
+	String Host_idx = useridx != null ? useridx.toString() : "";
+	
 	if (name == null || name.isEmpty()) {
 	%><script>
 			window.open('/homes/guest/login_popup.jsp', 'popup',
@@ -77,40 +116,59 @@ wf.setCrpath(crpath);
 
 	<%@include file="hostheader.jsp"%>
 	<section>
-		<form name="fminsertroom" action="hostinsert_ok.jsp">
+		<form name="fminsertroom" action="hostinsert_ok.jsp" method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div>
 					<fieldset>
 						<legend>대표 이미지 등록하기 </legend>
-						<img src="/homes/img/no_image.jpg" alt="이미지 없음"> <input
-							type="file" name="image" accept="image/*" multiple>
+						 <img id="selectedImage" src="default-image.jpg" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />
+						<input type="file" id="fileInput" name="aaa" accept="image/*" onchange="FileSelect(event)" />
 					</fieldset>
 				</div>
 				<div id="roominsert">
 					<h2>숙소 등록 하기</h2>
 					<ul>
-						<li><label>숙소 이름:</label> <input type="text" name="room_name"
-							name="room_img" required></li>
-						<li><label for="room_min">인원수:</label> <input type="number"
-							id="room_min" name="room_min" min="2" required
-							placeholder="최소 인원수"> ~ <input type="number"
-							id="room_max" name="room_max" min="2" required
-							placeholder="최대 인원수"></li>
-						<li><label for="details">세부사항:</label> <input type="text"
-							name="goothing" required placeholder="세부사항 입력"></li>
-						<li><label for="addr_detail">주소:</label> <input type="text"
-							name="addr_detail" required placeholder="주소 입력"></li>
-						<li><label for="price">가격:</label> <input type="text"
-							name="price" required placeholder="가격 입력"></li>
+						<li><label>숙소 이름:</label> 
+						<input type="text" name="room_name" required></li>
+						<li>
+							<label for="room_min">인원수:</label> 
+							<input type="number" id="room_min" name="room_min" min="2" required
+							placeholder="최소 인원수"> ~ 
+							<input type="number" id="room_max" name="room_max" min="2" required
+							placeholder="최대 인원수">
+						</li>
+						<li>
+							<label for="details">지역 번호:</label> 
+							<input type="text" name="region_idx" required placeholder="지역 번호 입력">
+						</li>
+						<li>
+							<label for="details">세부사항:</label> 
+							<input type="text" name="goodthing" required placeholder="세부사항 입력">
+						</li>
+						<li>
+							<label for="addr_detail">주소:</label> 
+							<input type="text" name="addr_detail" required placeholder="주소 입력">
+						</li>
+						<li>
+							<label for="price">가격:</label> 
+							<input type="text" name="price" required placeholder="가격 입력">
+						</li>
+						<li>
+							<label for="map_url">맵 url :</label> 
+							<input type="text" name="map_url" required placeholder="map_url">
+						</li>
+						<li>
+							<input type="hidden" name="host_idx" value="<%=Host_idx%>">
+						</li>
 					</ul>
 				</div>
 				<div>
 					<h2>사진 등록</h2>
 					<hr>
-					<input type="file" multiple>
+					<input type="file" multiple="multiple" accept="image/*" name='bbb'>
 				</div>
 				<div>
-					<input type="hidden" name="Folder" value="<%=name%>"> 
+					<input type="hidden" name="Folder"  value="<%=name%>"> 
 					<input type="submit" value="등록">
 				</div>
 			</div>
