@@ -7,6 +7,7 @@
 		<li><a href="/homes/host/hostbooking.jsp">예약 관리</a></li>
 		<li><a href="/homes/host/hostmanage.jsp">숙소 이용 현황</a></li>
 		<li><a href="/homes/host/hostinsert.jsp">숙소 등록 요청</a></li>
+		
 		<li>매출 관리</li>
 	</ul>
 </nav>

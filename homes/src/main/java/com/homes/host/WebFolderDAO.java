@@ -16,6 +16,10 @@ public class WebFolderDAO {
 		//4. 공통경로
 		private String everypath="img/host_img/";
 		
+		
+		private String hostpath="img/host_img";
+		
+		
 		//5. 사용자 현재위치
 		private String crpath;
 		
@@ -26,6 +30,14 @@ public class WebFolderDAO {
 			freeSize=0;
 			}
 		
+		public String getHostpath() {
+			return hostpath;
+		}
+
+		public void setHostpath(String hostpath) {
+			this.hostpath = hostpath;
+		}
+
 		public String getHomePath() {
 			return homePath;
 		}

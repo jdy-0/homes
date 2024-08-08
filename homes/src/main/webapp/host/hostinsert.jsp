@@ -81,7 +81,7 @@ wf.setCrpath(crpath);
 			<div class="container">
 				<div>
 					<fieldset>
-						<legend>이미지 등록하기 </legend>
+						<legend>대표 이미지 등록하기 </legend>
 						<img src="/homes/img/no_image.jpg" alt="이미지 없음"> <input
 							type="file" name="image" accept="image/*" multiple>
 					</fieldset>
@@ -105,8 +105,13 @@ wf.setCrpath(crpath);
 					</ul>
 				</div>
 				<div>
-					<input type="hidden" name="Folder" value="<%=name%>"> <input
-						type="submit" value="등록">
+					<h2>사진 등록</h2>
+					<hr>
+					<input type="file" multiple>
+				</div>
+				<div>
+					<input type="hidden" name="Folder" value="<%=name%>"> 
+					<input type="submit" value="등록">
 				</div>
 			</div>
 		</form>

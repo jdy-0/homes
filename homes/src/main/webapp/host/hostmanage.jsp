@@ -69,9 +69,6 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 						id="to">
 				</div>
 			</div>
-
-			<%-- <%@ include file="host_cal.jsp"%> --%>
-			
 		</div>
 </section>
 </body>
