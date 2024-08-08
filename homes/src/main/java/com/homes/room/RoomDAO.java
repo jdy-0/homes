@@ -8,6 +8,7 @@ public class RoomDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
+<<<<<<< HEAD
 
 	public List<RoomDTO> getAllRooms() {
         List<RoomDTO> roomList = new ArrayList<>();
@@ -148,6 +149,11 @@ public class RoomDAO {
     }
 
     
+=======
+	
+	
+	
+>>>>>>> JH
 	//다영버전
 	
 	/**검색된 숙소 가져오기(조건: 지역)*/
