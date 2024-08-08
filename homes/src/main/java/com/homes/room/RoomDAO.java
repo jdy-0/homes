@@ -156,12 +156,11 @@ public class RoomDAO {
 >>>>>>> JH
 	//다영버전
 	
-	/**검색된 숙소 가져오기(조건: 지역)*/
-	public ArrayList<RoomDTO> getRoom(int p_region_idx) {
-		Region_DetailDAO rddao = new Region_DetailDAO();
+	/**검색된 숙소 수 가져오기(조건: 지역)*/
+	public int getRoomCount(int p_region_idx) {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select * "
+			String sql="select count(*) "
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
 					+ "where ( rg.lev=2 and rg.parent_idx=? ) "
@@ -170,30 +169,14 @@ public class RoomDAO {
 			ps.setInt(1, p_region_idx);
 			ps.setInt(2, p_region_idx);
 			rs=ps.executeQuery();
-			ArrayList<RoomDTO> room= new ArrayList<>();
+			int count=0;
 			if(rs.next()) {
-				do {
-					int room_idx=rs.getInt("room_idx");
-					int host_idx=rs.getInt("host_idx");
-					int region_idx=rs.getInt("region_idx");
-					String room_name=rs.getString("room_name");
-					String goodthing=rs.getString("goodthing");
-					String addr_detail=rs.getString("addr_detail");
-					int price=rs.getInt("price");
-					String map_url=rs.getString("map_url");
-					String image=rs.getString("image");
-					
-					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
-					room.add(dto);
-				}while(rs.next());
-				
-				rddao.countUpdate(p_region_idx);
+				count=rs.getInt(1);
 			}
-			
-			return room;
+			return count;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return -1;
 		} finally {
 			try {
 				if(rs!=null) rs.close();
@@ -210,12 +193,12 @@ public class RoomDAO {
 		Region_DetailDAO rddao = new Region_DetailDAO();
 		int start=(cp-1)*ls+1;
 		int end=cp*ls;
-		System.out.println("cp:"+cp+" ls:"+ls+" start:"+start+" end:"+end);
+		
 		try {
 			conn=com.homes.db.HomesDB.getConn();
 			String sql="select * from "
 					+ "(select rownum as rnum, r.* "
-					+ "from room r \r\n"
+					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
 					+ "where (( rg.lev=2 and rg.parent_idx=? ) "
 					+ "or ( rg.lev=1 and rg.region_idx=? ))) a "
@@ -289,27 +272,25 @@ public class RoomDAO {
 	
 	/**랜덤 숙소 가져오기*/
 	public RoomDTO[] roomRandom() {
-		int[] idx = new int[6];
+		int[] rnum = new int[6];
 		int cnt=roomCount();
 		RoomDTO[] room=new RoomDTO[6];
 		try {
 			//랜덤 숫자 가져오기(idx)
 			for(int i=0;i<6;i++) {
-				idx[i]=(int)(Math.random()*cnt)+1;
+				rnum[i]=(int)(Math.random()*cnt)+1;
 				for(int j=0;j<i;j++) {
-					if(idx[j]==idx[i]) {
+					if(rnum[j]==rnum[i]) {
 						i--;
 						break;
 					}
 				}
 			}
-			
 			//db
 			conn=com.homes.db.HomesDB.getConn();
 			for(int i=0;i<6;i++) {
-				String sql="select * from room where room_idx="+idx[i];
+				String sql="select * from (select rownum as rnum, r.* from room r) a where rnum="+rnum[i];
 				ps=conn.prepareStatement(sql);
-				System.out.println(sql);
 				rs=ps.executeQuery();
 				if(rs.next()) {
 					do {
@@ -322,7 +303,7 @@ public class RoomDAO {
 						int price=rs.getInt("price");
 						String map_url=rs.getString("map_url");
 						String image=rs.getString("image");
-						
+
 						RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
 						room[i]=dto;
 					}while(rs.next());

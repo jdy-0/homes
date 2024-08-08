@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.collections4.bag.SynchronizedSortedBag"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -20,11 +21,10 @@
 <%
 	String region_idx=request.getParameter("select_location");
 	int p_region_idx=Integer.parseInt(region_idx);
-	System.out.println(region_idx);
 %>
 <%
 	//1.총게시물수
-	int totalCnt=rddao.regionDetailCount();
+	int totalCnt=rmdao.getRoomCount(p_region_idx);
 	//2.보여줄 리스트수
 	int listSize=6;
 	//3.페이지수
@@ -321,21 +321,12 @@ function validateForm() {
 		<label for="destination">여행지</label>
 		<select name="select_location" class="select_things">
 		<%
-		ArrayList<String> rname=new ArrayList<>();
-		rname=rdao.getRegionNames();
+		ArrayList<RegionDTO> region=new ArrayList<>();
+		region=rdao.getRegion();
 				
-		for(int i=0;i<rname.size();i++){%>
-	      		<option value="<%=i+1%>"><%=rname.get(i)%></option> 
+		for(int i=0;i<region.size();i++){%>
+	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
 	    <%} %>
-		<!--
-		   <option value="Seoul">서울</option> 
-		   <option value="Busan">부산</option> 
-		   <option value="Sokcho">속초</option> 
-		   <option value="Gangneung">강릉</option> 
-		   <option value="Jeonju">전주</option> 
-		   <option value="Daegu">대구</option> 
-		   <option value="Gyeongju">경주</option> 
-		-->
 		</select>
 	</div> 
 
@@ -403,7 +394,6 @@ function validateForm() {
 <tfoot>
 	<tr>
 		<td colspan="3" align="center">
-			<!-- 페이징 들어갈 곳 -->
 			<%
 			if(userGroup!=0){
 				%><a href="searchlist.jsp?cp=<%=(userGroup-1)*pageSize+pageSize %>&select_location=<%=p_region_idx %>">&lt;&lt;</a><%
