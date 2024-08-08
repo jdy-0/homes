@@ -288,9 +288,9 @@ function validateForm() {
 //1.총게시물수
 int totalCnt=rddao.regionDetailCount();
 //2.보여줄 리스트수
-int listSize=1;
+int listSize=5;
 //3.페이지수
-int pageSize=5;
+int pageSize=1;
 //4.사용자 현재위치
 String cp_s=request.getParameter("cp");
 if(cp_s==null||cp_s.equals("")){
@@ -298,12 +298,12 @@ if(cp_s==null||cp_s.equals("")){
 }
 int cp=Integer.parseInt(cp_s);
 
-int totalPage=(totalCnt/listSize)+1;
-if(totalCnt%listSize==0) totalPage--;
+int totalPage=(totalCnt/pageSize)+1;
+if(totalCnt%pageSize==0) totalPage--;
 
 //사용자 현재 위치의 그룹번호
-int userGroup=cp/pageSize;
-if(cp%pageSize==0)userGroup--;
+int userGroup=cp/listSize;
+if(cp%listSize==0)userGroup--;
 %>
 <body>
 <%@ include file="header.jsp"%>
@@ -319,21 +319,12 @@ if(cp%pageSize==0)userGroup--;
 		<label for="destination">여행지</label>
 		<select name="select_location" class="select_things">
 		<%
-		ArrayList<String> rname=new ArrayList<>();
-		rname=rdao.getRegionNames();
+		ArrayList<RegionDTO> region=new ArrayList<>();
+		region=rdao.getRegion();
 				
-		for(int i=0;i<rname.size();i++){%>
-	      		<option value="<%=i+1%>"><%=rname.get(i)%></option> 
+		for(int i=0;i<region.size();i++){%>
+	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
 	    <%} %>
-		<!--
-		   <option value="Seoul">서울</option> 
-		   <option value="Busan">부산</option> 
-		   <option value="Sokcho">속초</option> 
-		   <option value="Gangneung">강릉</option> 
-		   <option value="Jeonju">전주</option> 
-		   <option value="Daegu">대구</option> 
-		   <option value="Gyeongju">경주</option> 
-		-->
 		</select>
 	</div> 
 
@@ -376,17 +367,19 @@ if(cp%pageSize==0)userGroup--;
 		<td class="td_arrow">
 		<%
 		if(userGroup!=0){
-			%><a href="index.jsp?cp=<%=(userGroup-1)*pageSize+pageSize %>" id="arrow">&laquo;</a><%
+			%><a href="index.jsp?cp=<%=(userGroup-1)*listSize+listSize %>" id="arrow">&laquo;</a><%
 		}
 		%>
 		</td>
 		<%
+		ArrayList<RegionDTO> rcname=new ArrayList<>();
+		rcname=rdao.getRegionClick();
 		ArrayList<String> img=new ArrayList<>();
 		img=rddao.getRegionImg();
-		for(int i=userGroup*pageSize+1;i<=userGroup*pageSize+pageSize;i++){%>
+		for(int i=userGroup*listSize+1;i<=userGroup*listSize+listSize;i++){%>
 	      		<td>
-	      			<a href="searchlist.jsp?cp=<%=i %>&select_location=<%=i %>"><img src="<%=img.get(i-1) %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a>
-	      			<p>추천여행지:<%= rname.get(i-1)%></p>
+	      			<a href="searchlist.jsp?&select_location=<%=rcname.get(i-1).getRegion_idx() %>"><img src="<%=img.get(i-1) %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a>
+	      			<p>추천여행지:<%= rcname.get(i-1).getRegion_name()%></p>
 	      		</td>
 	      		<%
 				if(i==totalPage){
@@ -396,10 +389,10 @@ if(cp%pageSize==0)userGroup--;
 	    <%} %>
 	   <td class="td_arrow">
 	   <%
-	   //if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
-		if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
+	   //if(userGroup!=(totalPage/listSize-(totalPage%listSize==0?1:0))){
+		if(userGroup!=(totalPage/listSize-(totalPage%listSize==0?1:0))){
 		%>
-	   <a href="index.jsp?cp=<%=(userGroup+1)*pageSize+1 %>" id="arrow">&raquo;</a><%
+	   <a href="index.jsp?cp=<%=(userGroup+1)*listSize+1 %>" id="arrow">&raquo;</a><%
 		}
 		%>
 	   </td>

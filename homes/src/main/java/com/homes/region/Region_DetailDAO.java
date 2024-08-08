@@ -20,7 +20,6 @@ public class Region_DetailDAO {
 			ArrayList<String> img= new ArrayList<>();
 			while(rs.next()) {
 				img.add(rs.getString("img"));
-				System.out.println(rs.getString("img"));
 			}
 			
 			return img;

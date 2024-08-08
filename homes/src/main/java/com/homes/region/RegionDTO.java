@@ -10,6 +10,13 @@ public class RegionDTO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public RegionDTO(int region_idx, String region_name, int parent_idx, int lev) {
+		this.region_idx = region_idx;
+		this.region_name = region_name;
+		this.parent_idx = parent_idx;
+		this.lev = lev;
+	}
+
 	public int getRegion_idx() {
 		return region_idx;
 	}
