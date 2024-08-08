@@ -371,27 +371,6 @@ if(cp%pageSize==0)userGroup--;
 <h2>HOMES의 추천 여행지</h2>
 </fieldset>
 <article id="recommend_region">
-<%--
-	//1.총게시물수
-	int totalCnt=rddao.regionDetailCount();
-	//2.보여줄 리스트수
-	int listSize=5;
-	//3.페이지수
-	int pageSize=5;
-	//4.사용자 현재위치
-	String cp_s=request.getParameter("cp");
-	if(cp_s==null||cp_s.equals("")){
-		cp_s="1";
-	}
-	int cp=Integer.parseInt(cp_s);
-	
-	int totalPage=(totalCnt/listSize)+1;
-	if(totalCnt%listSize==0) totalPage--;
-	
-	//사용자 현재 위치의 그룹번호
-	int userGroup=cp/pageSize;
-	if(cp%pageSize==0)userGroup--;
---%>
 <table id="recommend_region_table">
 	<tr>
 		<td class="td_arrow">
@@ -417,7 +396,8 @@ if(cp%pageSize==0)userGroup--;
 	    <%} %>
 	   <td class="td_arrow">
 	   <%
-	   if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
+	   //if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
+		if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
 		%>
 	   <a href="index.jsp?cp=<%=(userGroup+1)*pageSize+1 %>" id="arrow">&raquo;</a><%
 		}
