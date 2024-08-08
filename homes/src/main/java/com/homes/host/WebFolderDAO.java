@@ -16,6 +16,8 @@ public class WebFolderDAO {
 		//4. 공통경로
 		private String everypath="img/host_img/";
 		
+		private String imgpath="img/";
+		
 		
 		private String hostpath="img/host_img";
 		
@@ -23,11 +25,19 @@ public class WebFolderDAO {
 		//5. 사용자 현재위치
 		private String crpath;
 		
+		public String getImgpath() {
+			return imgpath;
+		}
+
+		public void setImgpath(String imgpath) {
+			this.imgpath = imgpath;
+		}
+
 		public WebFolderDAO() {
 			System.out.println("webFolder객체 생성됌!");
 			totalSize=1024*1024*10;
 			usedSize=0;
-			freeSize=0;
+			freeSize = totalSize;
 			}
 		
 		public String getHostpath() {

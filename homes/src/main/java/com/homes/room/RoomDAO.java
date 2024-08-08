@@ -28,7 +28,7 @@ public class RoomDAO {
                 String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
 
-                RoomDTO roomDTO = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+                RoomDTO roomDTO = new RoomDTO();
                 roomList.add(roomDTO);
             }
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class RoomDAO {
                 int price = rs.getInt("price");
                 String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
-
+                	
                 RoomDTO roomDTO = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
                 roomList.add(roomDTO);
             }
@@ -412,4 +412,38 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	public int insertRoom2(RoomDTO roomDTO) {
+        int result = 0;
+        try {
+            conn = com.homes.db.HomesDB.getConn();
+            String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, MAP_URL, IMAGE, ROOM_MIN,ROOM_MAX) "
+                    + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, roomDTO.getHost_idx());
+            ps.setInt(2, roomDTO.getRegion_idx());
+            ps.setString(3, roomDTO.getRoom_name());
+            ps.setString(4, roomDTO.getGoodthing());
+            ps.setString(5, roomDTO.getAddr_detail());
+            ps.setInt(6, roomDTO.getPrice());
+            ps.setString(7, roomDTO.getMap_url());
+            ps.setString(8, roomDTO.getImage());
+            ps.setInt(9, roomDTO.getRoom_min());
+            ps.setInt(10, roomDTO.getRoom_max());
+
+            result = ps.executeUpdate();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+	
 }
