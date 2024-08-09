@@ -325,7 +325,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 	
 	function chooseWeeks(tag){
-		one_month_cal.querySelectorAll('.days .none')
+		
+		alert(tag.getClass());
+		one_month_cal.querySelectorAll('')
 		
 		
 	}
@@ -343,6 +345,8 @@ document.addEventListener("DOMContentLoaded", function() {
         	if(weekOfDays[i]=='일'){
     			dow_span.setAttribute('class','sunday');
         	}
+        	
+        	
         	
         	dow_span.addEventListener('click', () => {   	
 				chooseWeeks(dow_span,one_month_cal);
@@ -391,6 +395,8 @@ document.addEventListener("DOMContentLoaded", function() {
       	
       	const year = nextDate.getFullYear();
         const month = nextDate.getMonth();
+        
+        const weekClass = ['sun','mon','tue','wed','thur','fri','sat'];
       	
         const firstDay = new Date(year, month, 1).getDay();
         const lastDate = new Date(year, month + 1, 0).getDate();
@@ -400,11 +406,12 @@ document.addEventListener("DOMContentLoaded", function() {
             monthContainer.appendChild(emptyCell);
         }
 		
+        
         for (let day = 1; day <= lastDate; day++) {
             const dayElement = document.createElement('span');
 
             dayElement.setAttribute('class','none');
-
+			dayElement.classList.add(weekClass[(firstDay+day-1)%7]);
             dayElement.textContent = day;
             dayElement.id = 'd' + year + (month + 1).toString().padStart(2, '0') + (day.toString().padStart(2, '0'));
  
