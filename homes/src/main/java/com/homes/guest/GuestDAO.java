@@ -415,4 +415,56 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	
+	//총 이용회수 구하기
+	public int[] getCountandPeriod(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT (SELECT COUNT(*) FROM RESERVATION_TEST WHERE MEMBER_IDX = ? AND STATE = '이용완료') AS USECOUNT, "
+					+ "CEIL(SYSDATE-JOINDATE) AS PERIOD FROM HOMES_MEMBER WHERE IDX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			ps.setInt(2, idx);
+			rs=ps.executeQuery();
+			rs.next();
+			int usecount = rs.getInt("usecount");
+			int period = rs.getInt("period");
+			
+			int [] number = new int[2];
+			number[0] = usecount;
+			number[1] = period;
+			
+			return number;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	public int getCountUse(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT COUNT(*) FROM RESERVATION_TEST WHERE MEMBER_IDX=? AND STATE='이용완료'";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			rs=ps.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 }
