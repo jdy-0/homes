@@ -16,42 +16,7 @@ window.location.href='/homes';
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
-/* #mypage_profile{
-	width:800px;
-	height:70px;
-	margin:20px auto;  
-}
-#mypage_profile fieldset{
-	background-color:#dec022;
-	display: flex;
-	border:5px solid black;
-	font-family: 'SBAggroB';
-}
-#mypage_profile img{
-	width:80px;
-	margin-left:20px;
-}
-#mypage_profile div{
-	margin-left:20px;
-}
-#mypage_list{
-	margin:30px auto;
-	text-align:center;
-}
-#mypage_list li{
-	list-style-type:none;
-	margin-bottom:15px;
-}
-#mypage_list fieldset{
-	border: 1px solid black;
-	width:800px;
-	height:50px;
-}
-#mypage_list a{
-	margin:10px;
-	color:black;
-	text-decoration:none;
-} */
+
 section{
 	display:flex;
 }
@@ -60,7 +25,7 @@ section{
 	border-right:5px solid black;
 }
 #myPageNav{
-	width:400px;
+	width:410px;
 }
 .label_fs{
 	background-color:#dec022;
@@ -70,19 +35,50 @@ section{
 	font-family: 'SBAggroB';
 }
 #myPageMain_fs{
-	margin:50px auto;
+	margin:80px auto;
 	width:800px;
 	text-align:center;
+	border:0;
 }
 #myPageMain_fs img{ 
-	width:150px;
+	width:300px;
 	border:4px solid black;
 	border-radius:500px;
 	margin:30px;
 }
 input[type="file"] {display: none;}
+#myPageMain_fs div{
+	font-family: 'SBAggroB';
+}
+#ul_menu{
+	display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+	list-style:none;
+}
+#ul_menu li{
+	margin:50px 10px 50px 10px;
+}
+#ul_menu a{
+	color:black;
+	font-family: 'SBAggroB';
+	font-size:25px;
+	text-decoration:none;
+}
+.ul_submenu{
+	margin-top:15px 0px 15px 0px;
+	list-style:none;
+	display:none;
+}
+.ul_submenu a{
+	color:black;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	text-decoration:none;
+}
 </style>
 <script>
+
 // 이미지 클릭 시 파일 선택 창 열기
 document.getElementById("profileImg").addEventListener("click", function() {
     document.getElementById("fileInput").click();
@@ -112,59 +108,85 @@ document.getElementById("fileInput").addEventListener("change", function() {
             	<input type="file" name="profileImg" id="fileInput" accept="image/*">
         	</form>
 			<div>
-			
+			<%
+			int number[] = gdao.getCountandPeriod(useridx);
+			int usecount = 0;
+			int period = 0;
+			if(number!=null && number.length!=0){
+				usecount = number[0];
+				period = number[1];
+			}
+			%>
+				<h2>나의 이용 횟수:&nbsp;<%=usecount %></h2>
+				<h2>HOMES와 함께한 시간:&nbsp;<%=period %>일</h2>
 			</div>
 		</fieldset>
 	</div>
 </article>
+<%@include file="/guest/myProfile.jsp" %>
+
 <article id="myPageNav">
 	<fieldset class="label_fs">
 		<h3>MENU</h3>
 	</fieldset>
+	<nav>
+		<ul id="ul_menu">
+			<li><a href="javascript:showSubMenu('ul_account');">&#127960;계정관리</a>
+   				<ul id="ul_account" class="ul_submenu" style="display: none;">
+        			<li><a href="javascript:openNewArticle('myProfile');">나의 정보</a></li>
+        			<li><a href="#">비밀번호 변경</a></li>
+    			</ul>
+			</li>
+			<li><a href="javascript:showSubMenu('ul_myreserve');">&#127960;나의 예약</a>
+    			<ul id="ul_myreserve" class="ul_submenu" style="display: none;">
+        			<li><a href="javascript:openNewArticle('myReserve');">예약 내역 보기</a></li>
+    			</ul>
+			</li>
+			<li><a href="javascript:showSubMenu('ul_myLike');">&#127960;LIKE</a>
+    			<ul id="ul_myLike" class="ul_submenu" style="display: none;">
+        			<li><a href="javascript:openNewArticle('myLike');">내가 찜한 목록</a></li>
+    			</ul>
+			</li>
+			<li><a href="javascript:showSubMenu('ul_myActivity');">&#127960;나의 활동</a>
+    			<ul id="ul_myActivity" class="ul_submenu" style="display: none;">
+        			<li><a href="javascript:openNewArticle('myReview');">내가 쓴 리뷰</a></li>
+        			<li><a href="javascript:openNewArticle('myReviewToMe');">내가 받은 리뷰</a></li>
+        			<li><a href="/homes/guest/msg.jsp">쪽지</a></li>
+    			</ul>
+			</li>
+			<li><a href="/homes/host/hostmain.jsp">&#127960;HOSTING</a></li>
+		</ul>
+	</nav>
 </article>
 </section>
-<%-- <section>
-	<article id="mypage_profile">
-		<fieldset>
-			<img src="/homes/img/default_profile.png" alt="profile_image">
-			<div>
-				<p><%=session.getAttribute("usernickname") %>님</p>
-				<a href="msg.jsp">&#128233;</a>
-			</div>
-		</fieldset>
-	</article>
-	<article id="mypage_list">
-	<ul>
-		<li>
-		<fieldset>
-			<a href="showProfile.jsp?userid=<%=session.getAttribute("userid")%>">계정관리</a>
-		</fieldset>
-		</li>
-		<li>
-		<fieldset>
-			<a href="/homes/guest/reserveHistory.jsp">예약 목록 보기</a>
-		</fieldset>
-		</li>
-		
-		<li>
-		<fieldset>
-			<a href="#">즐겨찾기 목록</a>
-		</fieldset>
-		</li>
-		<li>
-		<fieldset>
-			<a href="/homes/host/hostmain.jsp">호스팅 관리</a>
-		</fieldset>
-		</li>
-		<li>
-		<fieldset>
-			<a href="#">고객 지원</a>
-		</fieldset>
-		</li>
-		
-	</ul>
-	</article>
-</section> --%>
+<script>
+function openNewArticle(articleId){
+	
+	var articles = ['myPageMain', 'myProfile', 'myReserve', 'myLike', 'myReview', 'myReviewToMe'];
+	
+	for(var i=0;i<articles.length;i++){
+		var article = document.getElementById(articles[i]);
+		if(article){
+			if(articles[i] == articleId){
+				article.style.display="block";
+			}else{
+				article.style.display="none";
+			}
+		}
+	}
+}
+</script>
+<script>
+function showSubMenu(submenuId){
+	    var submenu = document.getElementById(submenuId);
+	    if (submenu.style.display === "none" || submenu.style.display === "") {
+	        submenu.style.display = "block";
+	    } else {
+	        submenu.style.display = "none";
+	    }
+}
+
+</script>
 <%@include file="/footer.jsp" %>
 </body>
 </html>
