@@ -1,4 +1,3 @@
-리뷰 8월 8일
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.homes.review.ReviewDAO, com.homes.review.ReviewDTO" %>
@@ -8,6 +7,7 @@
 <meta charset="UTF-8">
 <title>후기 보기 및 작성</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 새로 만든 CSS 파일 링크 -->
 <style>
     /* 기본 스타일 설정 */
     body {
@@ -127,9 +127,8 @@
                     for (ReviewDTO review : reviews) {
             %>
                         <div class="review-item">
-                            <p><strong>사용자:</strong> <%= review.getUserName() %></p>
+                            <p><strong>별점:</strong> <%= review.getRate() %>점</p> <!-- 별점 출력 -->
                             <p><%= review.getContent() %></p>
-                            <p><small><%= review.getCreatedAt() %></small></p>
                         </div>
             <%
                     }
@@ -145,6 +144,17 @@
                 <h3>후기 작성</h3>
                 <textarea name="review" placeholder="후기를 작성하세요..."></textarea>
                 <input type="hidden" name="room_idx" value="<%= roomIdx %>">
+                
+                <!-- 별점 선택 추가 -->
+                <label for="rate">별점:</label>
+                <select name="rate" id="rate">
+                    <option value="1">1점</option>
+                    <option value="2">2점</option>
+                    <option value="3">3점</option>
+                    <option value="4">4점</option>
+                    <option value="5">5점</option>
+                </select>
+                
                 <button type="submit">후기 제출</button>
             </form>
         </div>

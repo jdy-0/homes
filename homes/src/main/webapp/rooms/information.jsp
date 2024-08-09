@@ -1,11 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.homes.room.RoomDAO, com.homes.room.RoomDTO" %>
+
+<%
+    String roomIdxParam = request.getParameter("room_idx");
+    RoomDTO room = null;
+
+    // room_idx가 null이거나 빈 문자열인 경우 기본값 또는 에러 처리
+    if (roomIdxParam != null && !roomIdxParam.isEmpty()) {
+        try {
+            int roomIdx = Integer.parseInt(roomIdxParam);
+            RoomDAO roomDAO = new RoomDAO();
+            room = roomDAO.getRoomById(roomIdx);
+            if (room == null) {
+                out.println("해당 숙소 정보를 찾을 수 없습니다.");
+            }
+        } catch (NumberFormatException e) {
+            // room_idx 파라미터가 유효하지 않은 경우 처리
+            out.println("유효하지 않은 숙소 ID입니다.");
+        }
+    } else {
+        // room_idx 파라미터가 유효하지 않은 경우 처리
+        out.println("유효하지 않은 숙소 ID입니다.");
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>숙소 정보</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 추가된 rating.css 링크 -->
 <script>
 // 로그인 여부를 확인하는 함수
 function checkLogin() {
@@ -161,6 +186,33 @@ function openLoginPopup(){
         transition: 0.5s;
     }
 </style>
+  <style>
+    .star-rating {
+      display: flex;
+    }
+
+    .star {
+      appearance: none;
+      padding: 1px;
+    }
+
+    .star::after {
+      content: '☆';
+      color: hsl(60, 80%, 45%);
+      font-size: 20px;
+    }
+
+    .star:hover::after,
+    .star:has(~ .star:hover)::after,
+    .star:checked::after,
+    .star:has(~ .star:checked)::after {
+      content: '★';
+    }
+
+    .star:hover ~ .star::after {
+      content: '☆';
+    }
+  </style>
 </head>
 <body>
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
@@ -168,12 +220,7 @@ function openLoginPopup(){
         <div class="top">
             <h1>숙소 정보</h1>
             <div class="room-details">
-                <%
-                    int roomIdx = Integer.parseInt(request.getParameter("room_idx"));
-                    RoomDAO roomDAO = new RoomDAO();
-                    RoomDTO room = roomDAO.getRoomById(roomIdx);
-                    if (room != null) {
-                %>
+                <% if (room != null) { %>
                 <h2><%= room.getRoom_name() %></h2>
                 <p><%= room.getGoodthing() %></p>
                 <p><%= room.getAddr_detail() %></p>

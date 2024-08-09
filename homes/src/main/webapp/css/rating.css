@@ -1,0 +1,34 @@
+@charset "UTF-8";
+/* 별점 평가 스타일링 */
+.star-rating {
+    direction: rtl; /* 별을 오른쪽에서 왼쪽으로 정렬 */
+    display: inline-flex;
+    font-size: 2rem; /* 별 크기 조절 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+    user-select: none; /* 사용자가 별을 선택할 수 없도록 설정 */
+}
+
+/* 라디오 버튼 숨기기 */
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+/* 기본 별 색상 설정 */
+.star-rating label {
+    color: #ddd; /* 비활성화된 별 색상 */
+    font-size: 2rem;
+    padding: 0;
+    margin: 0;
+    transition: color 0.2s ease-in-out; /* 별 색상이 변할 때의 애니메이션 */
+}
+
+/* 선택된 별과 그 왼쪽에 있는 별들의 색상 변경 */
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffc107; /* 활성화된 별 색상 */
+}
+
+/* 별 위에 마우스를 올렸을 때 (hover) 색상 변경 */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107; /* 별을 호버할 때의 색상 */
+}
