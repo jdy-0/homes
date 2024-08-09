@@ -1,5 +1,6 @@
 package com.homes.host;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +15,10 @@ public class ScheduleDAO {
 	public ArrayList<ScheduleDTO> showAllSchdule(int room_idx){
 
         try {
-            conn = com.homes.db.HomesDB.getConn(); // 데이터베이스 연결
-            String sql = " SELECT * FROM UNAVAILABLE_SCHEDULE WHERE room_idx = ? "; // 관리자의 비밀번호를 조회하는 SQL 쿼리
+            conn = com.homes.db.HomesDB.getConn(); 
+            String sql = " SELECT * FROM UNAVAILABLE_SCHEDULE WHERE room_idx = ? "; 
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, room_idx); // 아이디 바인딩
+            ps.setInt(1, room_idx); 
             rs = ps.executeQuery();
             
             ArrayList<ScheduleDTO> arr = new ArrayList<ScheduleDTO>();
@@ -48,8 +49,52 @@ public class ScheduleDAO {
             	e2.printStackTrace();
             }
         }
-    
-		
+	}
+	
+	public int[] insertRoomSchedule(ArrayList<String> arr,int room_idx) {
+	       try {
+	            conn = com.homes.db.HomesDB.getConn(); 
+	            String sql = " insert into UNAVAILABLE_SCHEDULE (idx, room_idx, start_day, end_day, reason) "
+	            		+ " VALUES ('us'||unavailable_schedule_seq.NEXTVAL, ?, ?, ?, '휴무') "; 
+	           PreparedStatement ps = conn.prepareStatement(sql);
+	           
+	           if(arr!=null || arr.size()>0) {
+	        	   
+	        	   for(String s : arr) {
+	        		   String[] s_date = s.split(",");
+	        		   String begin = s_date[0];
+	        		   String end = s_date[1];
+	        		   java.sql.Date d_begin = new Date(Long.parseLong(begin));
+	        		   java.sql.Date d_end = new Date(Long.parseLong(end));
+	        		   ps.setInt(1, room_idx);  // Set room_idx
+	                    ps.setDate(2, d_begin);  // Set start_day
+	                    ps.setDate(3, d_end);    // Set end_day
+	                    
+	                    ps.addBatch();
+	        		   
+	        	   }
+	        	   
+	        	   return ps.executeBatch();
+	           }
+	           
+	           
+	            
+	            
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        } finally {
+	            // 자원 해제 (메모리 누수 방지)
+	            try {
+	            	if (rs != null) rs.close(); 
+	            	if (ps != null) ps.close();
+	            	if (conn != null) conn.close();
+	            } catch (Exception e2) {
+	            	e2.printStackTrace();
+	            }
+	        }
+		return null;
 	}
 	
 }

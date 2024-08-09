@@ -84,6 +84,9 @@
 	background-color: #007bff;
 	color: white;
 }
+
+
+
 .line {
 	background-color: blue;
 }
@@ -142,6 +145,31 @@
 	padding:10px;
 	font-size:20px;
 }
+
+
+/* ----------------test---------------------- */
+.small_start {
+
+            position: relative; /* 절대 위치 지정 */
+            top: -20px; /* 상단에 위치 */
+            left: 0; /* 왼쪽에 위치 */
+            font-size: 0.25em; /* 작은 글자 크기 조정 */
+            color: gray; /* 작은 글자의 색상 설정 */
+            background: white; /* 배경색을 설정하여 가독성 향상 */
+            padding: 2px; /* 약간의 여백 추가 */
+        }
+.holi{
+	background-color: red;
+}
+
+
+.hol_selected{
+	background-color: yellow;
+}
+.holi_line{
+	background-color: orange;
+}
+
 </style>
 <%
 String s_room = request.getParameter("room");
@@ -168,8 +196,8 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 	
 		for(int j=0; j<cal_arr.size(); j++){
 		%>
-			<input type="text" class="schedule" data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
-			<input type="text" class="schedule" data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
+			<input type="text" class="<%=cal_arr.get(j).getReason() %>" data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
+			<input type="text" class="<%=cal_arr.get(j).getReason() %>" data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
 		<%
 		}
 	}
@@ -177,11 +205,16 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 		<div class="month">
 			<button class="prev-month">‹</button>
 			<span class="month-year">초기화</span>
+			<span class="submit">휴무 등록 및 수정</span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
 			<!-- 날짜가 여기에 동적으로 추가됩니다 -->
 		</div>
+		
+		<form action="host_roomSchedule_ok.jsp" name="host_roomSchedule">
+		<input type="hidden" name="room" value="<%=room%>">
+		</form>
 	</div>
 </div>
 
@@ -195,20 +228,92 @@ document.addEventListener("DOMContentLoaded", function() {
     const nextMonthBtn = calendar.querySelector('.next-month');
     const side_cal = calendar.querySelector('.side_cal');
     
+    const reset = calendar.querySelector('.month-year');
+    const submit = calendar.querySelector('.submit');
+
+    var index =1;
 	var cals = [];
 	var date_from_to = [];
     let currentDate = new Date();
     let nextDate = new Date();
     var loc = 0;
     
+    reset.addEventListener('click', () => {
+        
+    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.remove	('hol_selected'));
+    	
+        /* holiday */
+    });
+    
+    
+    function getAllhol_selected(){
+    	
+    	var hol_sel = calendar.querySelectorAll('.hol_selected');
+    	
+    	const hol_sel_date = [];
+    	
+    	hol_sel.forEach(hol=>{
+    		hol_sel_date.push(new Date(makeIdToDate(hol.id)));
+    		
+    	});
+		alert('길이'+hol_sel_date.length);
+    	var s_date = hol_sel_date[0];
+    	var e_date = hol_sel_date[0];
+    	
+    	
+    	var range_date= [];
+    	for(var i = 1; i<hol_sel_date.length; i++){
+    		
+    		const c_s_date = hol_sel_date[i-1];
+    		const next_date = new Date(c_s_date);
+     		next_date.setDate(c_s_date.getDate()+1);
+    		const sideDate = hol_sel_date[i];
+
+    		if(next_date.getTime()==sideDate.getTime()){
+    			e_date = sideDate;
+    			
+    		} else {
+					
+    			range_date.push([s_date.getTime(),e_date.getTime()]);
+				s_date=hol_sel_date[i];	
+				e_date=hol_sel_date[i];	
+    		}
+    	}
+    	
+		range_date.push([s_date.getTime(),e_date.getTime()]);
+		return range_date;
+    }
+    
+    function makeHidden(range_date){
+    	var form = calendar.querySelector('form[name="host_roomSchedule"]');
+    	
+    	range_date.forEach((r,index)=>{
+    		const input = document.createElement('input');
+        	input.value=r;
+        	input.type='hidden';
+        	input.name = 'range_'+index;
+        	
+        	form.appendChild(input);
+    	});
+    	form.submit();
+    	
+    	
+    }
+    
+    submit.addEventListener('click', () => {
+        
+    	const range_date = getAllhol_selected();
+    	makeHidden(range_date);
+    	
+    });
     
     atStart();
+    
     
     function atStart(){
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
-        setAllSchedule();
     }
     
 
@@ -217,14 +322,16 @@ document.addEventListener("DOMContentLoaded", function() {
     	
     	const startInputs = calendar.querySelectorAll('input[data-type="start"]');
         const endInputs = calendar.querySelectorAll('input[data-type="end"]');
-		
+        
         let all_sch = [];
         startInputs.forEach((input, index) => {
             const startDate = input.value;
             const endDate = endInputs[index].value;
+            const reason = input.className;
 			let one_sch = [];
 			one_sch[0] = startDate.replaceAll('-','');
 			one_sch[1] = endDate.replaceAll('-','');
+			one_sch[2] = reason;
 			all_sch.push(one_sch);
         });
         
@@ -236,6 +343,39 @@ document.addEventListener("DOMContentLoaded", function() {
         return all_sch;
     }
     
+    function attachTag(one_month_cal){
+    	
+    	one_month_cal.querySelectorAll('.selected').forEach(sel => {
+            const smallStart = document.createElement('em');
+        	smallStart.className = 'small_start';
+            smallStart.textContent = index++;
+            sel.appendChild(smallStart);
+
+        });
+    	
+    	one_month_cal.querySelectorAll('.holi').forEach(sel => {
+            const smallStart = document.createElement('em');
+        	smallStart.className = 'small_start';
+            smallStart.textContent = '휴무';
+            sel.appendChild(smallStart);
+
+        });
+    	
+
+    }
+    
+    function checkHoliday(dayElement,reason){
+    	
+    	if (reason === "예약됨") {
+            dayElement.classList.add('selected');
+ 
+        } else {
+            dayElement.classList.add('holi');
+            
+        }
+    	
+    }
+    
 	function setAllSchedule(){
     	
     	let all_sch = getAllScheduleToId();
@@ -245,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	    	 const firstDate = all_sch[i][0];
 	         const lastDate  = all_sch[i][1];
-	 			
+	 		 const reason = all_sch[i][2];	
 	             const allDays = side_cal.querySelectorAll('span');
 	             
 	             allDays.forEach(dayElement => {
@@ -253,11 +393,22 @@ document.addEventListener("DOMContentLoaded", function() {
 	                 if(dayId!=null && dayId!=""){
 							
 	                	 currentDate = dayId.replaceAll('d','');
-	                	 if (currentDate == firstDate || currentDate == lastDate){
-	                		 dayElement.classList.add('selected');
-	                	 } else if (currentDate > firstDate && currentDate < lastDate) {
+	                	 if (currentDate == firstDate){
+	                		 checkHoliday(dayElement,reason);
 	                		
-	                		dayElement.classList.add('line');
+	                	 }else if (currentDate == lastDate){
+	                		 checkHoliday(dayElement,reason);
+	                		 
+	                	 }else if (currentDate > firstDate && currentDate < lastDate) {
+	                		
+	                		 if(reason=='예약됨'){
+	 	                		dayElement.classList.add('line');
+	                		 } else {
+		 	                		dayElement.classList.add('holi_line');
+	                		 }
+	                		
+	                		
+	                		
 	                	 }
 	                     
 	                 }
@@ -297,7 +448,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if(loc+2==cals.length){
         	renderCalendar(nextDate);
-            setAllSchedule();
 
             cals[loc+1].style.display='block';
 
@@ -325,11 +475,38 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 	
 	function chooseWeeks(tag){
-		
-		alert(tag.getClass());
-		one_month_cal.querySelectorAll('')
-		
-		
+		const Element = tag.parentElement;
+		const parentElement = Element.parentElement;
+		const className = tag.textContent;
+	    // 클래스 이름에 따라 처리 분기
+	    
+	    const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.hol_selected):not(.holi_line)';
+	    switch(className) {
+	        case '일':
+	        	parentElement.querySelectorAll('.sun'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '월':
+	        	parentElement.querySelectorAll('.mon'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '화':
+	        	parentElement.querySelectorAll('.tue'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '수':
+	        	parentElement.querySelectorAll('.wed'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '목':
+	        	parentElement.querySelectorAll('.thur'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '금':
+	        	parentElement.querySelectorAll('.fri'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        case '토':
+	        	parentElement.querySelectorAll('.sat'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
+	            break;
+	        default:
+	            alert('Unknown day class');
+	    }
+
 	}
 	
     function addWeekdays(one_month_cal){
@@ -359,7 +536,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function setYMD(){
-		/* <span class="month-year"></span> */
 		
 		const one_month_cal  = document.createElement('div');
 		cals.push(one_month_cal);
@@ -381,18 +557,12 @@ document.addEventListener("DOMContentLoaded", function() {
     function renderCalendar(date) {
     	one_month_cal = setYMD();
     	addWeekdays(one_month_cal);
-
-
-        /* 
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const tot = '';
-        monthYear.textContent = year+'년'+(month+1)+'월'; */
      
       	const monthContainer  = document.createElement('div');
       	monthContainer.innerHTML = '';
       	monthContainer.classList.add('days');
       	
+
       	const year = nextDate.getFullYear();
         const month = nextDate.getMonth();
         
@@ -428,188 +598,31 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
         one_month_cal.appendChild(monthContainer);
+        setAllSchedule();
+
+        attachTag(one_month_cal);
     }
     
     function chooseDate(year, month, day, dayElement) {
     	
-        document.querySelectorAll('.none').forEach(span => span.classList.remove('selected'));
-        dayElement.classList.add('selected');
 		// span태그 + none클래스 : => remove selected
-		
+		const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.hol_selected):not(.holi_line)';
+
 		// line none 클릭마다 변환
-/*     	if (dayElement.classList.contains('line')) {
-            dayElement.classList.replace('line', 'none');
+    	if (dayElement.classList.contains('hol_selected')) {
+            dayElement.classList.replace('hol_selected', 'none');
             
         } else {
-            dayElement.classList.replace('none', 'line');
+            dayElement.classList.replace('none', 'hol_selected');
 
-        } */
-        dayElement.classList.replace('none', 'line');
-
-        selectedDates = document.querySelectorAll('.selected');
-
-        if (document.querySelectorAll('.selected').length  == 1) {
-        	date_from_to[0] = dayElement;
- /*             const firstDateId = selectedDates[0].id.replaceAll('d', '');
-            const firstDate = new Date(
-                    firstDateId.substring(0, 4),
-                    parseInt(firstDateId.substring(4, 6)) - 1,
-                    firstDateId.substring(6, 8)
-                );
- 			const allDays = side_cal.querySelectorAll('span');
-            allDays.forEach(dayElement => {
-                const dayId = dayElement.id;
-                if(dayId!=null && dayId!="")
-
-                if (dayId) {
-                    const currentDate = new Date(
-                        dayId.substring(1, 5),
-                        parseInt(dayId.substring(5, 7)) - 1,
-                        dayId.substring(7, 9),
-                    );
-
-                    if (currentDate < firstDate) {
-                        dayElement.classList.add('disabled');
-                        const clone = dayElement.cloneNode(true);
-                        dayElement.parentNode.replaceChild(clone, dayElement);
-                    }
-                }
-            }); */
-            
-         	from.value = ''+year+'-'+(month+1).toString().padStart(2,'0')+'-'+(day.toString().padStart(2,'0'));
-
-/*             calendar.style.display = 'none';
- */            
-        } else if (document.querySelectorAll('.selected').length ==2){
-
-        	date_from_to[1] = dayElement;
-
-            const firstDateId = selectedDates[0].id.replaceAll('d', '');
-            const lastDateId = selectedDates[1].id.replaceAll('d', '');
-
-            const firstDate = new Date(
-                firstDateId.substring(0, 4),
-                parseInt(firstDateId.substring(4, 6)) - 1,
-                firstDateId.substring(6, 8)
-            );
-            const lastDate = new Date(
-                lastDateId.substring(0, 4),
-                parseInt(lastDateId.substring(4, 6)) - 1,
-                lastDateId.substring(6, 8)
-            );
-			
-            const allDays = side_cal.querySelectorAll('span');
-            
-            allDays.forEach(dayElement => {
-                const dayId = dayElement.id;
-                if(dayId!=null && dayId!="")
-
-                if (dayId) {
-                    const currentDate = new Date(
-                        dayId.substring(1, 5),
-                        parseInt(dayId.substring(5, 7)) - 1,
-                        dayId.substring(7, 9),
-                    );
-
-                    if (currentDate >= firstDate && currentDate <= lastDate) {
-                        dayElement.classList.add('line');
-                    }
-                }
-            });
-         	to.value = ''+year+'-'+(month+1).toString().padStart(2,'0')+'-'+(day.toString().padStart(2,'0'));
-        	
-           
-
-        } else {
-
-        	const length = selectedDates.length;
-        	
-            const firstDate = date_from_to[0];
-            const lastDate = date_from_to[1];
- 			
-            if(selectedDates[0]===firstDate){
-
-
-        		if(selectedDates[1]===lastDate){
-                	lastDate.setAttribute('class','none');
-            		selectedDates[2].setAttribute('class','none');
-                	date_from_to[1] = selectedDates[2];
-            	} else {
-            		lastDate.setAttribute('class','none');
-            		selectedDates[1].setAttribute('class','none');
-            		date_from_to[1] = selectedDates[1];
-            	}
-        		
-                side_cal.querySelectorAll('.line:not(.selected)').forEach(el => el.setAttribute('class', 'none'));
-				
-            	
-            } else {
-            	firstDate.setAttribute('class','none');
-            	selectedDates[0].setAttribute('class','none');
-                side_cal.querySelectorAll('.line:not(.selected)').forEach(el => el.setAttribute('class', 'none'));
-
-            	date_from_to[0] = selectedDates[0];
-            }
-            
-
-			againChooseDate(year, month, day, dayElement);
-        }
-        
-
-    }
-    
- function againChooseDate(year, month, day, dayElement) {
-        document.querySelectorAll('.none').forEach(span => span.classList.remove('selected'));
-        dayElement.classList.add('selected');
-        
-        /* alert(date_from_to[0].id);
-        alert(date_from_to[1].id); */
-
-    	if (dayElement.classList.contains('line')) {
-            dayElement.classList.replace('line', 'none');
-            
-        } else {
-            dayElement.classList.replace('none', 'line');
-        }
+        } 
 		
-        selectedDates = document.querySelectorAll('.selected');
-        const firstDateId = selectedDates[0].id.replaceAll('d', '');
-        const lastDateId = selectedDates[1].id.replaceAll('d', '');
-
-        const firstDate = new Date(
-                firstDateId.substring(0, 4),
-                parseInt(firstDateId.substring(4, 6)) - 1,
-                firstDateId.substring(6, 8)
-        );
-        const lastDate = new Date(
-                lastDateId.substring(0, 4),
-                parseInt(lastDateId.substring(4, 6)) - 1,
-                lastDateId.substring(6, 8)
-        );
-			
-            const allDays = side_cal.querySelectorAll('span');
             
-            allDays.forEach(dayElement => {
-                const dayId = dayElement.id;
-                if(dayId!=null && dayId!="")
 
-                if (dayId) {
-                    const currentDate = new Date(
-                        dayId.substring(1, 5),
-                        parseInt(dayId.substring(5, 7)) - 1,
-                        dayId.substring(7, 9),
-                    );
+     }
+        
 
-                    if (currentDate >= firstDate && currentDate <= lastDate) {
-                        dayElement.classList.add('line');
-                    }
-                }
-            });
-
-			
-         	from.value = makeIdToDate(date_from_to[0].id)
-         	to.value = makeIdToDate(date_from_to[1].id)
-        }
+    
         
 		function makeIdToDate(id){
 			
