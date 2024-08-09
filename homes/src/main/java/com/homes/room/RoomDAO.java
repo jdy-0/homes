@@ -147,10 +147,10 @@ public class RoomDAO {
         return room;
     }
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
     
->>>>>>> DY
+//>>>>>>> DY
 
 	//다영버전
 	
