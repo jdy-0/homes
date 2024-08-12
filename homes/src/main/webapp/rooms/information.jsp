@@ -12,15 +12,15 @@
             RoomDAO roomDAO = new RoomDAO();
             room = roomDAO.getRoomById(roomIdx);
             if (room == null) {
-                out.println("해당 숙소 정보를 찾을 수 없습니다.");
+                out.println("<p>해당 숙소 정보를 찾을 수 없습니다.</p>");
             }
         } catch (NumberFormatException e) {
             // room_idx 파라미터가 유효하지 않은 경우 처리
-            out.println("유효하지 않은 숙소 ID입니다.");
+            out.println("<p>유효하지 않은 숙소 ID입니다.</p>");
         }
     } else {
         // room_idx 파라미터가 유효하지 않은 경우 처리
-        out.println("유효하지 않은 숙소 ID입니다.");
+        out.println("<p>유효하지 않은 숙소 ID입니다.</p>");
     }
 %>
 
@@ -151,17 +151,13 @@ function openLoginPopup(){
         background-color: #e2dccc;
         font-size: 20px;
     }
-    .reservation-box .price-info {
+    .details {
+        margin-top: 10px;
         font-size: 24px;
         font-weight: bold;
         border-bottom: 2px solid black;
         padding-bottom: 5px;
-    }
-    .reservation-box .details {
-        margin-top: 10px;
-        font-size: 18px;
-        border-bottom: 2px solid black;
-        padding-bottom: 5px;
+        text-align: center;
     }
     .reviews h3 {
         font-size: 24px;
@@ -186,41 +182,14 @@ function openLoginPopup(){
         transition: 0.5s;
     }
 </style>
-  <style>
-    .star-rating {
-      display: flex;
-    }
-
-    .star {
-      appearance: none;
-      padding: 1px;
-    }
-
-    .star::after {
-      content: '☆';
-      color: hsl(60, 80%, 45%);
-      font-size: 20px;
-    }
-
-    .star:hover::after,
-    .star:has(~ .star:hover)::after,
-    .star:checked::after,
-    .star:has(~ .star:checked)::after {
-      content: '★';
-    }
-
-    .star:hover ~ .star::after {
-      content: '☆';
-    }
-  </style>
 </head>
 <body>
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
-    <main class="container">
+<main class="container">
+    <% if (room != null) { %>
         <div class="top">
             <h1>숙소 정보</h1>
             <div class="room-details">
-                <% if (room != null) { %>
                 <h2><%= room.getRoom_name() %></h2>
                 <p><%= room.getGoodthing() %></p>
                 <p><%= room.getAddr_detail() %></p>
@@ -242,31 +211,22 @@ function openLoginPopup(){
             <p class="price">₩<%= room.getPrice() %> / 박</p>
             <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
             <div class="reservation-box">
-                <div class="price-info">₩<%= room.getPrice() %> / 박</div>
                 <div class="details">
-                    <p>체크인: <%= request.getParameter("checkin") %></p>
-                    <p>체크아웃: <%= request.getParameter("checkout") %></p>
-                    <p>인원: <%= request.getParameter("guests") %></p>
+                    <p>총 합계: ₩<%= room.getPrice() %></p>
                 </div>
-                <%
-                    int serviceFee = (int)(room.getPrice() * 0.1);
-                    int totalPrice = room.getPrice() + serviceFee;
-                %>
-                <p>서비스 수수료: ₩<%= serviceFee %></p>
-                <p>총 합계: ₩<%= totalPrice %></p>
                 <form id="reservationForm" action="reservationConfirmation.jsp" method="get">
                     <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>">
-                    <input type="hidden" name="checkin" value="<%= request.getParameter("checkin") %>">
-                    <input type="hidden" name="checkout" value="<%= request.getParameter("checkout") %>">
+                    <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>">
+                    <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>">
                     <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
                     <button type="submit" class="button">예약하기</button>
                 </form>
             </div>
-            <% } else { %>
-                <p>해당 숙소 정보를 찾을 수 없습니다.</p>
-            <% } %>
         </div>
-    </main>
-    <%@ include file="/footer.jsp"%>
+    <% } else { %>
+        <p>해당 숙소 정보를 찾을 수 없습니다.</p>
+    <% } %>
+</main>
+<%@ include file="/footer.jsp"%>
 </body>
 </html>
