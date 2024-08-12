@@ -125,8 +125,8 @@ function validatePaymentForm() {
                 <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
             </div>
             <div class="form-group">
-                <input type="hidden" name="checkin" value="<%= request.getParameter("checkin") %>">
-                <input type="hidden" name="checkout" value="<%= request.getParameter("checkout") %>">
+                <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>">
+                <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>">
                 <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
                 <input type="hidden" name="totalPrice" value="<%= request.getParameter("totalPrice") %>">
             </div>

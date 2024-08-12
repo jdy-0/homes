@@ -173,15 +173,15 @@
         <div class="info-section">
             <h3>예약 정보</h3>
             <%
-                String checkin = request.getParameter("checkin");
-                String checkout = request.getParameter("checkout");
+                String check_in = request.getParameter("check_in");
+                String check_out = request.getParameter("check_out");
                 String guests = request.getParameter("guests");
                 String priceStr = request.getParameter("price"); // 가격 정보를 받아옴
                 int price = Integer.parseInt(priceStr != null ? priceStr : "0"); // price 정보가 null일 경우 0으로 처리
                 int serviceFee = (int)(price * 0.1); // 서비스 수수료 10%
                 int totalPrice = price + serviceFee; // 총 합계
             %>
-            <p>날짜: <%= checkin %> ~ <%= checkout %></p>
+            <p>날짜: <%= check_in %> ~ <%= check_out %></p>
             <p>체크인 시간: ~</p>
             <p>게스트: <%= guests %></p>
         </div>
@@ -199,8 +199,8 @@
         </div>
         <!-- 결제하기 버튼이 새로운 JSP 페이지로 POST 요청을 보냄 -->
         <form id="payment-form" action="/homes/pay/homesPayment.jsp" method="POST">
-            <input type="hidden" name="checkin" value="<%= checkin %>">
-            <input type="hidden" name="checkout" value="<%= checkout %>">
+            <input type="hidden" name="check_in" value="<%= check_in %>">
+            <input type="hidden" name="check_out" value="<%= check_out %>">
             <input type="hidden" name="guests" value="<%= guests %>">
             <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
             <button type="submit" class="payment-button" id="final-payment">결제하기</button>
@@ -217,9 +217,8 @@
                 <span class="close-button" onclick="closeModal()">&times;</span>
                 이용약관
             </div>
-            <div class="modal-body">
-                <!-- 이용약관 내용을 여기에 추가할 수 있습니다. -->
-                <p>여기에 이용약관 내용을 입력하세요.</p>
+            <div class="modal-body" id="termsContent">
+                <!-- 이용약관 내용이 로드될 부분 -->
             </div>
             <div class="modal-footer">
                 <button onclick="closeModal()">확인</button>
@@ -230,7 +229,16 @@
     <script>
         // 모달 창을 보여주는 함수
         function showModal() {
-            document.getElementById('termsModal').style.display = "block";
+            // termsOfService.html 파일에서 이용약관 내용 불러오기
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET','/homes/termsOfService.html', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('termsContent').innerHTML = xhr.responseText;
+                    document.getElementById('termsModal').style.display = "block";
+                }
+            };
+            xhr.send();
         }
 
         // 모달 창을 닫는 함수

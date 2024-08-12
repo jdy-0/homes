@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>후기 보기 및 작성</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
-<link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 새로 만든 CSS 파일 링크 -->
+<link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 별점 스타일링 CSS 파일 링크 -->
 <style>
-    /* 기본 스타일 설정 */
+    /* 기존 스타일 설정 */
     body {
         background-color: #e2dccc;
         font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
@@ -121,7 +121,9 @@
             <%
                 int roomIdx = Integer.parseInt(request.getParameter("room_idx"));
                 ReviewDAO reviewDAO = new ReviewDAO();
-                List<ReviewDTO> reviews = reviewDAO.getReviewsByRoomIdx(roomIdx);
+                
+                // 리뷰를 조회수(viewCount) 기준으로 가져오기
+                List<ReviewDTO> reviews = reviewDAO.getReviewsByRoomIdxSortedByViewCount(roomIdx);
 
                 if (reviews != null && !reviews.isEmpty()) {
                     for (ReviewDTO review : reviews) {
@@ -129,6 +131,8 @@
                         <div class="review-item">
                             <p><strong>별점:</strong> <%= review.getRate() %>점</p> <!-- 별점 출력 -->
                             <p><%= review.getContent() %></p>
+                            <p><strong>조회수:</strong> <%= review.getViewCount() %></p> <!-- 조회수 출력 -->
+                            <p><strong>좋아요 수:</strong> <%= review.getLikeCount() %></p> <!-- 좋아요 수 출력 -->
                         </div>
             <%
                     }
@@ -146,14 +150,13 @@
                 <input type="hidden" name="room_idx" value="<%= roomIdx %>">
                 
                 <!-- 별점 선택 추가 -->
-                <label for="rate">별점:</label>
-                <select name="rate" id="rate">
-                    <option value="1">1점</option>
-                    <option value="2">2점</option>
-                    <option value="3">3점</option>
-                    <option value="4">4점</option>
-                    <option value="5">5점</option>
-                </select>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rate" value="1"><label for="star1">★</label>
+                </div>
                 
                 <button type="submit">후기 제출</button>
             </form>
