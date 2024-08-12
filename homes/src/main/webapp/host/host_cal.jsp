@@ -1,36 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import ="com.homes.host.ScheduleDTO" %>
-<%@ page import ="java.util.*" %>
+<%@ page import="com.homes.host.ScheduleDTO"%>
+<%@ page import="java.util.*"%>
 <jsp:useBean id="sdao" class="com.homes.host.ScheduleDAO"></jsp:useBean>
 <style>
-.date{
+.date {
 	width: 200px;
-    border: 3px solid black;
-    padding: 10px;
-    font-size: 20px;
-    font-family: 'SBAggroB';
+	border: 3px solid black;
+	padding: 10px;
+	font-size: 20px;
+	font-family: 'SBAggroB';
 }
+
 .date-picker {
 	position: relative;
 	display: flex;
-    align-items: center;
+	align-items: center;
 }
-.date-picker>div{
- 	float:left;
+
+.date-picker>div {
+	float: left;
 }
-.date-picker>div>div{
- 	float:left;
+
+.date-picker>div>div {
+	float: left;
 }
+
 #date-input {
 	width: 417px;
 	padding: 8px;
 	font-size: 16px;
 	cursor: pointer;
-	display:flex;
+	display: flex;
 	font-family: 'SBAggroB';
-    font-size:25px;
+	font-size: 25px;
 }
+
 .calendar {
 	position: static;
 	top: 90%;
@@ -38,24 +43,27 @@
 	width: 615px;
 	z-index: 10;
 	/* border: 1px solid black; */
-	border:0px;
+	border: 0px;
 	background-color: #e2dccc;
 	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
-.prev-month{
+
+.prev-month {
 	font-size: 30px;
-    width: 40px;
-    border: 3px solid black;
-    background-color: #dec022;
-    font-weight: bold;
+	width: 40px;
+	border: 3px solid black;
+	background-color: #dec022;
+	font-weight: bold;
 }
-.next-month{
+
+.next-month {
 	font-size: 30px;
-    width: 40px;
-    border: 3px solid black;
-    background-color: #dec022;
-    font-weight: bold;
+	width: 40px;
+	border: 3px solid black;
+	background-color: #dec022;
+	font-weight: bold;
 }
+
 .month {
 	display: flex;
 	justify-content: space-between;
@@ -63,29 +71,32 @@
 	padding: 10px;
 	background-color: #e2dccc;
 	width: -webkit-fill-available;
-	border:3px solid black;
+	border: 3px solid black;
 }
+
 .weekdays, .days {
 	display: flex;
 	flex-wrap: wrap;
 }
+
 .weekdays span, .days span {
 	width: 14.28%;
 	text-align: center;
 	padding: 10px 0;
 }
+
 .days span {
 	cursor: pointer;
 }
+
 .days span:hover {
 	background-color: #f2f2f2;
 }
+
 .days .selected {
 	background-color: #007bff;
 	color: white;
 }
-
-
 
 .line {
 	background-color: blue;
@@ -118,58 +129,64 @@
 .month-year {
 	font-size: 25px;
 	/* background-color: lightgray; */
-	background-color:#dec022;
-	border-bottom:3px solid black;
-}
-#select_guest_div{
-	margin-left:115px;
-	display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-#select_guest_div label{
-	padding-bottom:5px;
-}
-#select_guest{
-	border: 3px solid black;
-    width: 200px;
-    font-size: 20px;
-    padding: 10px;
-    font-family: 'SBAggroB';
-}
-.button{
-	width:80px;
-	background-color:#dec022;
-	border:3px solid black;
-	font-family: 'SBAggroB';
-	padding:10px;
-	font-size:20px;
+	background-color: #dec022;
+	border-bottom: 3px solid black;
 }
 
+#select_guest_div {
+	margin-left: 115px;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+}
+
+#select_guest_div label {
+	padding-bottom: 5px;
+}
+
+#select_guest {
+	border: 3px solid black;
+	width: 200px;
+	font-size: 20px;
+	padding: 10px;
+	font-family: 'SBAggroB';
+}
+
+.button {
+	width: 80px;
+	background-color: #dec022;
+	border: 3px solid black;
+	font-family: 'SBAggroB';
+	padding: 10px;
+	font-size: 20px;
+}
 
 /* ----------------test---------------------- */
 .small_start {
+	position: relative; /* 절대 위치 지정 */
+	top: -20px; /* 상단에 위치 */
+	left: 0; /* 왼쪽에 위치 */
+	font-size: 0.25em; /* 작은 글자 크기 조정 */
+	color: gray; /* 작은 글자의 색상 설정 */
+	background: white; /* 배경색을 설정하여 가독성 향상 */
+	padding: 2px; /* 약간의 여백 추가 */
+}
 
-            position: relative; /* 절대 위치 지정 */
-            top: -20px; /* 상단에 위치 */
-            left: 0; /* 왼쪽에 위치 */
-            font-size: 0.25em; /* 작은 글자 크기 조정 */
-            color: gray; /* 작은 글자의 색상 설정 */
-            background: white; /* 배경색을 설정하여 가독성 향상 */
-            padding: 2px; /* 약간의 여백 추가 */
-        }
-.holi{
+.holi {
 	background-color: red;
 }
 
-
-.hol_selected{
+.hol_selected {
 	background-color: yellow;
 }
-.holi_line{
-	background-color: orange;
+
+.choosen{
+	background-color: lime;
 }
 
+.holi_line {
+	background-color: orange;
+}
 </style>
 <%
 String s_room = request.getParameter("room");
@@ -187,7 +204,7 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 <div class="date-picker">
 
 	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
-	<%
+		<%
 
 
 
@@ -196,24 +213,26 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 	
 		for(int j=0; j<cal_arr.size(); j++){
 		%>
-			<input type="text" class="<%=cal_arr.get(j).getReason() %>" data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
-			<input type="text" class="<%=cal_arr.get(j).getReason() %>" data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
+		<input type="hidden" class="<%=cal_arr.get(j).getReason() %>"
+			data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
+		<input type="hidden" class="<%=cal_arr.get(j).getReason() %>"
+			data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
 		<%
 		}
 	}
 		%>
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year">초기화</span>
-			<span class="submit">휴무 등록 및 수정</span>
+			<span class="month-year">초기화</span> <span class="submit">휴무 등록
+				및 수정</span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
 			<!-- 날짜가 여기에 동적으로 추가됩니다 -->
 		</div>
-		
+
 		<form action="host_roomSchedule_ok.jsp" name="host_roomSchedule">
-		<input type="hidden" name="room" value="<%=room%>">
+			<input type="hidden" name="room" value="<%=room%>">
 		</form>
 	</div>
 </div>
@@ -240,8 +259,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     reset.addEventListener('click', () => {
         
-    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.remove	('hol_selected'));
-    	
+    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.replace('.hol_selected','none'));
+/*     	side_cal.querySelectorAll('.choosen').forEach(span => span.classList.remove	('choosen'));
+ */    	
         /* holiday */
     });
     
@@ -474,39 +494,56 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	}
 	
-	function chooseWeeks(tag){
-		const Element = tag.parentElement;
-		const parentElement = Element.parentElement;
-		const className = tag.textContent;
-	    // 클래스 이름에 따라 처리 분기
-	    
-	    const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.hol_selected):not(.holi_line)';
-	    switch(className) {
-	        case '일':
-	        	parentElement.querySelectorAll('.sun'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '월':
-	        	parentElement.querySelectorAll('.mon'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '화':
-	        	parentElement.querySelectorAll('.tue'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '수':
-	        	parentElement.querySelectorAll('.wed'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '목':
-	        	parentElement.querySelectorAll('.thur'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '금':
-	        	parentElement.querySelectorAll('.fri'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        case '토':
-	        	parentElement.querySelectorAll('.sat'+selector).forEach(span => span.classList.replace('none', 'hol_selected'));
-	            break;
-	        default:
-	            alert('Unknown day class');
+	function chooseWeeks(tag) {
+	    const Element = tag.parentElement;
+	    const parentElement = Element.parentElement;
+	    const className = tag.textContent;
+	    const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.choosen):not(.holi_line)';
+
+	    function isSpans_holSelected(spans) {
+	    	let check = true;
+	        spans.forEach(span => {
+	            if (!span.classList.contains('hol_selected')) {
+	            	check =  false;
+	            }
+	        });
+	        return check;
 	    }
 
+	    // Select spans based on the className
+	    let spans;
+	    switch (className) {
+	        case '일':
+	            spans = parentElement.querySelectorAll('.sun' + selector);
+	            break;
+	        case '월':
+	            spans = parentElement.querySelectorAll('.mon' + selector);
+	            break;
+	        case '화':
+	            spans = parentElement.querySelectorAll('.tue' + selector);
+	            break;
+	        case '수':
+	            spans = parentElement.querySelectorAll('.wed' + selector);
+	            break;
+	        case '목':
+	            spans = parentElement.querySelectorAll('.thur' + selector);
+	            break;
+	        case '금':
+	            spans = parentElement.querySelectorAll('.fri' + selector);
+	            break;
+	        case '토':
+	            spans = parentElement.querySelectorAll('.sat' + selector);
+	            break;
+	        default:
+	            alert('잘못된 접근');
+	            return;
+	    }
+		
+	    if (isSpans_holSelected(spans)) {
+	        spans.forEach(span => span.classList.replace('hol_selected', 'none'));
+	    } else {
+	        spans.forEach(span => span.classList.replace('none', 'hol_selected'));
+	    }
 	}
 	
     function addWeekdays(one_month_cal){
@@ -603,25 +640,60 @@ document.addEventListener("DOMContentLoaded", function() {
         attachTag(one_month_cal);
     }
     
+    const ClickedDates = [];
+    
     function chooseDate(year, month, day, dayElement) {
     	
 		// span태그 + none클래스 : => remove selected
-		const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.hol_selected):not(.holi_line)';
+		const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.holi_line)';
 
+			  if (dayElement.matches('.disabled') ||dayElement.matches('.selected') || dayElement.matches('.line') || dayElement.matches('.holi') 
+					|| dayElement.matches('.holi_line')) {
+			  if (!dayElement.matches('.selected') && !dayElement.matches('.disabled') && !dayElement.matches('.line')) {
+				const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
+				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 일정을 삭제하시겠습니까?");
+				if(checkDel){
+					location.href='host_roomSchedule_Delete_ok.jsp?room=<%=room%>&date='+longDate; 
+				}
+			  }
+			        return;  // 일치하면 함수 종료
+		}	
 		// line none 클릭마다 변환
-    	if (dayElement.classList.contains('hol_selected')) {
-            dayElement.classList.replace('hol_selected', 'none');
+    	/* if (dayElement.classList.contains('choosen')) {
+            dayElement.classList.replace('choosen', 'hol_selected');
             
-        } else {
+        } else */ if (dayElement.classList.contains('none')){
             dayElement.classList.replace('none', 'hol_selected');
+        } else {
+            dayElement.classList.replace('hol_selected', 'none');
 
-        } 
-		
-            
-
+        }
      }
         
+		
+    function rangeChoosen(dayElement){
+    	var count = true;
+        count=!count;
+        if(count){
+        	ClickedDates[1] = new Date(makeIdToDate(dayElement.id));
+        } else {
+        	ClickedDates[0] = new Date(makeIdToDate(dayElement.id));
+            const allDays = side_cal.querySelectorAll('span');
+            allDays.forEach(dayElement => {
+                const dayId = dayElement.id;
+                if(dayId!=null && dayId!="")
 
+                if (dayId) {
+                    const currentDate = new Date(makeIdToDate(dayId))
+
+                    if (currentDate >= ClickedDates[0] && currentDate <=  ClickedDates[1]) {
+                        dayElement.classList.add('choosen');
+                    }
+                }
+            });
+        	
+        }
+    }
     
         
 		function makeIdToDate(id){
