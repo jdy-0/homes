@@ -91,7 +91,15 @@ window.location.href='/homes';
 		</div>
 		<table id="msgList_table">
 		<%
-		ArrayList<MsgDTO> arr = gdao.getMsgList(userid);
+		int crpage = 1;
+		int MsgSize = 10;
+		int pageSize = 5;
+		
+		if(request.getParameter("crpage")!=null){
+			crpage=Integer.parseInt(request.getParameter("crpage"));
+		}
+		ArrayList<MsgDTO> arr = gdao.getMsgList(userid, crpage, MsgSize);
+		
 		if(arr == null || arr.size()==0){
 			%>
 			<tr>

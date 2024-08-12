@@ -305,12 +305,23 @@ public class GuestDAO {
 	}
 	
 	//메세지 리스트 가져오기 메소드
-	public ArrayList<MsgDTO> getMsgList(String id){
+	public ArrayList<MsgDTO> getMsgList(String id, int page, int size){
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql = "SELECT * FROM HOMES_MSG WHERE RECEIVER_ID = ? ORDER BY IDX DESC";
+			//String sql = "SELECT * FROM HOMES_MSG WHERE RECEIVER_ID = ? ORDER BY IDX DESC";
+			
+			String sql="SELECT * FROM "
+					+ "    	(SELECT ROW_NUMBER() OVER "
+					+ "		(ORDER BY IDX DESC) AS RNUM, IDX, SENDER_ID, TITLE, SEND_TIME, READ_STATE "
+					+ "		FROM homes_msg where receiver_id = ?) "
+					+ "   	WHERE RNUM BETWEEN ? AND ?";
+			int endnum = page*size;
+			int startnum = endnum - size + 1;
+			
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
+			ps.setInt(2, startnum);
+			ps.setInt(3, endnum);
 			
 			rs=ps.executeQuery();
 			
@@ -332,6 +343,31 @@ public class GuestDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//나에게 온 메세지 총 개수 구하기
+	public int getTotalMsgCount(String userid) {
+		int totalMsg = 0;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="SELECT COUNT(*) FROM HOMES_MSG WHERE RECEIVER_ID=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, userid);
+			rs=ps.executeQuery();
+			rs.next();
+			totalMsg = rs.getInt(1);
+			
+			return totalMsg;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
 		} finally {
 			try {
 				if(rs!=null) rs.close();

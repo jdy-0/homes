@@ -10,7 +10,7 @@
 }
 #myProfile table{
 	margin: 100px 140px 20px;
-    width: 800px;
+    /* width: 800px; */
 }
 #myProfile table th{
 	width:200px;
