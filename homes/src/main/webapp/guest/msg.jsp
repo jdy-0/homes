@@ -44,10 +44,12 @@ window.location.href='/homes';
 	width:200px;
 }
 #msgList_title_th{
-	width:800px;
 }
 #msgList_sendtime_th{
 	width:200px;
+}
+#msgList_readstate{
+	width:100px;
 }
 #msgList_table td{		
 	color:black;
@@ -77,6 +79,17 @@ window.location.href='/homes';
 	background-color: #e2dccc;
     transition: 0.5s;
 }
+#msgPageNav{
+	text-align:center;
+	font-family: 'SBAggroB';
+}
+
+#msgPageNav span{
+	color:black;
+}
+#msgPageNav a{
+	color: darkgray;
+}
 </style>
 </head>
 <%
@@ -85,6 +98,7 @@ window.location.href='/homes';
 <body>
 <%@include file="/header.jsp" %>
 <section>
+	<article>
 	<fieldset id="msgList_fieldset">
 		<div align="right">
 			<input type="button" class="btstyle" value="쪽지쓰기" onclick="location.href='writeMsg.jsp'">
@@ -92,13 +106,13 @@ window.location.href='/homes';
 		<table id="msgList_table">
 		<%
 		int crpage = 1;
-		int MsgSize = 10;
+		int msgSize = 10;
 		int pageSize = 5;
 		
 		if(request.getParameter("crpage")!=null){
 			crpage=Integer.parseInt(request.getParameter("crpage"));
 		}
-		ArrayList<MsgDTO> arr = gdao.getMsgList(userid, crpage, MsgSize);
+		ArrayList<MsgDTO> arr = gdao.getMsgList(userid, crpage, msgSize);
 		
 		if(arr == null || arr.size()==0){
 			%>
@@ -113,6 +127,7 @@ window.location.href='/homes';
 				<th id="msgList_sender_th">보낸사람</th>
 				<th id="msgList_title_th">제목</th>
 				<th id="msgList_sendtime_th">전송시간</th>
+				<th id="msgList_readstate">읽음</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -123,6 +138,11 @@ window.location.href='/homes';
 					<td align="center"><%=arr.get(i).getSender_id() %></td>
 					<td><a href="msgContent.jsp?msgidx=<%=arr.get(i).getIdx()%>"><%=arr.get(i).getTitle() %></a></td>
 					<td><%=arr.get(i).getSend_time() %></td>
+					<%
+					int read_state = arr.get(i).getRead_state();
+					String state = (read_state == 0) ? "안읽음":"읽음";
+					%>
+					<td><%=state %></td>
 				</tr>
 				<%
 			}
@@ -133,6 +153,43 @@ window.location.href='/homes';
 		%>			
 		</table>
 	</fieldset>
+	</article>
+	<article>
+	<!-- 페이지 네비게이션 -->
+	<div id="msgPageNav">
+	<%
+	int totalMsg = gdao.getTotalMsgCount(userid);
+	int totalPageNum = ((totalMsg-1)/msgSize)+1;
+	
+	int startPageNum = ((crpage-1)/pageSize)*pageSize  +1;
+	int endPageNum = Math.min(startPageNum + pageSize -1, totalPageNum);
+	
+	if(startPageNum > 1){
+		%>
+		<a href="/homes/guest/msg.jsp?crpage=<%=startPageNum-1%>">&lt;&lt; 이전</a>
+		<%
+	}
+	
+	for(int i = startPageNum; i<=endPageNum; i++){
+		if(i == crpage){
+			%>
+			<span><%=i %></span>
+			<%
+		} else{
+			%>
+			<a href="/homes/guest/msg.jsp?crpage=<%=i %>"><%=i %></a>
+			<%
+		}
+	}
+	
+	if(endPageNum<totalPageNum){
+		%>
+		<a href="/homes/guest/msg.jsp?crpage=<%=endPageNum + 1 %>">다음&gt;&gt;</a>
+		<%
+	}
+	%>
+	</div>
+	</article>
 </section>
 <%@include file="/footer.jsp" %>
 </body>
