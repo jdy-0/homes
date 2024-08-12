@@ -29,5 +29,5 @@ if(range_req!=null){
 }
 %>
 <script>
-window.location.href='host_roomSchedule.jsp';
-</script>
+ window.location.href='host_roomSchedule.jsp';
+ </script>

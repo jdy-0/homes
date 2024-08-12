@@ -308,11 +308,10 @@ public class GuestDAO {
 	public ArrayList<MsgDTO> getMsgList(String id, int page, int size){
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			//String sql = "SELECT * FROM HOMES_MSG WHERE RECEIVER_ID = ? ORDER BY IDX DESC";
 			
 			String sql="SELECT * FROM "
 					+ "    	(SELECT ROW_NUMBER() OVER "
-					+ "		(ORDER BY IDX DESC) AS RNUM, IDX, SENDER_ID, TITLE, SEND_TIME, READ_STATE "
+					+ "		(ORDER BY IDX DESC) AS RNUM, IDX, RECEIVER_ID, SENDER_ID, TITLE, CONTENT, SEND_TIME, READ_STATE "
 					+ "		FROM homes_msg where receiver_id = ?) "
 					+ "   	WHERE RNUM BETWEEN ? AND ?";
 			int endnum = page*size;
