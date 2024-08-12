@@ -115,7 +115,7 @@ function validatePaymentForm() {
             <a href="../rooms/reservationConfirmation.jsp">← 돌아가기</a>
         </div>
         <div class="header">결제 정보 입력</div>
-        <form action="processPayment.jsp" method="POST" onsubmit="return validatePaymentForm();">
+        <form action="/homes/reserve/reserve.jsp" method="POST" onsubmit="return validatePaymentForm();">
             <div class="form-group">
                 <label for="cardNumber">카드 번호:</label>
                 <input type="text" id="cardNumber" name="cardNumber" required>
