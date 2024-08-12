@@ -33,6 +33,7 @@ section{
 	border-bottom:5px solid black;
 	margin:0px;
 	font-family: 'SBAggroB';
+	text-align:start;
 }
 #myPageMain_fs{
 	margin:80px auto;
@@ -124,7 +125,7 @@ document.getElementById("fileInput").addEventListener("change", function() {
 	</div>
 </article>
 <%@include file="/guest/myProfile.jsp" %>
-
+<%@include file="/guest/reserveHistory.jsp" %>
 <article id="myPageNav">
 	<fieldset class="label_fs">
 		<h3>MENU</h3>

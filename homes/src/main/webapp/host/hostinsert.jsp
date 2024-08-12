@@ -116,13 +116,15 @@ wf.setCrpath(crpath);
 
 	<%@include file="hostheader.jsp"%>
 	<section>
+	
+	
 		<form name="fminsertroom" action="hostinsert_ok.jsp" method="post" enctype="multipart/form-data">
 			<div class="container">
 				<div>
 					<fieldset>
 						<legend>대표 이미지 등록하기 </legend>
 						 <img id="selectedImage" src="default-image.jpg" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />
-						<input type="file" id="fileInput" name="aaa" accept="image/*" onchange="FileSelect(event)" />
+						<input type="file" id="fileInput" name="mainPiceture" accept="image/*" onchange="FileSelect(event)" />
 					</fieldset>
 				</div>
 				<div id="roominsert">
@@ -162,11 +164,11 @@ wf.setCrpath(crpath);
 						</li>
 					</ul>
 				</div>
-				<div>
+				<!-- <div>
 					<h2>사진 등록</h2>
 					<hr>
-					<input type="file" multiple="multiple" accept="image/*" name='bbb'>
-				</div>
+					<input type="file" multiple="multiple" accept="image/*" name='subpicture'>
+				</div> -->
 				<div>
 					<input type="hidden" name="Folder"  value="<%=name%>"> 
 					<input type="submit" value="등록">

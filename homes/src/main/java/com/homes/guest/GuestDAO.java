@@ -416,7 +416,7 @@ public class GuestDAO {
 		}
 	}
 	
-	//총 이용회수 구하기
+	//총 이용회수와 가입 기간 구하기
 	public int[] getCountandPeriod(int idx) {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
@@ -459,6 +459,126 @@ public class GuestDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//회원별 예약 내역 불러오기 메소드
+//	public ArrayList<ReservationDTO> getReserveHistory(int member_idx){
+//		try {
+//			conn = com.homes.db.HomesDB.getConn();
+//			String sql = "SELECT * FROM RESERVATION_TEST WHERE MEMBER_IDX = ?";
+//			ps=conn.prepareStatement(sql);
+//			ps.setInt(1, member_idx);
+//			
+//			rs=ps.executeQuery();
+//			ArrayList<ReservationDTO> arr = new ArrayList<ReservationDTO>();
+//			while(rs.next()) {
+//				int reservation_idx = rs.getInt("reservation_idx");
+//				int room_idx = rs.getInt("room_idx");
+//				String state = rs.getString("state");
+//				java.sql.Date reserve_date = rs.getDate("reserve_date");
+//				int price = rs.getInt("price");
+//				
+//				ReservationDTO dto = new ReservationDTO(reservation_idx, member_idx, room_idx, state, reserve_date, price);
+//				arr.add(dto);
+//			}
+//			
+//			return arr;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			try {
+//				if(rs!=null) rs.close();
+//				if(ps!=null) ps.close();
+//				if(conn!=null) conn.close();
+//			} catch (Exception e2) {}
+//		}
+//	}
+	
+	//회원별 예약 상세 내역
+	/*
+	 * public ArrayList<Reservation_detailDTO> getReserveDetail(int member_idx){ try
+	 * { conn = com.homes.db.HomesDB.getConn(); String sql =
+	 * "SELECT * FROM RESERVATION_DETAIL_TEST WHERE MEMBER_IDX = ?";
+	 * ps=conn.prepareStatement(sql); ps.setInt(1, member_idx);
+	 * 
+	 * rs=ps.executeQuery(); ArrayList<Reservation_detailDTO> arr = new
+	 * ArrayList<Reservation_detailDTO>(); while(rs.next()) { int
+	 * reservation_detail_idx = rs.getInt(1); int reserve_idx = rs.getInt(2);
+	 * java.sql.Date check_in = rs.getDate("check_in"); java.sql.Date check_out =
+	 * rs.getDate("check_out"); String request = rs.getString("request");
+	 * 
+	 * Reservation_detailDTO dto = new Reservation_detailDTO(reservation_detail_idx,
+	 * reserve_idx, member_idx, check_in, check_out, request); arr.add(dto); }
+	 * 
+	 * return arr; } catch (Exception e) { e.printStackTrace(); return null; }
+	 * finally { try { if(rs!=null) rs.close(); if(ps!=null) ps.close();
+	 * if(conn!=null) conn.close(); } catch (Exception e2) {} } }
+	 */
+	
+	/*
+	 * public ArrayList<ReservationDTO> getReserve(int member_idx){ try {
+	 * conn=com.homes.db.HomesDB.getConn(); String sql
+	 * ="SELECT RT.RESERVE_IDX, ROOM_IDX, RESERVE_DATE, CHECK_IN, CHECK_OUT, STATE, PRICE "
+	 * + "FROM RESERVATION_TEST RT, RESERVATION_DETAIL_TEST RDT " +
+	 * "WHERE RT.MEMBER_IDX = ? " + "AND RT.RESERVE_IDX = RDT.RESERVE_IDX";
+	 * 
+	 * ps=conn.prepareStatement(sql); ps.setInt(1, member_idx);
+	 * 
+	 * rs=ps.executeQuery(); ArrayList<ReservationDTO> arr = new
+	 * ArrayList<ReservationDTO>(); while(rs.next()) { int reserve_idx =
+	 * rs.getInt("reserve_idx"); int room_idx = rs.getInt("room_idx"); java.sql.Date
+	 * reserve_date = rs.getDate("reserve_date"); java.sql.Date check_in =
+	 * rs.getDate("check_in"); java.sql.Date check_out = rs.getDate("check_out");
+	 * String state = rs.getString("state"); int price = rs.getInt("price");
+	 * 
+	 * ReservationDTO dto = new ReservationDTO(reserve_idx, room_idx, reserve_date,
+	 * check_in, check_out, state, price);
+	 * 
+	 * arr.add(dto); } return arr; } catch (Exception e) { e.printStackTrace();
+	 * return null; } finally { try { if(rs!=null) rs.close(); if(ps!=null)
+	 * ps.close(); if(conn!=null) conn.close(); } catch (Exception e2) {} } }
+	 */
+	
+	//예약 내역 확인
+	public ArrayList<ReservationDTO> getReserveHistory(int member_idx){
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT "
+					+ "FROM ROOM R, RESERVATION_TEST RES, RESERVATION_DETAIL_TEST RES_DE "
+					+ "WHERE RES.ROOM_IDX = R.ROOM_IDX "
+					+ "    AND RES.MEMBER_IDX=? "
+					+ "    AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX "
+					+ "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
+					+ "ORDER BY RES.RESERVE_IDX DESC";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, member_idx);
+			
+			ArrayList<ReservationDTO> arr = new ArrayList<ReservationDTO>();
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				int reserve_idx = rs.getInt("reserve_idx");
+				String image = rs.getString("image");
+				String room_name = rs.getString("room_name");
+				String state = rs.getString("state");
+				java.sql.Date check_in = rs.getDate("check_in");
+				java.sql.Date check_out = rs.getDate("check_out");
+				
+				ReservationDTO dto = new ReservationDTO(reserve_idx, image, room_name, state, check_in, check_out);
+				arr.add(dto);
+			}
+			return arr;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		} finally {
 			try {
 				if(rs!=null) rs.close();
