@@ -21,7 +21,7 @@ public class WebFolderDAO {
 		
 		private String hostpath="img/host_img";
 		
-		
+		private String imgFile="/homes/img/";
 		//5. 사용자 현재위치
 		private String crpath;
 		
@@ -90,6 +90,15 @@ public class WebFolderDAO {
 		public void setCrpath(String crpath) {
 			this.crpath = crpath;
 		}	
+		
+		public String getImgFile() {
+			return imgFile;
+		}
+
+		public void setImgFile(String imgFile) {
+			this.imgFile = imgFile;
+		}
+
 		//사용자 공간 존재 확인 및 생성 관련 메서드
 		public void userFolderExists() {
 			

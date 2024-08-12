@@ -64,22 +64,16 @@
 <body>
 <%@ include file="/header.jsp"%>
 <%	
-	/* Object s_useridx =session.getAttribute("useridx");
- 	int useridx = 0;
-    useridx = Integer.parseInt((String) s_useridx);
- */
-	
- int useridxObj = (Integer)session.getAttribute("useridx");
 
- //int useridx = 0; // 기본값 설정
-// useridx = (Integer) useridxObj;
+	
+ Integer useridx = (Integer)session.getAttribute("useridx");
 
 
 
 	//useridx1=Integer.parseInt((String)request.getAttribute("useridx"));
-	ArrayList<RoomDTO> arr= homedao.HomesList(userid);
+	ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 	
-	if(userid==null||userid.isEmpty()){
+	if(useridx==null){
 		%><script>
 		window.open('/homes/guest/login_popup.jsp', 'popup', 'width=400,height=300,top=100,left=100');
 		</script>
@@ -101,7 +95,7 @@
 			int a = arr.size();
 			for(int i=0;i<arr.size();i++){
 				%>
-
+			<form name="updatefm" action="host_update.jsp"> 
 			<div class="container">
 				<div>
 					<img id="selectedImage" src ="<%=arr.get(i).getImage()%>" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />
@@ -129,7 +123,10 @@
 							<label for="map_url">맵 url :</label> 
 							<label>맵 쓰기</label>
 						</li>
-					
+						<li>
+							<input type="hidden" value=<%=arr.get(i).getRoom_idx() %> name="room_idx">
+						<li>
+						
 					</ul>
 				</div>
 				<!-- <div>
@@ -138,9 +135,10 @@
 					<input type="file" multiple="multiple" accept="image/*" name='subpicture'>
 				</div> -->
 				<div>
-					<input type="submit" value="등록">
+					<input type="submit" value="수정">
 				</div>
 			</div>
+			</form>
 			<br>
 			<hr>
 			<%

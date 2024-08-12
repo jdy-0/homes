@@ -325,12 +325,12 @@ public class RoomDAO {
 
 	
 	//형주버전
-	public ArrayList<RoomDTO> HomesList(String userid){
+	public ArrayList<RoomDTO> HomesList(int useridx){
 		try {
 		conn=com.homes.db.HomesDB.getConn();
-		String sql="SELECT * FROM ROOM WHERE HOST_IDX = (SELECT idx FROM Homes_Member WHERE id = ?) and STATE = 1 ";
+		String sql="SELECT * FROM ROOM WHERE HOST_IDX = (SELECT idx FROM Homes_Member WHERE idx = ?) and STATE = 1 ";
 		ps=conn.prepareStatement(sql);
-		ps.setString(1, userid);
+		ps.setInt(1, useridx);
 		rs=ps.executeQuery();
 		ArrayList<RoomDTO> arr= new ArrayList<RoomDTO>();
 		
@@ -413,23 +413,23 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	public int insertRoom2(RoomDTO roomDTO) {
+	public int insertRoom2(int hostIdx,int regionIdx,String roomName,String goodthing,String addrDetail,int price,String mapUrl,String img,int roomMin,int roomMax) {
         int result = 0;
         try {
             conn = com.homes.db.HomesDB.getConn();
             String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, MAP_URL, IMAGE, ROOM_MIN,ROOM_MAX) "
                     + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, roomDTO.getHost_idx());
-            ps.setInt(2, roomDTO.getRegion_idx());
-            ps.setString(3, roomDTO.getRoom_name());
-            ps.setString(4, roomDTO.getGoodthing());
-            ps.setString(5, roomDTO.getAddr_detail());
-            ps.setInt(6, roomDTO.getPrice());
-            ps.setString(7, roomDTO.getMap_url());
-            ps.setString(8, roomDTO.getImage());
-            ps.setInt(9, roomDTO.getRoom_min());
-            ps.setInt(10, roomDTO.getRoom_max());
+            ps.setInt(1, hostIdx);
+            ps.setInt(2, regionIdx);
+            ps.setString(3, roomName);
+            ps.setString(4, goodthing);
+            ps.setString(5, addrDetail);
+            ps.setInt(6, price);
+            ps.setString(7, mapUrl);
+            ps.setString(8, img);
+            ps.setInt(9, roomMin);
+            ps.setInt(10, roomMax);
 
             result = ps.executeUpdate();
             return result;
@@ -446,5 +446,34 @@ public class RoomDAO {
         }
         
     }
-	
+	public ArrayList<RoomDTO> Review_select(int idx) {
+		
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="SELECT * FROM Reviews where ROOM_IDX = ? ";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			rs=ps.executeQuery();
+			ArrayList<RoomDTO> arr= new ArrayList<RoomDTO>();
+			while(rs.next()) {
+				int room_idx=idx;
+				int rate=rs.getInt("rate");
+				String member_id=rs.getString("member_id");
+				String content=rs.getString("content");
+		
+				RoomDTO dto = new RoomDTO(room_idx,member_id, rate ,content);
+				arr.add(dto);
+			}
+			return arr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 }

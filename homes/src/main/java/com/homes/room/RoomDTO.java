@@ -23,12 +23,24 @@ public class RoomDTO {
 	private String reason; 
 	private int state;
 	
-
+	//review select
+	private int rate;
+	private String content;
+	private String member_id;
+	
 
 	public RoomDTO() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public RoomDTO(int room_idx,String member_id, int rate, String content) {
+		super();
+		this.room_idx = room_idx;
+		this.member_id = member_id;
+		this.rate = rate;
+		this.content = content;
+	}
+
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
 			int price, String map_url, String image, String state,int room_min,int room_max) {
 		this.room_idx = room_idx;
@@ -187,6 +199,30 @@ public class RoomDTO {
 
 	public void setRoom_max(int room_max) {
 		this.room_max = room_max;
+	}
+
+	public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getMember_id() {
+		return member_id;
+	}
+
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 	
 }
