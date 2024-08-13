@@ -329,19 +329,18 @@ function validateForm() {
 
 
    <div class="date-picker">
-
 			<div id="date-input">
 				<div class="search_item">
-					<label for="checkin">체크인</label> <input type="text" id="check_in" class="date" required readonly="readonly" id="from">
+					<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required readonly="readonly">
 				</div>
 				<div class="search_item">
-					<label for="checkin">체크아웃</label> <input type="text" id="check_out" class="date" required readonly="readonly" id="to">
+					<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required readonly="readonly">
 				</div>
 			</div>
 
 			<%@ include file="cal.jsp"%>
 			<div id="select_guest_div">
-				<label for="checkin">인원수</label> <input type="number" name="인원수" id="select_guest" min="1" required>
+				<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" required>
 			</div>
 			<div class="search_button">
 				<input type="submit" value="검색" class="button">
@@ -404,9 +403,8 @@ function validateForm() {
 		<%if(i % 3 == 0) {%>
 	   		<tr>
 	   	<%} %>
-      		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx() %>"><img src="<%= room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%= room[i].getRoom_name() %></p></td>
-      		
-   		<%if(i % 3 == 2) {%>
+      		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room[i].getRoom_name() %></p></td>
+   		<%if(i%3==2) {%>
 	   		</tr>
 	   	<%} %>
 	<%} %>

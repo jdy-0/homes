@@ -1,5 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<%@ page import="com.homes.guest.GuestDTO" %>
+<jsp:useBean id="gdto" class="com.homes.guest.GuestDTO"></jsp:useBean>
+<jsp:useBean id="gdao" class="com.homes.guest.GuestDAO"></jsp:useBean>    
+
+<%@ page import="com.homes.region.RegionDTO" %>
+<jsp:useBean id="rgdto" class="com.homes.region.RegionDTO"></jsp:useBean>
+<jsp:useBean id="rgdao" class="com.homes.region.RegionDAO"></jsp:useBean>    
+<%@ page import="com.homes.region.Region_DetailDTO" %>
+<jsp:useBean id="rddto" class="com.homes.region.Region_DetailDTO"></jsp:useBean>
+<jsp:useBean id="rddao" class="com.homes.region.Region_DetailDAO"></jsp:useBean>
+
+<%@ page import="com.homes.review.ReviewDTO" %>
+<jsp:useBean id="rvdto" class="com.homes.review.ReviewDTO"></jsp:useBean>
+<jsp:useBean id="rvdao" class="com.homes.review.ReviewDAO"></jsp:useBean>  
+
+<%@ page import="com.homes.room.RoomDTO" %>
+<jsp:useBean id="rmdto" class="com.homes.room.RoomDTO"></jsp:useBean>
+<jsp:useBean id="rmdao" class="com.homes.room.RoomDAO"></jsp:useBean>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <script>
 function openLoginPopup(){
