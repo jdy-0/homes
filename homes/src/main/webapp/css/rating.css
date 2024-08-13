@@ -1,8 +1,8 @@
 /* rating.css (별점 스타일링) */
 .star-rating {
-    direction: rtl; /* 별을 오른쪽에서 왼쪽으로 정렬 */
+    direction: ltr; /* 별을 왼쪽에서 오른쪽으로 정렬 */
     display: inline-flex;
-    font-size: 2rem; /* 별 크기 조절 */
+    font-size: 4rem; /* 별 크기 조절 */
     cursor: pointer; /* 마우스 커서를 포인터로 변경 */
     user-select: none; /* 사용자가 별을 선택할 수 없도록 설정 */
 }
@@ -15,9 +15,6 @@
 /* 기본 별 색상 설정 */
 .star-rating label {
     color: #ddd; /* 비활성화된 별 색상 */
-    font-size: 2rem;
-    padding: 0;
-    margin: 0;
     transition: color 0.2s ease-in-out; /* 별 색상이 변할 때의 애니메이션 */
 }
 
@@ -101,6 +98,13 @@ body {
     font-family: 'SBAggroB', Arial, sans-serif;
 }
 
+/* review-header 스타일 추가 */
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* h3와 별점 사이의 간격 조정 */
+}
+
 .review-inputs {
     display: flex;
     align-items: center;
@@ -108,7 +112,7 @@ body {
 }
 
 .review-inputs textarea {
-    flex: 1;
+    flex-grow: 1;
     height: 100px;
     padding: 10px;
     border: 2px solid black;
@@ -116,18 +120,10 @@ body {
     font-size: 16px;
     resize: vertical;
     font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
-    margin-bottom: 10px;
-}
-
-.star-rating {
-    flex-shrink: 0; /* 크기 조정 방지 */
-    display: inline-flex;
-    direction: rtl;
-    font-size: 2rem;
-    cursor: pointer;
 }
 
 .review-form button {
+    margin-top: 10px;
     padding: 10px 20px;
     background-color: #dec022;
     color: black;
