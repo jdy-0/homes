@@ -70,17 +70,14 @@ if(roomArr==null && roomArr.size()<=0){
 		        </article>
 				 
 		        <article class="calendarart">
-		        <jsp:include page="host_booking_cal.jsp">
-                    <jsp:param name="room" value="<%= resdto.getRoom_idx() %>" />
-                    <jsp:param name="check_in" value="<%= resdto.getCheck_in() %>" />
-                    <jsp:param name="check_out" value="<%= resdto.getCheck_out() %>" />
-                </jsp:include> 
+		        <%
+		        
+		        request.setAttribute("resdto",resdto);
+		        %>
+		        
+		        <jsp:include page="host_booking_cal.jsp"/>
 		        </article>
 		         <article class="buttonart">
-		         	<ul>
-		           		<li><input type="button" value="수락"></li>
-		           		<li><input type="button" value="거절"></li>
-		           </ul>
 		        </article>
     	</div>
 			<%
