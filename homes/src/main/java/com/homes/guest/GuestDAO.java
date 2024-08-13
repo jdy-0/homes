@@ -59,17 +59,19 @@ public class GuestDAO {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
 			
-			String sql="INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, SYSDATE, '/homes/guest/profileimg/default_profile.png', 1)";
+			String sql="INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, '/homes/guest/profileimg/default_profile.svg', 1)";
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, dto.getId());
 			ps.setString(2, dto.getPwd());
-			ps.setString(3, dto.getName());
-			ps.setString(4, dto.getNickname());
+			ps.setString(3, dto.getPwd_hint_q());
+			ps.setString(4, dto.getPwd_hint_a());
+			ps.setString(5, dto.getName());
+			ps.setString(6, dto.getNickname());
 			String bday_s=dto.getBday();
 			java.sql.Date bday=java.sql.Date.valueOf(bday_s);
-			ps.setDate(5, bday);
-			ps.setString(6, dto.getEmail());
-			ps.setString(7, dto.getTel());
+			ps.setDate(7, bday);
+			ps.setString(8, dto.getEmail());
+			ps.setString(9, dto.getTel());
 			
 			int count = ps.executeUpdate();
 			return count;

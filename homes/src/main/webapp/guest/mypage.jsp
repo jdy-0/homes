@@ -42,10 +42,15 @@ section{
 	border:0;
 }
 #myPageMain_fs img{ 
-	width:300px;
-	border:4px solid black;
-	border-radius:500px;
-	margin:30px;
+	width:250px;
+	height:250px;
+	padding: 20px;
+}
+#img_div{
+	width: 320px;
+    height: 320px;
+    border: 4px solid black;
+    border-radius: 500px;
 }
 input[type="file"] {display: none;}
 #myPageMain_fs div{
@@ -104,7 +109,9 @@ document.getElementById("fileInput").addEventListener("change", function() {
 		int useridx=(Integer)session.getAttribute("useridx");
 		String img = gdao.getImgSrc(useridx);
 		%>
+			<div id="img_div">
 			<img src="<%=img %>" alt="profile_img" id="profileImg">
+			</div>
 			<form action="profileUpload.jsp" method="post" enctype="multipart/form-data" id="uploadForm">
             	<input type="file" name="profileImg" id="fileInput" accept="image/*">
         	</form>
@@ -132,6 +139,7 @@ document.getElementById("fileInput").addEventListener("change", function() {
 	</fieldset>
 	<nav>
 		<ul id="ul_menu">
+			<li><a href="javascript:openNewArticle('myPageMain');">My Page</a></li>
 			<li><a href="javascript:showSubMenu('ul_account');">&#127960;계정관리</a>
    				<ul id="ul_account" class="ul_submenu" style="display: none;">
         			<li><a href="javascript:openNewArticle('myProfile');">나의 정보</a></li>

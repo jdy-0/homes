@@ -12,7 +12,7 @@ boolean sameEmail = gdao.checkSameGuest(email);
 if(sameEmail){
 	%>
 	<script>
-	window.alert('이미 등록된 이메일입니다.');
+	window.alert('이미 가입된 이메일입니다.');
 	window.location.href='/homes/guest/homesJoin.jsp';
 	</script>
 	<%
@@ -32,7 +32,7 @@ if(result>0){
 }else if(result==0){
 	%>
 	<script>
-	window.alert('이미 등록된 이메일입니다.');
+	window.alert('이미 가입된 이메일입니다.');
 	window.location.href='/homes/guest/homesJoin.jsp';
 	</script>
 	<%
