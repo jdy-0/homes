@@ -138,6 +138,67 @@ public class ReservationDAO {
 			}
 		}
 	}
+	
+	public int updateSetResState(ReservationDTO dto) {
+		
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+	        conn.setAutoCommit(false);  // 트랜잭션 시작
+
+			String sql = " update reservation_test set state = ? where reserve_idx = ? ";
+			ps = conn.prepareStatement(sql);
+	        ps.setString(1, dto.getState());
+			ps.setInt(2, dto.getReserve_idx());
+			int count = ps.executeUpdate();
+			
+			if(count>0 && dto.getState().equals("예약완료")) {
+				int tot_count = insertReserveToSchedule(dto);
+			} else {
+			}
+			
+	        conn.commit();  // 트랜잭션 커밋
+	        return count;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return -1;
+
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public int insertReserveToSchedule(ReservationDTO dto) {
+		try {
+            String sql = " insert into UNAVAILABLE_SCHEDULE (idx, room_idx, start_day, end_day, reason) "
+            		+ " VALUES ('us'||unavailable_schedule_seq.NEXTVAL, ?, ?, ?, '예약됨') "; 
+           ps = conn.prepareStatement(sql);
+           ps.setInt(1, dto.getRoom_idx());
+           ps.setDate(2, dto.getCheck_in());
+           ps.setDate(3, dto.getCheck_out());
+           
+           return ps.executeUpdate();
+           
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+	}
 
 	
 }

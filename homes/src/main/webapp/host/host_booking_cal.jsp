@@ -1,3 +1,4 @@
+<%@page import="com.homes.guest.ReservationDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.homes.host.ScheduleDTO"%>
@@ -189,31 +190,38 @@
 }
 </style>
 <%
-String s_room = request.getParameter("room");
+ReservationDTO resdto = (ReservationDTO) request.getAttribute("resdto");
+int room=resdto.getRoom_idx();
 
-int room=0;
-if(s_room!=null && !s_room.equals("")){
-	room = Integer.parseInt(s_room);
-}
-
-String seq = request.getParameter("seq");
 ArrayList<ScheduleDTO> cal_arr = sdao.showAllSchdule(room);
 String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
+
+
 %>
 
 <div class="date-picker">
 
 	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
-
+		
 		<input type="text" 
-			data-type="start" value="<%=request.getParameter("check_in")%>">
+			data-type="start" value="<%=resdto.getCheck_in()%>">
 		<input type="text" 
-			data-type="end" value="<%=request.getParameter("check_out")%>">
+			data-type="end" value="<%=resdto.getCheck_out()%>">
+			
+		<form action="hostbooking_ok.jsp" name="hostbooking" >
+			<input type="text" name="reserve_idx" value="<%=resdto.getReserve_idx()%>">
+			<input type="text" name="state" value="">
+			<input type="text" name="room_idx" value="<%=resdto.getRoom_idx()%>">
+			<input type="text" name = "check_in"
+				data-type="start" value="<%=resdto.getCheck_in()%>">
+			<input type="text" 
+				data-type="end" name = "check_out" value="<%=resdto.getCheck_out()%>">
+		</form>
 		
 		
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year">수락</span> <span class="month-year">거절</span>
+			<span class="month-year accept">수락</span> <span class="month-year decline">거절</span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
@@ -234,8 +242,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const nextMonthBtn = calendar.querySelector('.next-month');
     const side_cal = calendar.querySelector('.side_cal');
     
-    const reset = calendar.querySelector('.month-year');
-    const submit = calendar.querySelector('.submit');
+    const accept = calendar.querySelector('.accept');
+    const decline = calendar.querySelector('.decline');
+    
+    const form = calendar.querySelector('form[name="hostbooking"]');
+    const state = form.querySelector('input[name="state"]');
 
     var index =1;
 	var cals = [];
@@ -244,12 +255,20 @@ document.addEventListener("DOMContentLoaded", function() {
     let nextDate = new Date();
     var loc = 0;
     
-    reset.addEventListener('click', () => {
-        
-    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.replace('.hol_selected','none'));
-/*     	side_cal.querySelectorAll('.choosen').forEach(span => span.classList.remove	('choosen'));
- */    	
-        /* holiday */
+    accept.addEventListener('click', () => {
+    	const check = confirm('예약을 승인하시겠습니까?');
+    	if(check){
+    		state.value="예약완료";
+        	form.submit();
+    	}
+    });
+    
+    decline.addEventListener('click', () => {
+    	const check = confirm('예약을 거절하시겠습니까?');
+    	if(check){
+    		state.value="승인거절";
+        	form.submit();
+    	}    
     });
     
     
@@ -291,29 +310,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		return range_date;
     }
     
-    function makeHidden(range_date){
-    	var form = calendar.querySelector('form[name="host_roomSchedule"]');
-    	
-    	range_date.forEach((r,index)=>{
-    		const input = document.createElement('input');
-        	input.value=r;
-        	input.type='hidden';
-        	input.name = 'range_'+index;
-        	
-        	form.appendChild(input);
-    	});
-    	form.submit();
-    	
-    	
-    }
-    /* 
-    submit.addEventListener('click', () => {
-        
-    	const range_date = getAllhol_selected();
-    	makeHidden(range_date);
-    	
-    });
-     */
+
+    
     atStart();
     
     
