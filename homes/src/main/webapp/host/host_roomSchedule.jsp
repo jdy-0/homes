@@ -19,7 +19,9 @@
 <%@ include file="/header.jsp" %>
 <%@include file="hostheader.jsp" %>
 <%
-ArrayList<RoomDTO> rarr= roomdao.HomesList(userid); 
+Object o_useridx = session.getAttribute("useridx");
+int useridx = (Integer) o_useridx;
+ArrayList<RoomDTO> rarr= roomdao.HomesList(useridx);
 %>
 <section>
 <%

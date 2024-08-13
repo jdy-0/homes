@@ -26,6 +26,24 @@ public class ReservationDTO {
 		this.check_in = check_in;
 		this.check_out = check_out;
 	}
+	
+	
+	
+	public ReservationDTO(int reserve_idx, int member_idx, int room_idx, String state, Date reserve_date, int price,
+			int reservation_detial_idx, Date check_in, Date check_out, String request) {
+		super();
+		this.reserve_idx = reserve_idx;
+		this.member_idx = member_idx;
+		this.room_idx = room_idx;
+		this.state = state;
+		this.reserve_date = reserve_date;
+		this.price = price;
+		this.reservation_detial_idx = reservation_detial_idx;
+		this.check_in = check_in;
+		this.check_out = check_out;
+		this.request = request;
+	}
+
 	public int getReserve_idx() {
 		return reserve_idx;
 	}
