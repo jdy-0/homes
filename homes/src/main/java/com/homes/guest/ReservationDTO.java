@@ -7,7 +7,7 @@ public class ReservationDTO {
 	private String state;
 	private java.sql.Date reserve_date;
 	private int price;
-	private int reservation_detial_idx;
+	private int reservation_detail_idx;
 	private java.sql.Date check_in, check_out;
 	private String request;
 	private String room_name;
@@ -62,11 +62,11 @@ public class ReservationDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getReservation_detial_idx() {
-		return reservation_detial_idx;
+	public int getReservation_detail_idx() {
+		return reservation_detail_idx;
 	}
-	public void setReservation_detial_idx(int reservation_detial_idx) {
-		this.reservation_detial_idx = reservation_detial_idx;
+	public void setReservation_detail_idx(int reservation_detail_idx) {
+		this.reservation_detail_idx = reservation_detail_idx;
 	}
 	public java.sql.Date getCheck_in() {
 		return check_in;

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class GuestDTO {
 	private int idx;
-	private String id, pwd, name, nickname;
+	private String id, pwd, pwd_hint_q, pwd_hint_a, name, nickname;
 	private String bday;
 	private String email, tel;
 	private java.sql.Date joindate;
@@ -21,6 +21,25 @@ public class GuestDTO {
 		this.idx = idx;
 		this.id = id;
 		this.pwd = pwd;
+		this.name = name;
+		this.nickname = nickname;
+		this.bday = bday;
+		this.email = email;
+		this.tel = tel;
+		this.joindate = joindate;
+		this.img = img;
+		this.state = state;
+	}
+	
+	//모든 인자를 매개변수로 받는 인자생성자
+	public GuestDTO(int idx, String id, String pwd, String pwd_hint_q, String pwd_hint_a, String name, String nickname,
+			String bday, String email, String tel, Date joindate, String img, int state) {
+		super();
+		this.idx = idx;
+		this.id = id;
+		this.pwd = pwd;
+		this.pwd_hint_q = pwd_hint_q;
+		this.pwd_hint_a = pwd_hint_a;
 		this.name = name;
 		this.nickname = nickname;
 		this.bday = bday;
@@ -117,6 +136,22 @@ public class GuestDTO {
 
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public String getPwd_hint_q() {
+		return pwd_hint_q;
+	}
+
+	public void setPwd_hint_q(String pwd_hint_q) {
+		this.pwd_hint_q = pwd_hint_q;
+	}
+
+	public String getPwd_hint_a() {
+		return pwd_hint_a;
+	}
+
+	public void setPwd_hint_a(String pwd_hint_a) {
+		this.pwd_hint_a = pwd_hint_a;
 	}
 	
 }
