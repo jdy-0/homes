@@ -162,8 +162,49 @@ public class RoomDAO {
 					+ "and rg.parent_idx=(select region_idx from region where region_idx=? and lev=1)";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
-
+			rs=ps.executeQuery();
+			int count=0;
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**검색된 숙소 수 가져오기(조건: 전부)*/
+	public int getRoomCount(int p_region_idx, int guest_num, String start_day, String end_day) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select count(*) "
+					+ "from room r "
+					+ "join region rg on r.region_idx=rg.region_idx "		
+					+ "where (( rg.lev=2 and rg.parent_idx=? ) "				
+					+ "or ( rg.lev=1 and rg.region_idx=? )) "			
+					+ "and (room_max>=? and room_min<=?) "						
+					+ "and r.room_idx not in ( "								
+					+ "select u.room_idx "
+					+ "from unavailable_schedule u "
+					+ "where to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
+					+ "or to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
+					+ ")";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, p_region_idx);
 			ps.setInt(2, p_region_idx);
+			ps.setInt(3, guest_num);
+			ps.setInt(4, guest_num);
+			ps.setString(5, start_day);
+			ps.setString(6, end_day);
 			rs=ps.executeQuery();
 			int count=0;
 			if(rs.next()) {
@@ -241,7 +282,74 @@ public class RoomDAO {
 		}
 	}
 	
-	/**숙소 수 가져오기*/
+	/**검색된 숙소 가져오기(조건: 전부)*/
+	public ArrayList<RoomDTO> getRoom(int p_region_idx, int cp, int ls, int guest_num, String start_day, String end_day) {
+		Region_DetailDAO rddao = new Region_DetailDAO();
+		int start=(cp-1)*ls+1;
+		int end=cp*ls;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from "
+					+ "(select rownum as rnum, r.* "
+					+ "from room r "
+					+ "join region rg on r.region_idx=rg.region_idx "			
+					+ "where (( rg.lev=2 and rg.parent_idx=? ) "				
+					+ "or ( rg.lev=1 and rg.region_idx=? )) "			
+					+ "and (room_max>=? and room_min<=?) "						
+					+ "and r.room_idx not in ( "								
+					+ "select u.room_idx "
+					+ "from unavailable_schedule u "
+					+ "where to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
+					+ "or to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
+					+ ")"
+					+ ") a "
+					+ "where rnum between ? and ?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, p_region_idx);
+			ps.setInt(2, p_region_idx);
+			ps.setInt(3, guest_num);
+			ps.setInt(4, guest_num);
+			ps.setString(5, start_day);
+			ps.setString(6, end_day);
+			ps.setInt(7, start);
+			ps.setInt(8, end);
+			rs=ps.executeQuery();
+			ArrayList<RoomDTO> room= new ArrayList<RoomDTO>();
+			if(rs.next()) {
+				do {
+					int room_idx=rs.getInt("room_idx");
+					int host_idx=rs.getInt("host_idx");
+					int region_idx=rs.getInt("region_idx");
+					String room_name=rs.getString("room_name");
+					String goodthing=rs.getString("goodthing");
+					String addr_detail=rs.getString("addr_detail");
+					int price=rs.getInt("price");
+					String map_url=rs.getString("map_url");
+					String image=rs.getString("image");
+					
+					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+					room.add(dto);
+				}while(rs.next());
+				
+				rddao.countUpdate(p_region_idx);
+			}
+			
+			return room;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**전체 숙소 수 가져오기*/
 	public int roomCount() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
@@ -273,7 +381,6 @@ public class RoomDAO {
 		int cnt=roomCount();
 		RoomDTO[] room=new RoomDTO[6];
 		try {
-			//랜덤 숫자 가져오기(idx)
 			for(int i=0;i<6;i++) {
 				rnum[i]=(int)(Math.random()*cnt)+1;
 				for(int j=0;j<i;j++) {
@@ -283,7 +390,7 @@ public class RoomDAO {
 					}
 				}
 			}
-			//db
+			
 			conn=com.homes.db.HomesDB.getConn();
 			for(int i=0;i<6;i++) {
 				String sql="select * from (select rownum as rnum, r.* from room r) a where rnum="+rnum[i];
@@ -316,7 +423,6 @@ public class RoomDAO {
 				if(ps!=null)ps.close();
 				if(conn!=null)conn.close();
 			} catch (Exception e2) {
-				// TODO: handle exception
 			}
 		}
 		

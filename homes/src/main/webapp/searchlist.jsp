@@ -21,10 +21,22 @@
 <%
 	String region_idx=request.getParameter("select_location");
 	int p_region_idx=Integer.parseInt(region_idx);
+	String check_in=request.getParameter("check_in");
+	String check_out=request.getParameter("check_out");
+	String num=request.getParameter("guest_num");
+	if(num==null||num.equals("")){
+		num="0";
+	}
+	int guest_num=Integer.parseInt(num);
 %>
 <%
 	//1.총게시물수
-	int totalCnt=rmdao.getRoomCount(p_region_idx);
+	int totalCnt=0;
+	if(!(num.equals("0"))){
+		totalCnt=rmdao.getRoomCount(p_region_idx, guest_num, check_in, check_out);
+	} else{
+		totalCnt=rmdao.getRoomCount(p_region_idx);
+	}
 	//2.보여줄 리스트수
 	int listSize=6;
 	//3.페이지수
@@ -369,7 +381,12 @@ function validateForm() {
 <tbody>
 	<%
 	ArrayList<RoomDTO> room=new ArrayList<>();
-	room=rmdao.getRoom(p_region_idx,cp,listSize);
+	//room=rmdao.getRoom(p_region_idx,cp,listSize);
+	if(!(num.equals("0"))){
+		room=rmdao.getRoom(p_region_idx,cp,listSize,guest_num,check_in,check_out);
+	} else {
+		room=rmdao.getRoom(p_region_idx,cp,listSize);
+	}
 	if(room==null||room.size()==0){
 		%>
 		<tr>
@@ -384,7 +401,7 @@ function validateForm() {
 			<%if(i%2==0) {%>
 		   		<tr>
 		   	<%} %>
-	      		<td><a href="#"><img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room.get(i).getRoom_name() %></p></td>
+	      		<td><a href="rooms/information.jsp?room_idx=<%= room.get(i).getRoom_idx() %>"><img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room.get(i).getRoom_name() %></p></td>
 	   		<%if(i%2==1 || i==room.size()-1) {%>
 		   		</tr>
 		   	<%} %>
@@ -396,14 +413,26 @@ function validateForm() {
 		<td colspan="3" align="center">
 			<%
 			if(userGroup!=0){
-				%><a href="searchlist.jsp?cp=<%=(userGroup-1)*pageSize+pageSize %>&select_location=<%=p_region_idx %>">&lt;&lt;</a><%
+				%><a href="searchlist.jsp?cp=<%=(userGroup-1)*pageSize+pageSize %>&select_location=<%=p_region_idx %>
+				<%
+				if(!(num.equals("0"))){
+					%>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num %><%
+				}
+				%>
+				">&lt;&lt;</a><%
 			}
 			%>
 			
 			<%
 			for(int i=userGroup*pageSize+1;i<=userGroup*pageSize+pageSize;i++){
 				%>
-				&nbsp;&nbsp;<a href="searchlist.jsp?cp=<%=i %>&select_location=<%=p_region_idx %>"><%=i %></a>&nbsp;&nbsp;
+				&nbsp;&nbsp;<a href="searchlist.jsp?cp=<%=i %>&select_location=<%=p_region_idx %>
+				<%
+				if(!(num.equals("0"))){
+					%>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num %><%
+				}
+				%>
+				"><%=i %></a>&nbsp;&nbsp;
 				<%
 				if(i==totalPage){
 					break;
@@ -413,7 +442,13 @@ function validateForm() {
 			
 			<%
 			if(userGroup!=(totalPage/pageSize-(totalPage%pageSize==0?1:0))){
-				%><a href="searchlist.jsp?cp=<%=(userGroup+1)*pageSize+1 %>&select_location=<%=p_region_idx %>">&gt;&gt;</a><%
+				%><a href="searchlist.jsp?cp=<%=(userGroup+1)*pageSize+1 %>&select_location=<%=p_region_idx %>
+				<%
+				if(!(num.equals("0"))){
+					%>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num %><%
+				}
+				%>
+				">&gt;&gt;</a><%
 			}
 			%>
 		</td>

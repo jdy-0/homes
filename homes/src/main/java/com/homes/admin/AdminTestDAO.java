@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.homes.region.RegionDTO;
 import com.homes.room.RoomDTO;
 
 public class AdminTestDAO {
@@ -348,4 +349,71 @@ public class AdminTestDAO {
 		}
 	}
 	
+	/**-----------------------------------------------------------------------------------------------*/
+	
+	/**지역 대분류 소분류 순으로 출력하기*/
+	public  ArrayList<RegionDTO> regionTable() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from region "
+					+ "start with parent_idx is null "
+					+ "connect by "
+					+ "prior region_idx=parent_idx";
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			ArrayList<RegionDTO> rt= new ArrayList<>();
+			while(rs.next()) {
+				int region_idx=rs.getInt("region_idx");
+				String region_name=rs.getString("region_name");
+				int parent_idx=rs.getInt("parent_idx");
+				int lev=rs.getInt("lev");
+				RegionDTO dto = new RegionDTO(region_idx, region_name, parent_idx, lev);
+				rt.add(dto);
+			}
+			
+			return rt;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**대분류의 지역 이름을 가져오는 메소드*/
+	public String getParentName(int parent_idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select region_name from region where region_idx="+parent_idx;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			String parent_name="";
+			
+			if(rs.next()) {
+				parent_name=rs.getString("region_name");
+				
+			} else {
+				parent_name="-";
+			}
+			
+			return parent_name;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 }

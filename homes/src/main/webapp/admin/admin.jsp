@@ -70,7 +70,7 @@
 			    <li><a href="#">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
-			    <li><a href="#">지역 관리</a></li>
+			    <li><a href="/homes/admin/admin_region.jsp">지역 관리</a></li>
 			    <li><a href="#">후기 관리</a></li>
 			    <li><a href="#">숙소 관리</a></li>	    
 			    <li><a href="#">예약 관리</a></li>
