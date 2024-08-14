@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.homes.review.ReviewDAO, com.homes.review.ReviewDTO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,6 @@
 <title>후기 보기 및 작성</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
-    /* 기본 스타일 설정 */
     body {
         background-color: #e2dccc;
         font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
@@ -153,84 +153,94 @@
         const rateValue = document.querySelector('input[name="rate"]:checked');
         if (reviewText === "") {
             alert("후기를 작성해주세요.");
-            return false; // 폼 제출을 막음
+            return false;
         }
         if (!rateValue) {
             alert("별점을 선택해주세요.");
-            return false; // 폼 제출을 막음
+            return false;
         }
-        return true; // 폼 제출을 허용
+        return true;
     }
 </script>
 </head>
 <body>
 <%@ include file="/header.jsp"%>
-    <main class="container">
-        <div class="back-link">
-            <a href="information.jsp?room_idx=<%= request.getParameter("room_idx") %>">← 돌아가기</a>
-        </div>
-        <div class="header">
-            후기 보기 및 작성
-        </div>
-        <div class="review-list">
-            <!-- 후기 항목 출력 -->
-            <%
-                int roomIdx = Integer.parseInt(request.getParameter("room_idx"));
-                int pageNum = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
-                int pageSize = 10;
+<main class="container">
+    <div class="back-link">
+        <a href="information.jsp?room_idx=<%= request.getParameter("room_idx") %>">← 돌아가기</a>
+    </div>
+    <div class="header">
+        후기 보기 및 작성
+    </div>
+    <div class="review-list">
+        <!-- 후기 항목 출력 -->
+        <%
+            int roomIdx = 0;
+            try {
+                roomIdx = Integer.parseInt(request.getParameter("room_idx"));
+            } catch (NumberFormatException e) {
+                out.println("<p>유효하지 않은 숙소 ID입니다.</p>");
+                e.printStackTrace();
+            }
 
-                ReviewDAO reviewDAO = new ReviewDAO();
+            int pageNum = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+            int pageSize = 10;
 
-                // 페이징된 리뷰 가져오기
-                List<ReviewDTO> reviews = reviewDAO.getReviewsByRoomIdxWithPaging(roomIdx, pageNum, pageSize);
-                int totalReviewCount = reviewDAO.getReviewCountByRoomIdx(roomIdx);
-                int totalPageCount = (int) Math.ceil(totalReviewCount / (double) pageSize);
+            ReviewDAO reviewDAO = new ReviewDAO();
 
-                if (reviews != null && !reviews.isEmpty()) {
-                    for (ReviewDTO review : reviews) {
-            %>
-                        <div class="review-item">
-                            <p><strong>별점:</strong> <%= review.getRate() %>점</p>
-                            <p><%= review.getContent() %></p>
-                        </div>
-            <%
-                    }
-                } else {
-            %>
-                    <p>아직 후기가 없습니다.</p>
-            <%
-                }
-            %>
-        </div>
+            // 페이징된 리뷰 가져오기
+            List<ReviewDTO> reviews = reviewDAO.getReviewsByRoomIdxWithPaging(roomIdx, pageNum, pageSize);
+            int totalReviewCount = reviewDAO.getReviewCountByRoomIdx(roomIdx);
+            int totalPageCount = (int) Math.ceil(totalReviewCount / (double) pageSize);
 
-        <!-- 페이지 네비게이션 -->
-        <div class="pagination">
-            <% for (int i = 1; i <= totalPageCount; i++) { %>
-                <a href="review.jsp?room_idx=<%= roomIdx %>&page=<%= i %>" class="<%= i == pageNum ? "active" : "" %>"><%= i %></a>
-            <% } %>
-        </div>
-
-        <!-- 후기 작성 폼 -->
-        <div class="review-form">
-            <form method="post" action="submitReview.jsp" onsubmit="return validateReviewForm();">
-                <div class="review-header">
-                    <h3>후기 작성</h3>
-                    <div class="star-rating">
-                        <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
-                        <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
-                        <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
-                        <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
-                        <input type="radio" id="star1" name="rate" value="1"><label for="star1">★</label>
+            // 리뷰 출력
+            if (!reviews.isEmpty()) {
+                for (ReviewDTO review : reviews) {
+        %>
+                    <div class="review-item">
+                        <p><strong>별점:</strong> <%= review.getRate() %>점</p>
+                        <p><%= review.getContent() %></p>
                     </div>
+        <%
+                }
+            } else {
+        %>
+                <p>아직 후기가 없습니다.</p>
+        <%
+            }
+        %>
+    </div>
+
+    <!-- 페이지 네비게이션 -->
+    <div class="pagination">
+        <% for (int i = 1; i <= totalPageCount; i++) { %>
+            <a href="review.jsp?room_idx=<%= roomIdx %>&page=<%= i %>" class="<%= i == pageNum ? "active" : "" %>">
+                <%= i %>
+            </a>
+        <% } %>
+    </div>
+
+    <!-- 후기 작성 폼 -->
+    <div class="review-form">
+        <form method="post" action="submitReview.jsp" onsubmit="return validateReviewForm();">
+            <div class="review-header">
+                <h3>후기 작성</h3>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rate" value="1"><label for="star1">★</label>
                 </div>
-                <div class="review-inputs">
-                    <textarea name="review" placeholder="후기를 작성하세요..."></textarea>
-                </div>
-                <input type="hidden" name="room_idx" value="<%= roomIdx %>">
-                <button type="submit">후기 제출</button>
-            </form>
-        </div>
-    </main>
-    <%@ include file="/footer.jsp"%>
+            </div>
+            <div class="review-inputs">
+                <textarea name="review" placeholder="후기를 작성하세요..."></textarea>
+            </div>
+            <input type="hidden" name="room_idx" value="<%= roomIdx %>">
+            <button type="submit">후기 제출</button>
+        </form>
+    </div>
+</main>
+<%@ include file="/footer.jsp"%>
 </body>
 </html>

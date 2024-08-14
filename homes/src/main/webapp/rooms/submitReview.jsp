@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.homes.review.ReviewDAO, com.homes.review.ReviewDTO" %>
-
 <%
     // 파라미터 값 받기
     String roomIdxParam = request.getParameter("room_idx");
@@ -22,21 +21,18 @@
         String userName = (String) session.getAttribute("userName");
 
         if (userName != null) {
-            // ReviewDTO 객체 생성
-            ReviewDTO review = new ReviewDTO();
-            review.setRoomIdx(roomIdx);
-            review.setRate(rate);
-            review.setContent(reviewContent);
-
-            // ReviewDAO 객체를 사용하여 데이터베이스에 저장
+            // ReviewDAO 객체 생성
             ReviewDAO reviewDAO = new ReviewDAO();
-            reviewDAO.addReview(review);
+            // 리뷰 추가 후 리디렉션할 URL 생성
+            String redirectUrl = reviewDAO.submitReview(roomIdx, reviewContent, rate, userName);
+            // 페이지 리디렉션
+            response.sendRedirect(redirectUrl);
+        } else {
+            // 로그인이 안된 경우 처리
+            response.sendRedirect("/homes/guest/login.jsp"); // 로그인 페이지로 리디렉션 예시
         }
     } else {
         // 파라미터가 잘못된 경우 처리
         response.sendRedirect("errorPage.jsp"); // 예시로 에러 페이지로 리디렉션
     }
-
-    // 완료 후 원래 페이지로 리디렉션
-    response.sendRedirect("review.jsp?room_idx=" + roomIdx);
 %>
