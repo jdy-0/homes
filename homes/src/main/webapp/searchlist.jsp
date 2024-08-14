@@ -1,4 +1,3 @@
-<%@page import="org.apache.commons.collections4.bag.SynchronizedSortedBag"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -16,7 +15,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>숙소 검색 결과</title>
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
 <%
 	String region_idx=request.getParameter("select_location");
@@ -70,30 +69,30 @@
     padding-bottom: 5px;
 }
 .index_label_fs{
-    background-color:#dec022;
-    color:black;
-    border-bottom:5px solid black;
-    margin:0px;
-    font-family: 'SBAggroB';
+	background-color:#dec022;
+	color:black;
+	border-bottom:5px solid black;
+	margin:0px;
+	font-family: 'SBAggroB';
 }
 #search_box_fs{
-    height: 150px;
+	height: 150px;
     padding-top: 50px;
-    border-bottom:5px solid black;
-    border-right:0px;
-    border-left:0px;
-    border-top:0px;
-    margin:0px;
+	border-bottom:5px solid black;
+	border-right:0px;
+	border-left:0px;
+	border-top:0px;
+	margin:0px;
 }
 .select_box {
-    display: flex;
+   	display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'SBAggroB';
     font-size:25px;
 }
 .select_things{
-    border: 3px solid black;
+	border: 3px solid black;
     width: 200px;
     padding: 10px;
     font-size: 20px;
@@ -103,192 +102,195 @@
 </style>
 <style>
 .date{
-    width: 200px;
+	width: 200px;
     border: 3px solid black;
     padding: 10px;
     font-size: 20px;
     font-family: 'SBAggroB';
 }
 .date-picker {
-    position: relative;
-    display: flex;
+	position: relative;
+	display: flex;
     align-items: center;
 }
 .date-picker>div{
-     float:left;
+ 	float:left;
 }
 .date-picker>div>div{
-     float:left;
+ 	float:left;
 }
 #date-input {
-    width: 417px;
-    padding: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    display:flex;
-    font-family: 'SBAggroB';
+	width: 417px;
+	padding: 8px;
+	font-size: 16px;
+	cursor: pointer;
+	display:flex;
+	font-family: 'SBAggroB';
     font-size:25px;
 }
 .calendar {
-    position: absolute;
-    top: 90%;
-    left: -30px;
-    width: 615px;
-    z-index: 10;
-    border:0px;
-    background-color: #e2dccc;
+	position: absolute;
+	top: 90%;
+	left: -30px;
+	width: 615px;
+	z-index: 10;
+	/* border: 1px solid black; */
+	border:0px;
+	background-color: #e2dccc;
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 .prev-month{
-    font-size: 30px;
+	font-size: 30px;
     width: 40px;
     border: 3px solid black;
     background-color: #dec022;
     font-weight: bold;
 }
 .next-month{
-    font-size: 30px;
+	font-size: 30px;
     width: 40px;
     border: 3px solid black;
     background-color: #dec022;
     font-weight: bold;
 }
 .month {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #e2dccc;
-    width: -webkit-fill-available;
-    border:3px solid black;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	background-color: #e2dccc;
+	width: -webkit-fill-available;
+	border:3px solid black;
 }
 .weekdays, .days {
-    display: flex;
-    flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 .weekdays span, .days span {
-    width: 14.28%;
-    text-align: center;
-    padding: 10px 0;
+	width: 14.28%;
+	text-align: center;
+	padding: 10px 0;
 }
 .days span {
-    cursor: pointer;
+	cursor: pointer;
 }
 .days span:hover {
-    background-color: #f2f2f2;
+	background-color: #f2f2f2;
 }
 .days .selected {
-    background-color: #007bff;
-    color: white;
+	background-color: #007bff;
+	color: white;
 }
 .line {
-    background-color: blue;
+	background-color: blue;
 }
 
 .side_cal {
-    display: flex;
+	display: flex;
 }
 
 .one_month_cal {
-    display: inline;
-    float: left;
-    border: 4px solid black;
-    width: 300px;
+	display: inline;
+	float: left;
+	border: 4px solid black;
+	width: 300px;
 }
 
 .month-year {
-    text-align: center;
+	text-align: center;
 }
 
 .disabled {
-    text-decoration: line-through;
-    background-color: lightgray;
+	text-decoration: line-through;
+	background-color: lightgray;
 }
 
 .sunday {
-    color: red;
+	color: red;
 }
 
 .month-year {
-    font-size: 25px;
-    background-color:#dec022;
-    border-bottom:3px solid black;
+	font-size: 25px;
+	/* background-color: lightgray; */
+	background-color:#dec022;
+	border-bottom:3px solid black;
 }
 #select_guest_div{
-    margin-left:115px;
-    display: flex;
+	margin-left:115px;
+	display: flex;
     flex-direction: column;
     padding: 10px;
 }
 #select_guest_div label{
-    padding-bottom:5px;
+	padding-bottom:5px;
 }
 #select_guest{
-    border: 3px solid black;
+	border: 3px solid black;
     width: 200px;
     font-size: 20px;
     padding: 10px;
     font-family: 'SBAggroB';
 }
 .button{
-    width:80px;
-    background-color:#dec022;
-    border:3px solid black;
-    font-family: 'SBAggroB';
-    padding:10px;
-    font-size:20px;
+	width:80px;
+	background-color:#dec022;
+	border:3px solid black;
+	font-family: 'SBAggroB';
+	padding:10px;
+	font-size:20px;
 }
 #recommend_region{
-    border-bottom:5px solid black;
-    height:380px;
+	border-bottom:5px solid black;
+	height:380px;
 }
 #recommend_region_table{
-    margin:50px auto;
-    width:1600px;
-    border-spacing:0px;
+	margin:50px auto;
+	width:1600px;
+	border-spacing:0px;
 }
 #recommend_region_table td{
-    text-align:center;
-    width:260px;
+	text-align:center;
+	width:260px;
 }
 
 #recommend_region_table td img{
-    width:232px;
-    height:232px;
-    margin:28px;
+	width:232px;
+	height:232px;
+	margin:28px;
 }
 #recommend_region_table td a img:hover{
-    width:260px;
-    height:260px;
-    margin:14px;
+	width:260px;
+	height:260px;
+	margin:14px;
 }
 .td_arrow{
-    text-align:center;
-    width:80px;
+	text-align:center;
+	width:80px;
 }
 #arrow{
-    text-decoration: none;
-    color:black;
-    font-size:80px;
-    font-weight:bold;
+	text-decoration: none;
+	color:black;
+	font-size:80px;
+	font-weight:bold;
 }
 #search_room_table{
-    margin:50px auto;
-    width:1550px;
-    height:1020px;
+	margin:50px auto;
+	width:1550px;
+	height:1020px;
 }
 #search_room_table td{
-    text-align:center;
-    height:510px;
+	text-align:center;
+	height:510px;
 }
 #search_room_table td img{
-    width:480px;
-    height:480px;
-    margin:15px;
+	width:480px;
+	height:480px;
+	margin:15px;
 }
 #search_room_table td img:hover{
-    width:495px;
-    height:495px;
-    margin:0px;
+	width:495px;
+	height:495px;
+	margin:0px;
 }
 </style>
 <script>
@@ -326,43 +328,48 @@ function validateForm() {
 <fieldset id="search_box_fs">
 <form name="search" action="searchlist.jsp" onsubmit="return validateForm()">
 <div class="select_box">
-    <div class="search_item">
-        <label for="destination">여행지</label>
-        <select name="select_location" class="select_things">
-        <%
-        ArrayList<RegionDTO> region = new ArrayList<>();
-        region = rdao.getRegion();
-                
-        for (int i = 0; i < region.size(); i++){%>
-                  <option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
-        <%} %>
-        </select>
-    </div> 
+	<div class="search_item">
+		<label for="destination">여행지</label>
+		<select name="select_location" class="select_things">
+		<%
+		ArrayList<RegionDTO> region=new ArrayList<>();
+		region=rdao.getRegion();
+				
+		for(int i=0;i<region.size();i++){%>
+	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
+	    <%} %>
+		</select>
+	</div> 
 
 
    <div class="date-picker">
 
-            <div id="date-input">
-                <div class="search_item">
-                    <label for="checkin">체크인</label> <input type="text" id="check_in" class="date" required readonly="readonly" id="from">
-                </div>
-                <div class="search_item">
-                    <label for="checkin">체크아웃</label> <input type="text" id="check_out" class="date" required readonly="readonly" id="to">
-                </div>
-            </div>
+			<div id="date-input">
+				<div class="search_item">
+					<label for="checkin">체크인</label> <input type="text"
+						id="check_in" class="date" required readonly="readonly"
+						id="from">
+				</div>
+				<div class="search_item">
+					<label for="checkin">체크아웃</label> <input type="text"
+						id="check_out" class="date" required readonly="readonly"
+						id="to">
+				</div>
+			</div>
 
-            <%@ include file="cal.jsp"%>
-            <div id="select_guest_div">
-                <label for="checkin">인원수</label> <input type="number" name="인원수" id="select_guest" min="1" required>
-            </div>
-            <div class="search_button">
-                <input type="submit" value="검색" class="button">
-            </div>
-        </div>
+			<%@ include file="cal.jsp"%>
+			<div id="select_guest_div">
+				<label for="checkin">인원수</label> <input type="number" name="인원수"
+					id="select_guest" min="1" required>
+			</div>
+			<div class="search_button">
+				<input type="submit" value="검색" class="button">
+			</div>
+		</div>
 
-    </div>
+	</div>
 </form>
-    </fieldset>
+	</fieldset>
 </article>
 
 <fieldset class="index_label_fs">
@@ -401,6 +408,7 @@ function validateForm() {
 	}%>
 </tbody>
 <tfoot>
+	<% if(!(room==null||room.size()==0)){%>
 	<tr>
 		<td colspan="3" align="center">
 			<%
@@ -445,6 +453,7 @@ function validateForm() {
 			%>
 		</td>
 	</tr>
+	<%} %>
 </tfoot>
 </table>
 </article>

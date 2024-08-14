@@ -4,6 +4,7 @@
 <%@ page import="com.homes.region.RegionDTO" %>
 <jsp:useBean id="rdto" class="com.homes.region.RegionDTO"></jsp:useBean>
 <jsp:useBean id="rdao" class="com.homes.region.RegionDAO"></jsp:useBean>   
+<jsp:useBean id="adao" class="com.homes.admin.AdminTestDAO"></jsp:useBean>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,31 +63,47 @@ legend{
 }
 
 </style>
+<%
+	String region_idx_s=request.getParameter("param");
+	int region_idx=Integer.parseInt(region_idx_s);
+%>
 </head>
 <body>
 <fieldset>
    <legend>지역수정</legend>
-   <form name="rgupdate" onsubmit="return checkId()" action="admin_region_update_ok.jsp">
+   <form name="rgupdate" action="admin_region_update_ok.jsp">
    <div id="rgupdate_frame">
+   <%
+		RegionDTO rg=new RegionDTO();
+ 		rg=adao.getRegion(region_idx);
+	%>
    <div>
       <label>지역이름</label>
-      <input type="text" name="name" id="regionName">      
+      <input type="text" name="regionName" id="regionName" value="<%=rg.getRegion_name()%>">      
    </div>
    <div>
       <label>상위지역</label>
       <select name="select_parent" class="select_things">
-	      <%
-			ArrayList<RegionDTO> region=new ArrayList<>();
-			region=rdao.getRegion();
-					
-			for(int i=0;i<region.size();i++){%>
-		      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
-	    <%} %>
+      		<%
+      		if(rg.getParent_idx()==0){
+      			%><option>-</option><%
+      		} else {
+      		%>
+				<%	
+				ArrayList<RegionDTO> region=new ArrayList<>();
+				region=rdao.getRegion();
+				for(int i=0;i<region.size();i++){
+				%>
+					<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
+		    	<%
+	    		} 
+			}
+	    	%>
 		</select>   
    </div>
-      <input type="submit" id="button" value="확인">
+   		<input type="hidden" name="regionIdx" value="<%=rg.getRegion_idx() %>">
+      <input type="submit" id="button" value="수정">
    </div>
-   <div id="error-message" style="color: red; margin-top: 5px;"></div>
    </form>
 </fieldset>
 </body>

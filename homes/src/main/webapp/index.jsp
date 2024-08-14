@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.homes.region.RegionDTO" %>
 <jsp:useBean id="rdto" class="com.homes.region.RegionDTO"></jsp:useBean>
@@ -17,9 +18,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
 </head>
-<%
-
-%>
 <style>
 .search_item {
     padding: 10px 20px;
@@ -284,25 +282,25 @@ function validateForm() {
 }
 </script>
 <%
-    // 1.총게시물수
-    int totalCnt = rddao.regionDetailCount();
-    // 2.보여줄 리스트수
-    int listSize = 5;
-    // 3.페이지수
-    int pageSize = 1;
-    // 4.사용자 현재위치
-    String cp_s = request.getParameter("cp");
-    if(cp_s == null || cp_s.equals("")) {
-        cp_s = "1";
-    }
-    int cp = Integer.parseInt(cp_s);
+//1.총게시물수
+int totalCnt=rddao.regionDetailCount();
+//2.보여줄 리스트수
+int listSize=5;
+//3.페이지수
+int pageSize=1;
+//4.사용자 현재위치
+String cp_s=request.getParameter("cp");
+if(cp_s==null||cp_s.equals("")){
+	cp_s="1";
+}
+int cp=Integer.parseInt(cp_s);
 
-    int totalPage = (totalCnt / pageSize) + 1;
-    if(totalCnt % pageSize == 0) totalPage--;
+int totalPage=(totalCnt/pageSize)+1;
+if(totalCnt%pageSize==0) totalPage--;
 
-    // 사용자 현재 위치의 그룹번호
-    int userGroup = cp / listSize;
-    if(cp % listSize == 0) userGroup--;
+//사용자 현재 위치의 그룹번호
+int userGroup=cp/listSize;
+if(cp%listSize==0)userGroup--;
 %>
 <body>
 <%@ include file="header.jsp"%>
@@ -318,10 +316,10 @@ function validateForm() {
 		<label for="destination">여행지</label>
 		<select name="select_location" class="select_things">
 		<%
-		ArrayList<RegionDTO> region = new ArrayList<>();
-		region = rdao.getRegion();
+		ArrayList<RegionDTO> region=new ArrayList<>();
+		region=rdao.getRegion();
 				
-		for(int i = 0; i < region.size(); i++){%>
+		for(int i=0;i<region.size();i++){%>
 	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
 	    <%} %>
 		</select>
@@ -359,31 +357,31 @@ function validateForm() {
 	<tr>
 		<td class="td_arrow">
 		<%
-		if(userGroup != 0) {
+		if(userGroup!=0){
 			%><a href="index.jsp?cp=<%=(userGroup-1)*listSize+listSize %>" id="arrow">&laquo;</a><%
 		}
 		%>
 		</td>
 		<%
-		ArrayList<RegionDTO> rcname = new ArrayList<>();
-		rcname = rdao.getRegionClick();
-		ArrayList<String> img = new ArrayList<>();
-		img = rddao.getRegionImg();
-		for(int i = userGroup*listSize+1; i <= userGroup*listSize+listSize; i++){%>
+		ArrayList<RegionDTO> rcname=new ArrayList<>();
+		rcname=rdao.getRegionClick();
+		ArrayList<String> img=new ArrayList<>();
+		img=rddao.getRegionImg();
+		for(int i=userGroup*listSize+1;i<=userGroup*listSize+listSize;i++){%>
 	      		<td>
 	      			<a href="searchlist.jsp?&select_location=<%=rcname.get(i-1).getRegion_idx() %>"><img src="<%=img.get(i-1) %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a>
 	      			<p>추천여행지:<%= rcname.get(i-1).getRegion_name()%></p>
 	      		</td>
 	      		<%
-				if(i == totalPage){
+				if(i==totalPage){
 					break;
 				}
 	      		%>
 	    <%} %>
 	   <td class="td_arrow">
 	   <%
-	   //if(userGroup != (totalPage / listSize - (totalPage % listSize == 0 ? 1 : 0))){
-		if(userGroup != (totalPage / listSize - (totalPage % listSize == 0 ? 1 : 0))){
+	   //if(userGroup!=(totalPage/listSize-(totalPage%listSize==0?1:0))){
+		if(userGroup!=(totalPage/listSize-(totalPage%listSize==0?1:0))){
 		%>
 	   <a href="index.jsp?cp=<%=(userGroup+1)*listSize+1 %>" id="arrow">&raquo;</a><%
 		}
@@ -398,9 +396,9 @@ function validateForm() {
 <article id="recommend_room">
 <table id="recommend_room_table">
 	<%
-	RoomDTO[] room = rmdao.roomRandom();
-	for(int i = 0; i < 6; i++){ %>
-		<%if(i % 3 == 0) {%>
+	RoomDTO[] room=rmdao.roomRandom();
+	for(int i=0;i<6;i++){ %>
+		<%if(i%3==0) {%>
 	   		<tr>
 	   	<%} %>
       		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room[i].getRoom_name() %></p></td>
