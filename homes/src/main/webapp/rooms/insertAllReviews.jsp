@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert Reviews for All Rooms</title>
-<style>
+<!-- <style>
     /* 기본 페이지 스타일 설정 */
     body {
         font-family: Arial, sans-serif;
@@ -35,7 +35,7 @@
 </style>
 </head>
 <body>
-    <div class="container">
+   <div class="container">
         <h1>Insert Reviews for All Rooms</h1>
         <%
             // ReviewDAO 객체 생성
@@ -62,8 +62,6 @@
                         review.setRoomIdx(roomId); // 숙소 ID 설정
                         review.setContent(reviewTexts[i]); // 리뷰 내용 설정
                         review.setRate(reviewRates[i]); // 별점 설정
-                        review.setViewCount(0); // 초기 조회수 설정
-                        review.setLikeCount(0); // 초기 좋아요 수 설정
                         reviewDAO.insertReview(review); // 리뷰 삽입 메서드 호출
                     }
                 }
@@ -75,4 +73,4 @@
         %>
     </div>
 </body>
-</html>
+</html>-->  
