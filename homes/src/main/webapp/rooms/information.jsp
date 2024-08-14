@@ -209,6 +209,16 @@ function openLoginPopup(){
         </div>
         <div class="right">
             <p class="price">₩<%= room.getPrice() %> / 박</p>
+            <div>
+                <input type="text" name="check_in" <%-- value="<%= request.getParameter("check_in") %>" --%> value="2024-11-01" >
+                <input type="text" name="check_out" <%-- value="<%= request.getParameter("check_out") %>" --%> value="2024-11-05">
+                    
+            	<input type="text">
+            	<jsp:include page="information_cal.jsp">
+            		<jsp:param value="<%=roomIdxParam %>" name="room"/>
+            	</jsp:include>
+            	
+            </div>
             <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
             <div class="reservation-box">
                 <div class="details">

@@ -257,13 +257,64 @@ document.addEventListener("DOMContentLoaded", function() {
     let nextDate = new Date();
     var loc = 0;
     
+    const check_in = document.querySelector("input[name='check_in']");
+    const check_out = document.querySelector("input[name='check_out']");
+    
+    let firstClickedDate = null;
+    let secondClickedDate = null;
+    
     reset.addEventListener('click', () => {
         
-    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.replace('hol_selected','none'));
+    	resetCal_Selected();
+    	check_in.value = "";
+    	check_out.value = "";
 /*     	side_cal.querySelectorAll('.choosen').forEach(span => span.classList.remove	('choosen'));
  */    	
         /* holiday */
     });
+    
+	function moveToCheckInDate(){
+    	dateCheck();
+
+		for(var i=0; i<cals.length; i++){
+			
+			cals[i].style.display='none';
+		}
+        if(loc+2==cals.length){
+        	renderCalendar(nextDate);
+
+            cals[loc+1].style.display='block';
+
+        } else {
+            cals[loc+1].style.display='block';
+            cals[loc+2].style.display='block';
+        }
+   
+    	loc++;
+	}
+	
+    function getMonBetMon(start){
+    	
+    	const today = new Date();
+
+    	const year = start.getFullYear();
+    	const today_year = today.getFullYear();
+    	
+    	const month = start.getMonth();
+    	const today_month = today.getMonth();
+    	
+    	return (year-today_year)*12 + (month-today_month);
+    	
+    }
+    
+    
+    function resetCal_Selected(){
+    	side_cal.querySelectorAll('.selected').forEach(span => span.classList.replace('selected','none'));
+    	side_cal.querySelectorAll('.line').forEach(span => span.classList.replace('line','none'));
+    	
+    }
+    
+
     
     
     function getAllhol_selected(){
@@ -334,6 +385,12 @@ document.addEventListener("DOMContentLoaded", function() {
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
+    	const startVal = check_in;
+    	const start = new Date(startVal.value);
+        for(var i =0; i< getMonBetMon(start); i++){
+	        moveToCheckInDate();
+
+		}
     }
     
 
@@ -363,36 +420,12 @@ document.addEventListener("DOMContentLoaded", function() {
         return all_sch;
     }
     
-    function attachTag(one_month_cal){
-    	
-    	one_month_cal.querySelectorAll('.selected').forEach(sel => {
-            const smallStart = document.createElement('em');
-        	smallStart.className = 'small_start';
-            smallStart.textContent = index++;
-            sel.appendChild(smallStart);
-
-        });
-    	
-    	one_month_cal.querySelectorAll('.holi').forEach(sel => {
-            const smallStart = document.createElement('em');
-        	smallStart.className = 'small_start';
-            smallStart.textContent = '휴무';
-            sel.appendChild(smallStart);
-
-        });
-    	
-
-    }
+  
     
     function checkHoliday(dayElement,reason){
     	
-    	if (reason === "예약됨") {
-            dayElement.classList.add('selected');
- 
-        } else {
-            dayElement.classList.add('holi');
-            
-        }
+		 dayElement.setAttribute('class','disabled');
+
     	
     }
     
@@ -421,11 +454,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	                		 
 	                	 }else if (currentDate > firstDate && currentDate < lastDate) {
 	                		
-	                		 if(reason=='예약됨'){
-	 	                		dayElement.classList.add('line');
-	                		 } else {
-		 	                		dayElement.classList.add('holi_line');
-	                		 }
+	                		 dayElement.setAttribute('class','disabled');
 	                		
 	                		
 	                		
@@ -494,58 +523,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	}
 	
-	function chooseWeeks(tag) {
-	    const Element = tag.parentElement;
-	    const parentElement = Element.parentElement;
-	    const className = tag.textContent;
-	    const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.choosen):not(.holi_line)';
-
-	    function isSpans_holSelected(spans) {
-	    	let check = true;
-	        spans.forEach(span => {
-	            if (!span.classList.contains('hol_selected')) {
-	            	check =  false;
-	            }
-	        });
-	        return check;
-	    }
-
-	    // Select spans based on the className
-	    let spans;
-	    switch (className) {
-	        case '일':
-	            spans = parentElement.querySelectorAll('.sun' + selector);
-	            break;
-	        case '월':
-	            spans = parentElement.querySelectorAll('.mon' + selector);
-	            break;
-	        case '화':
-	            spans = parentElement.querySelectorAll('.tue' + selector);
-	            break;
-	        case '수':
-	            spans = parentElement.querySelectorAll('.wed' + selector);
-	            break;
-	        case '목':
-	            spans = parentElement.querySelectorAll('.thur' + selector);
-	            break;
-	        case '금':
-	            spans = parentElement.querySelectorAll('.fri' + selector);
-	            break;
-	        case '토':
-	            spans = parentElement.querySelectorAll('.sat' + selector);
-	            break;
-	        default:
-	            alert('잘못된 접근');
-	            return;
-	    }
-		
-	    if (isSpans_holSelected(spans)) {
-	        spans.forEach(span => span.classList.replace('hol_selected', 'none'));
-	    } else {
-	        spans.forEach(span => span.classList.replace('none', 'hol_selected'));
-	    }
-	}
-	
     function addWeekdays(one_month_cal){
 
     	const weekdays  = document.createElement('div');
@@ -560,12 +537,6 @@ document.addEventListener("DOMContentLoaded", function() {
     			dow_span.setAttribute('class','sunday');
         	}
         	
-        	
-        	
-        	dow_span.addEventListener('click', () => {   	
-				chooseWeeks(dow_span,one_month_cal);
-            });
-
 		}
 		one_month_cal.appendChild(weekdays);
         side_cal.appendChild(one_month_cal);
@@ -596,6 +567,8 @@ document.addEventListener("DOMContentLoaded", function() {
     	addWeekdays(one_month_cal);
      
       	const monthContainer  = document.createElement('div');
+        one_month_cal.appendChild(monthContainer);
+
       	monthContainer.innerHTML = '';
       	monthContainer.classList.add('days');
       	
@@ -626,6 +599,23 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.addEventListener('click', () => {   	
 				chooseDate(year, month, day, dayElement);
             });
+            
+            // 체크인 체크아웃 값 있을경우, 해당 체크인 체크아웃에 클래스 부여 + 사이에 클래스 부여
+            var dayId =  dayElement.id
+            
+            if(check_in!=null && check_in!='' &&check_out!=null && check_out!='' ){
+                if(makeIdToDate(dayId)==check_in.value){
+
+
+    				chooseDate(year, month, day, dayElement);
+                } else if (makeIdToDate(dayId)==check_out.value){
+
+    				chooseDate(year, month, day, dayElement);
+                }
+            	
+            }
+
+            // 끝
             monthContainer.appendChild(dayElement);
             
             if(cals.length==1 && day<currentDate.getDate()){
@@ -634,42 +624,125 @@ document.addEventListener("DOMContentLoaded", function() {
                 dayElement.parentNode.replaceChild(clone, dayElement);
             }
         }
-        one_month_cal.appendChild(monthContainer);
         setAllSchedule();
 
-        attachTag(one_month_cal);
     }
+
     
     const ClickedDates = [];
     
+
+
     function chooseDate(year, month, day, dayElement) {
-    	
-		// span태그 + none클래스 : => remove selected
-		const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.holi_line)';
-
-			  if (dayElement.matches('.disabled') ||dayElement.matches('.selected') || dayElement.matches('.line') || dayElement.matches('.holi') 
-					|| dayElement.matches('.holi_line')) {
-			  if (!dayElement.matches('.selected') && !dayElement.matches('.disabled') && !dayElement.matches('.line')) {
-				const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
-				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 일정을 삭제하시겠습니까?");
-				if(checkDel){
-					location.href='host_roomSchedule_Delete_ok.jsp?room=<%=room%>&date='+longDate; 
-				}
-			  }
-			        return;  // 일치하면 함수 종료
-		}	
-		// line none 클릭마다 변환
-    	/* if (dayElement.classList.contains('choosen')) {
-            dayElement.classList.replace('choosen', 'hol_selected');
-            
-        } else */ if (dayElement.classList.contains('none')){
-            dayElement.classList.replace('none', 'hol_selected');
-        } else {
-            dayElement.classList.replace('hol_selected', 'none');
-
+        // 날짜 선택 불가 체크
+        if (dayElement.matches('.disabled') || dayElement.matches('.line') || 
+            dayElement.matches('.holi') || dayElement.matches('.holi_line')) {
+            return;  // 선택 불가한 날짜인 경우 함수 종료
         }
-     }
-        
+
+        // 첫 번째 날짜 선택
+        if (!firstClickedDate) {
+            firstClickedDate = dayElement;
+            dayElement.classList.replace('none', 'selected');
+            document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
+			/* setDisabledSpan(dayElement);
+             */
+        } else if (!secondClickedDate) {
+            // 두 번째 날짜 선택
+            secondClickedDate = dayElement;
+
+            dayElement.classList.replace('none', 'selected');
+
+            let startDate = new Date(makeIdToDate(firstClickedDate.id));
+            let endDate = new Date(makeIdToDate(secondClickedDate.id));
+
+            // 날짜 교환
+            if (startDate > endDate) {
+                [startDate, endDate] = [endDate, startDate];
+                [firstClickedDate, secondClickedDate] = [secondClickedDate, firstClickedDate];
+                document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
+            }
+
+            document.querySelector("input[name='check_out']").value = makeIdToDate(secondClickedDate.id);
+            // 날짜 범위 선택 및 업데이트
+            const allDays = calendar.querySelectorAll('span');
+            let rangeStarted = false;
+            for (const day of allDays) {
+                const dayId = day.id;
+                if (dayId) {
+                    const checkDate = new Date(makeIdToDate(dayId));
+
+                    if (checkDate.getTime() === startDate.getTime()) {
+                        rangeStarted = true;
+
+                    }
+
+                    if (rangeStarted && checkDate >= startDate && checkDate <= endDate) {
+                        if (day.classList.contains('disabled')) {
+                        	
+                        		resetCal_Selected();
+                                firstClickedDate = secondClickedDate;
+                                firstClickedDate.classList.replace('none', 'selected');
+                            	alert(firstClickedDate.id);
+
+                                secondClickedDate = null;
+                                document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
+                                document.querySelector("input[name='check_out']").value = "";
+                                
+
+                            break;
+                        }
+                        day.classList.replace('none', 'line');
+                    }
+                }
+            }
+
+
+        } else {
+            // 리셋 후 다시 선택
+            resetCal_Selected();
+/*             resetDisabledSpan();
+			setDisabledSpan(dayElement);
+ */
+            firstClickedDate = dayElement;
+            secondClickedDate = null;
+            dayElement.classList.replace('none', 'selected');
+            document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
+            document.querySelector("input[name='check_out']").value = "";
+        }
+    }
+	
+    const temp_dis = [];
+    
+    function setDisabledSpan(dayElement){
+    	
+    	const allDays = calendar.querySelectorAll('span:not(.disabled)');
+        let rangeStarted = false;
+		const startDate = new Date(makeIdToDate(dayElement.id));
+		
+        for (const day of allDays) {
+            const dayId = day.id;
+
+            if (dayId) {
+                const checkDate = new Date(makeIdToDate(dayId));
+                if (checkDate.getTime() > startDate.getTime()) {
+                    rangeStarted = true;
+                    break;
+                }
+                if ( rangeStarted && dayId ) {
+                	day.classList.replace('none','disabled');
+                	temp_dis.push(day);
+                }
+            }
+        }
+    }
+    
+    function resetDisabledSpan(){
+    	
+    	temp_dis.forEach(day => {
+            day.classList.replace('disabled','none');
+        });
+    }
 		
     function rangeChoosen(dayElement){
     	var count = true;
@@ -684,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(dayId!=null && dayId!="")
 
                 if (dayId) {
-                    const currentDate = new Date(makeIdToDate(dayId))
+                    const checkDate = new Date(makeIdToDate(dayId));
 
                     if (currentDate >= ClickedDates[0] && currentDate <=  ClickedDates[1]) {
                         dayElement.classList.add('choosen');
@@ -694,6 +767,7 @@ document.addEventListener("DOMContentLoaded", function() {
         	
         }
     }
+
     
         
 		function makeIdToDate(id){
