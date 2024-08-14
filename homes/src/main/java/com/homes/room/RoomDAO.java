@@ -476,4 +476,34 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	
+	//로그인 했을때 room테이블에 host_idx가 존재한다면 룸 인덱스, 룸 이름, 룸 state를 가져옴
+	public ArrayList<RoomDTO> RoomInfo(int useridx){
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="SELECT * FROM ROOM WHERE HOST_IDX ="
+					+ "(SELECT idx FROM Homes_Member WHERE idx = ?)";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, useridx);
+			rs=ps.executeQuery();
+			ArrayList<RoomDTO> arr= new ArrayList<RoomDTO>();
+
+			
+			while(rs.next()) {
+				RoomDTO dto = new RoomDTO(rs.getInt("room_idx"),rs.getInt("host_idx"),rs.getString("room_name"),rs.getInt("state"));
+				arr.add(dto);
+			}
+			return arr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 }
+

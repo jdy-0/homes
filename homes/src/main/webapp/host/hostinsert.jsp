@@ -67,7 +67,7 @@
                       const imageUrl = e.target.result;
                      
                       // 이미지 URL을 로컬 저장소에 저장
-                      localStorage.setItem('selectedImageUrl', imageUrl);
+                      //localStorage.setItem('selectedImageUrl', imageUrl);
                       
                       // 이미지 미리보기 업데이트
                       document.getElementById('selectedImage').src = imageUrl;

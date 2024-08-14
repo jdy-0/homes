@@ -1,4 +1,4 @@
- <%@page import="java.util.Enumeration"%>
+<%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Hashtable"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -14,14 +14,22 @@
 <jsp:setProperty property="*" name="rdto"/>
 
 <%
+	String savepath=wf.getHomePath()+wf.getImgpath();
+	MultipartRequest mr= new MultipartRequest(request,savepath,(int)wf.getFreeSize(),"UTF-8");
+	
+	String roompath= mr.getParameter("room_name");
+	roompath.replaceAll(" ", "");
+	System.out.println(roompath+"!@#!@#");
 	String folder = request.getParameter("Folder");
 	File f= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath());
 	String path=f.getPath();
 	File f0= new File(wf.getHomePath()+wf.getHostpath());
 	
+	//File f2= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath()+"/"+roompath);
+	
 	//File imgFile= new File(wf.getHomePath()+wf.getImgpath());
 	
-	if(!f.exists()){
+	if(!f0.exists()){
 		f0.mkdir();
 	%>
 	<script>
@@ -47,19 +55,34 @@
 		//window.self.close();
 	</script>
 <%
-}else{%>
+}else{
+%>
 <script>
 window.alert("파일생성안됌");
 </script>
+
 <%
-}%>
+}
+%>
+
+<%-- <%
+			if(!f.exists()){
+				f2.mkdir();
+				System.out.println(f2.getPath()+"@#@#@#@#");
+			}else{
+				%>
+				<script>
+				window.alert('<%=f2.getPath() %>+@@@@@@@@@');
+				</script>
+				<%
+			}
+%> --%>
 
 <!-- 대표 사진업로드 -->
 <!-- room insert 부분 ---------------------- -->
 
 <%
-	String savepath=wf.getHomePath()+wf.getImgpath();
-	MultipartRequest mr= new MultipartRequest(request,savepath,(int)wf.getFreeSize(),"UTF-8");//
+	//
 	
 	//insert 문
 	String roomName = mr.getParameter("room_name");
@@ -107,7 +130,7 @@ window.alert("파일생성안됌");
 window.alert("<%=msg%>");
 </script>
 <script>
-	window.alert('<%=savepath%>파일 올리기 성공!');
+	indow.alert('<%=savepath%>파일 올리기 성공!');
 	window.location.href='/homes/host/hostinsert.jsp';
 </script>
 
