@@ -12,7 +12,7 @@
 <%
 int useridx =Integer.parseInt(session.getAttribute("useridx").toString());
 resdto.setMember_idx(useridx);
-resdto.setRoom_idx(1);
+resdto.setRoom_idx(1 );
 resdto.setState("예약대기중");
 resdto.setPrice(130000);
 

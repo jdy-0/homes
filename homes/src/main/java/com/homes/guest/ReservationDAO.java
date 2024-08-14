@@ -98,8 +98,6 @@ public class ReservationDAO {
 					+ "    reservation_detail_test rd "
 					+ "ON  "
 					+ "    r.RESERVE_IDX = rd.RESERVE_IDX "
-					+ "AND  "
-					+ "    r.MEMBER_IDX = rd.MEMBER_IDX "
 					+ "WHERE state = '예약대기중' "
 					+ "	   and r.ROOM_IDX = ? "
 					+ "	   and check_in>sysdate ";

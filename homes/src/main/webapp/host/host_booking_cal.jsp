@@ -270,7 +270,26 @@ document.addEventListener("DOMContentLoaded", function() {
         	form.submit();
     	}    
     });
-    
+
+		function moveToCheckInDate(){
+	    	dateCheck();
+	
+			for(var i=0; i<cals.length; i++){
+				
+				cals[i].style.display='none';
+			}
+	        if(loc+2==cals.length){
+	        	renderCalendar(nextDate);
+	
+	            cals[loc+1].style.display='block';
+	
+	        } else {
+	            cals[loc+1].style.display='block';
+	            cals[loc+2].style.display='block';
+	        }
+	   
+	    	loc++;
+		}
     
     function getAllhol_selected(){
     	
@@ -315,10 +334,33 @@ document.addEventListener("DOMContentLoaded", function() {
     atStart();
     
     
+    function getMonBetMon(start){
+    	
+    	const today = new Date();
+
+    	const year = start.getFullYear();
+    	const today_year = today.getFullYear();
+    	
+    	const month = start.getMonth();
+    	const today_month = today.getMonth();
+    	
+    	return (year-today_year)*12 + (month-today_month);
+    	
+    }
+    
+    
     function atStart(){
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
+        
+    	const startVal = calendar.querySelectorAll('input[data-type="start"]')[0];
+    	const start = new Date(startVal.value);
+    	
+		for(var i =0; i< getMonBetMon(start); i++){
+	        moveToCheckInDate();
+
+		}
     }
     
 
