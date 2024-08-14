@@ -80,11 +80,6 @@
     text-align: center;
 }
 </style>
-<script>
-function openrgUpdate(param) {
-	window.open('/homes/admin/admin_region_update.jsp?param='+param,'adminrgUpdate','width=550,height=350');
-}
-</script>
 </head>
 <body>
 <%@ include file="adminheader.jsp"%>
@@ -113,26 +108,26 @@ function openrgUpdate(param) {
 	    </nav>
 	    
 	</div>
-
+<form name="regionImg" action="admin_region_profile.jsp">
 	<div class="content">
 		<h2>지역 관리</h2>
 		<table>
 			<thead>
 				<tr>
 					<th>지역명</th>
-					<th>상위지역</th>
-					<th>수정</th>
-					<th>삭제</th>
+					<th>이미지</th>
+					<th>이미지 변경</th>
+					<th>클릭수</th>
 				</tr>
 			</thead>
 			<tbody>
 			<%
-			ArrayList<RegionDTO> arr=adao.regionTable();
+			ArrayList<Region_DetailDTO> arr=adao.regionDetailTable();
 			if(arr==null||arr.size()==0){
 				%>
 				<tr>
 					<td colspan="4" align="center">
-						등록된 게시글이 없습니다
+						등록된 지역이 없습니다
 					</td>
 				</tr>
 				<%
@@ -140,27 +135,19 @@ function openrgUpdate(param) {
 				for(int i=0;i<arr.size();i++){
 					%>
 					<tr>
-						<td><%=arr.get(i).getRegion_name() %></td>
-						<td><%=adao.getParentName(arr.get(i).getParent_idx())  %></td>
-						<td><input type="button" name="<%=arr.get(i).getRegion_idx() %>" value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
-						<td><input type="button" name="<%=arr.get(i).getRegion_idx() %>" value="삭제" class="rbutton"></td>
+						<td><%=adao.getParentName(arr.get(i).getRegion_idx()) %></td>
+						<td><%=arr.get(i).getImg()  %></td>
+						<td><input type="submit" name="<%=arr.get(i).getRegion_idx() %>" value="수정" class="rbutton"></td>		
+						<td><%=arr.get(i).getClick()  %></td>
 					</tr>
 					<%
 				}
 			}
 			%>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="3" align="center">
-						
-					</td>
-					 <td><a href="#" style="text-decoration: none;">지역추가하기</a></td>
-				</tr>
-			</tfoot>
-			
 		</table>
 	</div>
+</form>	
 </fieldset>
 </article>
 </section>

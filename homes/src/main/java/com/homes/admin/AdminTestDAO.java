@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import com.homes.region.RegionDTO;
+import com.homes.region.Region_DetailDTO;
 import com.homes.room.RoomDTO;
 
 public class AdminTestDAO {
@@ -403,6 +404,141 @@ public class AdminTestDAO {
 			}
 			
 			return parent_name;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 idx로 지역 정보를 가져오는 메소드*/
+	public RegionDTO getRegion(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from region where region_idx="+idx;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			RegionDTO dto=null;
+			if(rs.next()) {
+				int region_idx = rs.getInt("region_idx");
+				String region_name = rs.getString("region_name");
+				int parent_idx = rs.getInt("parent_idx");
+				int lev = rs.getInt("lev");
+				dto=new RegionDTO(region_idx, region_name, parent_idx, lev);
+				
+			}
+			return dto;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 수정하는 메소드(대분류)*/
+	public int regionUpdateSubmit(int idx, String name) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update region set region_name=? where region_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, idx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 수정하는 메소드(소분류)*/
+	public int regionUpdateSubmit(int idx, String name, int pidx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update region set region_name=?, parent_idx=? where region_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, pidx);
+			ps.setInt(3, idx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역사진 수정하는 메소드*/
+	public int regionImageUpdate(String imgpath, int ridx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update region_detail set img=? where region_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, imgpath);
+			ps.setInt(2, ridx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 대분류 테이블 가져오기*/
+	public  ArrayList<Region_DetailDTO> regionDetailTable() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from region_detail";
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			ArrayList<Region_DetailDTO> rdt= new ArrayList<>();
+			while(rs.next()) {
+				int region_idx=rs.getInt("region_idx");
+				String img=rs.getString("img");
+				int click=rs.getInt("click");
+				Region_DetailDTO dto = new Region_DetailDTO(region_idx, img, click);
+				rdt.add(dto);
+			}
+			
+			return rdt;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
