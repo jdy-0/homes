@@ -1,15 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%
 request.setCharacterEncoding("utf-8");
 %>
 <%@ page import="java.util.*" %>
 <jsp:useBean id="gdao" class="com.homes.guest.GuestDAO" scope="session"></jsp:useBean>
+<jsp:useBean id="rdao" class="com.homes.room.RoomDAO" scope="session"></jsp:useBean>
+<%@ page import="com.homes.room.RoomDTO" %>
+
 <%
 String id=request.getParameter("id");
 String pwd=request.getParameter("pwd");
 String saveID=request.getParameter("saveID");
 int result = gdao.loginCheck(id, pwd);
+
+int useridx = 0;
 
 if(result == gdao.No_Id || result == gdao.No_Pwd){
 	%>
@@ -21,7 +27,7 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 } else if(result == gdao.Login_ok){
 	
 	ArrayList<Object> user_info = gdao.getUserInfo(id);
-	int useridx=(Integer)user_info.get(0);
+	useridx=(Integer)user_info.get(0);
 	String userid=(String)user_info.get(1);
 	String username=(String)user_info.get(2);
 	String usernickname=(String)user_info.get(3);
@@ -41,13 +47,23 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 		response.addCookie(ck);
 	}
 	
+	
+	
+	if(useridx!=0){
+		
+		ArrayList<RoomDTO> room_arr=rdao.RoomInfo(useridx);
+		session.setAttribute("room_arr", room_arr);
+	}
 	%>
 	<script>
 	window.alert('<%=usernickname%>님 로그인되었습니다.');
+	window.alert('room_arr세션저장');
 	window.location.href='/homes';
 	</script>
 	<%
-} else{
+}
+else
+{
 	%>
 	<script>
 	window.alert('고객센터 연락 바람');
@@ -56,3 +72,30 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	<%
 }
 %>
+
+<%
+if(useridx!=0){
+	
+	ArrayList<RoomDTO> room_arr=rdao.RoomInfo(useridx);
+	session.setAttribute("room_arr", room_arr);
+	%>
+	<script>
+		window.alert('room_arr세션저장');
+	
+	</script>
+	
+<%
+}else{
+	%>
+	<script>
+		window.alert('아이디 또는 비밀번호를 확인해주세요.');
+		window.location.href='login.jsp';
+	</script>
+	<%
+}
+%>
+
+
+
+
+

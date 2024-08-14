@@ -2,7 +2,7 @@
 package com.homes.room;
 
 import java.sql.*;
-
+import java.util.*;
 
 public class RoomDTO {
 	private int room_idx;
@@ -28,9 +28,11 @@ public class RoomDTO {
 	private String content;
 	private String member_id;
 	
-
+	
+	
+	
 	public RoomDTO() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public RoomDTO(int room_idx,String member_id, int rate, String content) {
@@ -86,7 +88,7 @@ public class RoomDTO {
 		this.state= state;//숙소 등록 y/n
 	}
 
-	public RoomDTO(String room_name,String image,Date startday, Date endday, String reason) {
+	public RoomDTO(String room_name,String image,java.sql.Date startday, java.sql.Date endday, String reason) {
 		super();
 		this.room_name= room_name;
 		this.image = image;
@@ -95,6 +97,22 @@ public class RoomDTO {
 		this.reason = reason;
 	}
 	
+	
+	public RoomDTO(int room_idx, int host_idx, String room_name, int state) {
+		super();
+		this.room_idx = room_idx;
+		this.host_idx = host_idx;
+		this.room_name = room_name;
+		this.state = state;
+	}
+
+	/*
+	 * public RoomDTO(ArrayList<Integer> room_idx_arr,ArrayList<Integer>
+	 * host_idx_arr, ArrayList<String> room_name_arr, ArrayList<Integer>
+	 * room_state_arr) { super(); this.room_idx_arr = room_idx_arr;
+	 * this.host_idx_arr = host_idx_arr; this.room_name_arr = room_name_arr;
+	 * this.room_state_arr = room_state_arr; }
+	 */
 	public java.sql.Date getStartday() {
 		return startday;
 	}
@@ -224,5 +242,5 @@ public class RoomDTO {
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
-	
+
 }

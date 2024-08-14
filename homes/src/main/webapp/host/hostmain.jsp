@@ -67,20 +67,22 @@
 
 	
  Integer useridx = (Integer)session.getAttribute("useridx");
-
-
-
-	//useridx1=Integer.parseInt((String)request.getAttribute("useridx"));
-	ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
+if(useridx==null){
+	%><script>
+	window.location='/homes/guest/login.jsp';
+	</script>
+	<%
 	
-	if(useridx==null){
-		%><script>
-		window.open('/homes/guest/login_popup.jsp', 'popup', 'width=400,height=300,top=100,left=100');
-		</script>
-		<%
-		return;
-		}
+	}
+ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 %>
+
+
+	<!--useridx1=Integer.parseInt((String)request.getAttribute("useridx"));  -->
+	
+	
+	
+
 <%@include file="hostheader.jsp" %>
 <section>
 		<%

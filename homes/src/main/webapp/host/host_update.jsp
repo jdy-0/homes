@@ -1,11 +1,19 @@
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.io.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.homes.room.RoomDAO, com.homes.room.RoomDTO" %>
 
+<jsp:useBean id="wf" class="com.homes.host.WebFolderDAO" scope="session"></jsp:useBean>
 <jsp:useBean id="rdao" class="com.homes.room.RoomDAO" scope="session"></jsp:useBean>
 <jsp:useBean id="rdto" class="com.homes.room.RoomDTO" scope="session"></jsp:useBean>
 <%
     String roomIdxParam = request.getParameter("room_idx");
+	session.setAttribute("room_idx", roomIdxParam);
+	String id= (String)session.getAttribute("userid");
+	
+	String path=request.getRealPath("/");
+	wf.setHomePath(path);
+	
 	int idx= Integer.parseInt(roomIdxParam);
     RoomDTO room = null;
 	
@@ -26,6 +34,7 @@
         // room_idx 파라미터가 유효하지 않은 경우 처리
         out.println("유효하지 않은 숙소 ID입니다.");
     }
+    
 %>
 
 <!DOCTYPE html>
@@ -53,208 +62,45 @@ function openLoginPopup(){
     window.open('/homes/guest/login_popup.jsp?redirect=information.jsp?room_idx=<%=request.getParameter("room_idx")%>&checkin=<%=request.getParameter("checkin")%>&checkout=<%=request.getParameter("checkout")%>&guests=<%=request.getParameter("guests")%>', 'login', option);
 }
 
+//선택한 사진으로 변환
+function FileSelect(event) {
+	const fileInput = event.target;
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        // 새로고침 
+        
+        reader.onload = function (e) {
+      	  //파일 선택을 누른 타겟의 url
+            const imageUrl = e.target.result;
+           
+            // 이미지 URL을 로컬 저장소에 저장
+           // localStorage.setItem('selectedImageUrl', imageUrl);
+            
+            // 이미지 미리보기 업데이트
+            document.getElementById('selectedImage').src = imageUrl;
+        };
+        // 파일을 데이터 URL로 읽기
+        reader.readAsDataURL(file);
+    }
+}
+
+/* function deleteFile(fileName) {
+ 
+        window.location.href = "host_delete_file.jsp?fileName="+fileName;
+    } */
+
 </script>
-<style>
-    body {
-        font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
-        margin: 20px;
-        background-color: #f8f9fa;
-    }
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #e2dccc;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border: 4px solid black;
-        border-radius: 10px;
-        min-height: 800px;
-        display: grid;
-        grid-template-areas: 
-            "top top"
-            "left right";
-        grid-gap: 20px;
-    }
-    .top {
-        grid-area: top;
-    }
-    .left {
-        grid-area: flex;
-    }
-    .right {
-        grid-area: flex;
-        padding: 20px;
-        border: 3px solid black;
-        border-radius: 10px;
-        background-color: #fff;
-    }
-    .header {
-        margin-bottom: 20px;
-    }
-    .header h1 {
-        font-size: 32px;
-        margin: 0;
-        background-color: #dec022;
-        padding: 10px;
-        border-radius: 5px;
-        border: 2px solid black;
-    }
-    .room-images {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .room-images img {
-        width: 25%;
-        border-radius: 10px;
-        border: 2px solid black;
-    }
-    .room-main img{
-    	width: 650px;
-       	height: 450px;
-       	border-radius: 10px;
-        border: 2px solid black;
-    }
-    .room-details h2 {
-        font-size: 28px;
-        margin: 0;
-        padding: 10px;
-        background-color: #dec022;
-        border: 2px solid black;
-        border-radius: 5px;
-    }
-    .room-details p {
-        font-size: 20px;
-        margin: 10px 0;
-        border-bottom: 2px solid black;
-        padding-bottom: 5px;
-        
-        
-    }
-    .reviews{
-    	
-        padding: 20px;
-        border: 3px solid black;
-        border-radius: 10px;
-        background-color: #fff;
-    	margin: 10px
-    }
-    .reviews p{
-    	border: none;
-    	font-size: 20px;
-        margin: 10px 0;
-        padding-bottom: 5px;
-    }
-      .room-input p{
-    	border: none;
-        background: none;
-    } 
-     input[type="number"] {
-            font-size: 14px; /* 폰트 크기 설정 */
-            padding: 2px; /* 입력 필드 내 여백 설정 */
-            width: 50px; /* 적절한 너비 설정 */
-            box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 설정 */
-        }
 
-    .room-details .price {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 20px 0;
-        border-bottom: 3px solid black;
-        padding-bottom: 5px;
-    }
-    .room-details .button {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        text-align: center;
-        color: black;
-        background-color: #dec022;
-        border: 2px solid black;
-        border-radius: 5px;
-        text-decoration: none;
-        font-family: 'SBAggroB', Arial, sans-serif;
-        font-size: 20px;
-    }
-    .room-details .button:hover {
-        background-color: #e2dccc;
-        transition: 0.5s;
-    }
-    .reservation-box {
-        margin-top: 20px;
-        padding: 20px;
-        border: 3px solid black;
-        border-radius: 10px;
-        background-color: #e2dccc;
-        font-size: 20px;
-    }
-    .reservation-box .price-info {
-        font-size: 24px;
-        font-weight: bold;
-        border-bottom: 2px solid black;
-        padding-bottom: 5px;
-    }
-    .reservation-box .details {
-        margin-top: 10px;
-        font-size: 18px;
-        border-bottom: 2px solid black;
-        padding-bottom: 5px;
-    }
-    .reviews h3 {
-        font-size: 24px;
-        padding: 10px;
-        background-color: #dec022;
-        border: 2px solid black;
-        border-radius: 5px;
-        font-family: 'SBAggroB', Arial, sans-serif;
-    }
-    .reviews a {
-        text-decoration: none;
-        color: black;
-        background-color: #dec022;
-        border: 2px solid black;
-        border-radius: 5px;
-        padding: 5px 10px;
-        font-family: 'SBAggroB', Arial, sans-serif;
-        font-size: 18px;
-    }
-    .reviews a:hover {
-        background-color: #e2dccc;
-        transition: 0.5s;
-    }
-</style>
- <style>
-    .star-rating {
-      display: flex;
-    }
-
-    .star {
-      appearance: none;
-      padding: 1px;
-    }
-
-    .star::after {
-      content: '☆';
-      color: hsl(60, 80%, 45%);
-      font-size: 20px;
-    }
-
-    .star:hover::after,
-    .star:has(~ .star:hover)::after,
-    .star:checked::after,
-    .star:has(~ .star:checked)::after {
-      content: '★';
-    }
-
-    .star:hover ~ .star::after {
-      content: '☆';
-    }
-  </style>
 </head>
+<link rel="stylesheet" href="/homes/css/updateLayout.css" type="text/css"/>
 <body>
+
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
     <main class="container">
+    	
         <div class="top">
             <h1>숙소 정보 수정</h1>
             <div class="room-details">
@@ -262,42 +108,129 @@ function openLoginPopup(){
                 
                  <div class="room-images">
                 	<div class="room-main">
-                    	<img src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+                    	<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+                    
+                    	<input type="file" id="fileUpdate" accept="image/*" onchange="FileSelect(event)">
                     </div>
-               		<div >
+                    
+                    
+               		<div class="small-image">
                     	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
-                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 2">
-                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 3">
                     </div>
+                    <div class="small-image">
+                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
+                    </div>
+                    <div class="small-image">
+                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
+                    </div>
+                    	
+                    	
+                    </div>
+                <div>
+                	<h2>상세 사진 관리</h2>
+                	<div>
+                		<%
+                		String userpath= id;
+                		File f= new File(wf.getHomePath()+wf.getEverypath()+id+"/"+room.getRoom_name());
+                		File files[]=f.listFiles();
+                		if(files==null||files.length==0){
+                			System.out.println(f.getPath());
+                			%>
+                			<script>
+                			window.alert('<%=f.getPath()%>');
+                			</script>
+                			
+                			<label>사진이 없습니다.</label>
+                			<form name="host_update_imgfm" action="host_update_image_ok.jsp">
+                				<input type="submit" value="사진 추가">
+                				<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
+                			</form>
+                			<%
+                		}else{
+                			for(int i=0;i<files.length;i++){
+                				%>
+                				<form name="host_delete_imgfm" action="host_delete_file.jsp">
+                					<a>
+                				
+                					<label><%=files[i].getName()%>
+                						<input type="submit" value="삭제">
+										<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
+										<input type="hidden" value="<%=id %>" name= "user_name">
+										<input type="hidden" value="<%= room.getRoom_name() %>" name= "room_name">
+									</label>
+                 					</a>
+                 				</form>
+                				<%
+                			}
+                		}
+                		%>
+                	</div>
+                	
+                	
                 </div>
-                <div class="room-input">
-                	<h2>숙소 이름 : <input type="text" value=<%= room.getRoom_name()%> ></h2>
-                	<p>숙소 편의시설 :<input type="text" value=<%= room.getGoodthing()%> ></p>
-                	<p>숙소 지역 :<input type="text" value=<%= room.getAddr_detail()%> ></p>
-                	<p>숙소 가격<input type="text" value=<%= room.getPrice()%> >  /  박</p>
-                	<p>
-						<label for="room_min">인원수:</label> 
-						<input type="number" id="room_min" name="room_min" min="2" required
-						placeholder="최소 인원수"> ~ 
-						<input type="number" id="room_max" name="room_max" min="2" required
-						placeholder="최대 인원수"> 명
-					<p>
-                </div>
-       
-                <h2>후기 관리</h2>
+
+				<div class="room-input">
+
+					<!-- 숙소 이름 -->
+					<h2>숙소 이름: <input type="text"
+						id="room_name" name="room_name" value="<%=room.getRoom_name()%>"
+						placeholder="숙소 이름을 입력하세요" title="숙소의 이름을 입력하세요" required>
+					</h2>
+					
+					<!-- 숙소 편의시설 -->
+					<label for="goodthing"> 숙소 편의시설: <input type="text"
+						id="goodthing" name="goodthing" value="<%=room.getGoodthing()%>"
+						placeholder="편의시설을 입력하세요" title="숙소의 편의시설을 입력하세요">
+					</label>
+
+					<!-- 숙소 지역 -->
+					<label for="addr_detail"> 숙소 지역: <input type="text"
+						id="addr_detail" name="addr_detail"
+						value="<%=room.getAddr_detail()%>" placeholder="숙소 지역을 입력하세요"
+						title="숙소의 상세 지역을 입력하세요">
+					</label>
+
+					<!-- 숙소 가격 -->
+					<label for="price"> 숙소 가격: <input type="text" id="price"
+						name="price" value="<%=room.getPrice()%>"
+						placeholder="숙소 가격을 입력하세요" title="숙소 1박당 가격을 입력하세요"> / 박
+					</label>
+
+					<!-- 인원수 -->
+					<label for="room_min"> 인원수: <input type="number"
+						id="room_min" name="room_min" min="2"
+						value="<%=room.getRoom_min()%>" placeholder="최소 인원수"
+						title="최소 인원수를 입력하세요" required> ~ <input type="number"
+						id="room_max" name="room_max" min="2"
+						value="<%=room.getRoom_max()%>" placeholder="최대 인원수"
+						title="최대 인원수를 입력하세요" required> 명
+					</label>
+				</div>
+
+
+				<h2>후기 관리</h2>
                 <%
                 ArrayList<RoomDTO> arr= rdao.Review_select(idx);
                 if(arr==null||arr.size()==0){
-                	%><h2>등록된 후기가 없습니다.</h2><%
+                	%><label>등록된 후기가 없습니다.</label><%
                 }else{
                 	for(int i=0;i<arr.size();i++){
 					%>
-					<form name="deletefm action="#"></form>
+					
+					<div>
 						<div class="reviews">
 							<p>작성자 :<label><%=arr.get(i).getMember_id() %></label></p>
 							<p>별점 :<%=arr.get(i).getRate() %></p>
 							<p>내용 :<label><%=arr.get(i).getContent() %></label></p>
+							
+					</div>
+						<!-- 
+						<form name="deletefm" action="reviews_delete.jsp">
+						<div class="button_delete">
+							<input type="button" name="delete" value="삭제">
 						</div>
+						</form>
+					</div> -->
 						<%
 						}
                 }
@@ -306,17 +239,20 @@ function openLoginPopup(){
             </div>
         </div>
         <div>
-          	<div>
-                    <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>">
+          	<div>	
+                   
                     <input type="hidden" name="checkin" value="<%= request.getParameter("checkin") %>">
                     <input type="hidden" name="checkout" value="<%= request.getParameter("checkout") %>">
-                    <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
-                    <button type="submit" class="button">예약하기</button>
-               
+                    <input type="hidden" name="guests" value="<%=request.getParameter("guests") %>">
+                    
+                    
+                    
+                    <button type="submit" class="button">수정하기</button>
+               		<%
+               		} 
+               		%>
             </div>
-            <% } else { %>
-                <p>해당 숙소 정보를 찾을 수 없습니다.</p>
-            <% } %>
+            
         </div>
     </main>
     <%@ include file="/footer.jsp"%>

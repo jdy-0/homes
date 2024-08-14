@@ -19,9 +19,13 @@ public class WebFolderDAO {
 		private String imgpath="img/";
 		
 		
+		private String roomPath;
+		
+		
 		private String hostpath="img/host_img";
 		
 		private String imgFile="/homes/img/";
+		
 		//5. 사용자 현재위치
 		private String crpath;
 		
@@ -99,6 +103,14 @@ public class WebFolderDAO {
 			this.imgFile = imgFile;
 		}
 
+		public String getRoomPath() {
+			return roomPath;
+		}
+
+		public void setRoomPath(String roomPath) {
+			this.roomPath = roomPath;
+		}
+
 		//사용자 공간 존재 확인 및 생성 관련 메서드
 		public void userFolderExists() {
 			
@@ -132,4 +144,31 @@ public class WebFolderDAO {
 				
 			}
 		}
+		
+		public void checkFile(String user_name,String room_name,String img_name) {
+			//\homes\img\host_img\phj9669\고산 캐빈
+			//\homes\img\host_img\null\phj9669\apartment.jpg\apartment.jpg@#@#@#@#@#@#@#@#@
+			File f = new File(homePath+everypath+"/"+user_name+"/"+room_name+"/"+img_name);
+			System.out.println(f.getPath()+"@#@#@#@#@#@#@#@#@");
+			deleteWebFolder(f);
+			
+		}
+		
+		
+		
+		
+		public void deleteWebFolder(File f) {
+
+			if(f.isDirectory()) {
+		        File[] files = f.listFiles();
+		        if(files != null) { // null 체크를 먼저 수행해야 함
+		            for(File file : files) {
+		                deleteWebFolder(file); // 재귀적으로 모든 파일 및 폴더 삭제
+		            }
+		        }
+		    }
+		    f.delete();
+			
+		}
+		
 }
