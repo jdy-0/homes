@@ -112,12 +112,12 @@ window.location.href='/homes';
 		if(request.getParameter("crpage")!=null){
 			crpage=Integer.parseInt(request.getParameter("crpage"));
 		}
-		ArrayList<MsgDTO> arr = gdao.getMsgList(userid, crpage, msgSize);
+		ArrayList<MsgDTO> arr = gdao.getMsgList(userid, crpage, msgSize, "receiver");
 		
 		if(arr == null || arr.size()==0){
 			%>
 			<tr>
-				<td colspan="3" align="center">메세지 없음</td>
+				<td colspan="4" align="center">메세지 없음</td>
 			</tr>
 			<%
 		}else{
@@ -158,7 +158,7 @@ window.location.href='/homes';
 	<!-- 페이지 네비게이션 -->
 	<div id="msgPageNav">
 	<%
-	int totalMsg = gdao.getTotalMsgCount(userid);
+	int totalMsg = gdao.getTotalMsgCount(userid, "receiver");
 	int totalPageNum = ((totalMsg-1)/msgSize)+1;
 	
 	int startPageNum = ((crpage-1)/pageSize)*pageSize  +1;

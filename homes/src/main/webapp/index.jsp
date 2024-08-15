@@ -329,10 +329,10 @@ if(cp%listSize==0)userGroup--;
    <div class="date-picker">
 			<div id="date-input">
 				<div class="search_item">
-					<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required readonly="readonly">
+					<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly">
 				</div>
 				<div class="search_item">
-					<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required readonly="readonly">
+					<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly">
 				</div>
 			</div>
 

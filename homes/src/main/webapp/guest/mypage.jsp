@@ -8,7 +8,7 @@ if(session.getAttribute("userid")==null || session.getAttribute("userid")==""){
 window.location.href='/homes';
 </script>
 <%
-}
+} else{
 %>
 <html>
 <head>
@@ -21,11 +21,11 @@ section{
 	display:flex;
 }
 #myPageMain{
-	width:1000px;
-	border-right:5px solid black;
+	width:1150px;
+	border-left:5px solid black;
 }
 #myPageNav{
-	width:410px;
+	width:300px;
 }
 .label_fs{
 	background-color:#dec022;
@@ -51,6 +51,7 @@ section{
     height: 320px;
     border: 4px solid black;
     border-radius: 500px;
+    margin:30px auto;
 }
 input[type="file"] {display: none;}
 #myPageMain_fs div{
@@ -79,7 +80,7 @@ input[type="file"] {display: none;}
 .ul_submenu a{
 	color:black;
 	font-family: 'SBAggroB';
-	font-size:20px;
+	font-size:10px;
 	text-decoration:none;
 }
 </style>
@@ -99,40 +100,6 @@ document.getElementById("fileInput").addEventListener("change", function() {
 <body>
 <%@include file="/header.jsp" %>
 <section>
-<article id="myPageMain">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님의 페이지</h3>
-	</fieldset>
-	<div id="myPage_main_div">
-		<fieldset id="myPageMain_fs">
-		<%
-		int useridx=(Integer)session.getAttribute("useridx");
-		String img = gdao.getImgSrc(useridx);
-		%>
-			<div id="img_div">
-			<img src="<%=img %>" alt="profile_img" id="profileImg">
-			</div>
-			<form action="profileUpload.jsp" method="post" enctype="multipart/form-data" id="uploadForm">
-            	<input type="file" name="profileImg" id="fileInput" accept="image/*">
-        	</form>
-			<div>
-			<%
-			int number[] = gdao.getCountandPeriod(useridx);
-			int usecount = 0;
-			int period = 0;
-			if(number!=null && number.length!=0){
-				usecount = number[0];
-				period = number[1];
-			}
-			%>
-				<h2>나의 이용 횟수:&nbsp;<%=usecount %></h2>
-				<h2>HOMES와 함께한 시간:&nbsp;<%=period %>일</h2>
-			</div>
-		</fieldset>
-	</div>
-</article>
-<%@include file="/guest/myProfile.jsp" %>
-<%@include file="/guest/reserveHistory.jsp" %>
 <article id="myPageNav">
 	<fieldset class="label_fs">
 		<h3>MENU</h3>
@@ -160,13 +127,49 @@ document.getElementById("fileInput").addEventListener("change", function() {
     			<ul id="ul_myActivity" class="ul_submenu" style="display: none;">
         			<li><a href="javascript:openNewArticle('myReview');">내가 쓴 리뷰</a></li>
         			<li><a href="javascript:openNewArticle('myReviewToMe');">내가 받은 리뷰</a></li>
-        			<li><a href="/homes/guest/msg.jsp">쪽지</a></li>
+        			<li><a href="/homes/guest/msgMain.jsp">쪽지</a></li>
     			</ul>
 			</li>
 			<li><a href="/homes/host/hostmain.jsp">&#127960;HOSTING</a></li>
 		</ul>
 	</nav>
 </article>
+<article id="myPageMain">
+	<fieldset class="label_fs">
+		<h3><%=session.getAttribute("usernickname") %>님의 페이지</h3>
+	</fieldset>
+	<div id="myPage_main_div">
+		<fieldset id="myPageMain_fs">
+		<%
+		
+		int useridx=(Integer)session.getAttribute("useridx");
+		String img = gdao.getImgSrc(useridx);
+		%>
+			<div id="img_div">
+			<img src="<%=img %>" alt="profile_img" id="profileImg">
+			</div>
+			<form action="profileUpload.jsp" method="post" enctype="multipart/form-data" id="uploadForm">
+            	<input type="file" name="profileImg" id="fileInput" accept="image/*">
+        	</form>
+			<div>
+			<%
+			int number[] = gdao.getCountandPeriod(useridx);
+			int usecount = 0;
+			int period = 0;
+			if(number!=null && number.length!=0){
+				usecount = number[0];
+				period = number[1];
+			}
+			%>
+				<h2>나의 이용 횟수:&nbsp;<%=usecount %></h2>
+				<h2>HOMES와 함께한 시간:&nbsp;<%=period %>일</h2>
+			</div>
+		</fieldset>
+	</div>
+</article>
+<%@include file="/guest/myProfile.jsp" %>
+<%@include file="/guest/reserveHistory.jsp" %>
+
 </section>
 <script>
 function openNewArticle(articleId){
@@ -199,3 +202,4 @@ function showSubMenu(submenuId){
 <%@include file="/footer.jsp" %>
 </body>
 </html>
+<%} %>
