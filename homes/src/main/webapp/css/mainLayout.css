@@ -245,6 +245,7 @@ footer{
 }
 footer hr{
 	border:2px solid black;
+	margin:0;
 }
 footer div{
 	margin:30px auto;

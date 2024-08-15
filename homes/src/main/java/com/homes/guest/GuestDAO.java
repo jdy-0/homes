@@ -2,6 +2,7 @@ package com.homes.guest;
 
 import java.util.*;
 import java.sql.*;
+import java.sql.Date;
 
 import javax.naming.*;
 import javax.sql.*;
@@ -286,7 +287,7 @@ public class GuestDAO {
 	public int sendMsg(MsgDTO dto) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "INSERT INTO HOMES_MSG VALUES(HOMES_MSG_IDX.NEXTVAL, ?, ?, ?, ?, SYSDATE, 0)";
+			String sql = "INSERT INTO HOMES_MSG VALUES(HOMES_MSG_IDX.NEXTVAL, ?, ?, ?, ?, SYSDATE, 0, 1, 1)";
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, dto.getReceiver_id());
 			ps.setString(2, dto.getSender_id());
@@ -306,16 +307,18 @@ public class GuestDAO {
 		}
 	}
 	
-	//메세지 리스트 가져오기 메소드
-	public ArrayList<MsgDTO> getMsgList(String id, int page, int size){
+	//받은 메세지 or 보낸 메세지 리스트 가져오기 메소드 (사용자 id = receiver_id -> 받은 메세지 / 사용자 id = sender_id -> 보낸 메세지)
+	public ArrayList<MsgDTO> getMsgList(String id, int page, int size, String receiver_sender, String unread){	//receiver_sender 는 화면에서 받은 메세지, 보낸 메세지 선택해서 파라미터로 가져올 예정
 		try {
 			conn=com.homes.db.HomesDB.getConn();
 			
-			String sql="SELECT * FROM "
-					+ "    	(SELECT ROW_NUMBER() OVER "
-					+ "		(ORDER BY IDX DESC) AS RNUM, IDX, RECEIVER_ID, SENDER_ID, TITLE, CONTENT, SEND_TIME, READ_STATE "
-					+ "		FROM homes_msg where receiver_id = ?) "
-					+ "   	WHERE RNUM BETWEEN ? AND ?";
+			String read = ("yes".equals(unread)) ? " AND READ_STATE = 0 ":" ";
+			String sql = "SELECT * FROM "
+					+ "	(SELECT ROW_NUMBER() OVER (ORDER BY IDX DESC) AS RNUM, "
+					+ "	IDX, RECEIVER_ID, SENDER_ID, TITLE, CONTENT, SEND_TIME, READ_STATE "
+					+ "	FROM HOMES_MSG WHERE "+receiver_sender+"_ID = ? AND "+receiver_sender+"_STATE = 1 "
+					+read+") WHERE RNUM BETWEEN ? AND ?";
+
 			int endnum = page*size;
 			int startnum = endnum - size + 1;
 			
@@ -353,12 +356,13 @@ public class GuestDAO {
 		}
 	}
 	
-	//나에게 온 메세지 총 개수 구하기
-	public int getTotalMsgCount(String userid) {
+	//보낸메세지, 받은메세지 개수 구하기
+	public int getTotalMsgCount(String userid, String receiver_sender) {
 		int totalMsg = 0;
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="SELECT COUNT(*) FROM HOMES_MSG WHERE RECEIVER_ID=?";
+			String sql = "SELECT COUNT(*) FROM HOMES_MSG WHERE "+receiver_sender+"_ID=? AND "+receiver_sender+"_STATE = 1";
+			
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, userid);
 			rs=ps.executeQuery();
@@ -378,11 +382,35 @@ public class GuestDAO {
 		}
 	}
 	
-	//안읽은 메세지 확인 메소드
+	//나에게 온 메세지 중 읽지 않은 메세지 개수 구하기
+	public int countUnreadMsg(String userid) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "SELECT COUNT(*) AS UNREAD FROM HOMES_MSG WHERE RECEIVER_ID = ? AND RECEIVER_STATE = 1 AND READ_STATE = 0";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, userid);
+			rs=ps.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+
+	//안읽은 메세지 있는지 확인 메소드
 	public boolean checkNonReadMsg(String id) {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql = "SELECT * FROM HOMES_MSG WHERE RECEIVER_ID=? and READ_STATE = 0";
+			String sql = "SELECT * FROM HOMES_MSG WHERE RECEIVER_ID=? and RECEIVER_STATE = 1 and READ_STATE = 0";
 			ps=conn.prepareStatement(sql);
 			ps.setString(1, id);
 			rs=ps.executeQuery();
@@ -449,6 +477,50 @@ public class GuestDAO {
 		} finally {
 			try {
 				
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//받은 메세지 삭제하기
+	public int dltGotMsg(int msgidx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "UPDATE HOMES_MSG SET RECEIVER_STATE = 0 WHERE MSGIDX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, msgidx);
+			
+			int count = ps.executeUpdate();
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//보낸 메세지 삭제하기
+	public int dltSendMsg(int msgidx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "UPDATE HOMES_MSG SET SENDER_STATE = 0 WHERE IDX = ?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, msgidx);
+			
+			int count = ps.executeUpdate();
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
 			} catch (Exception e2) {}
 		}
 	}

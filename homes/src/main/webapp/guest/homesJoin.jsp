@@ -132,7 +132,7 @@
 		</tr>
 		<tr>
 			<th>정답</th>
-			<td><input type="text" name="pwd_hint_a" id="pwd_hint_a" class="textfield_solo" required="required" maxlength="500"/></td>
+			<td><input type="text" name="pwd_hint_a" id="pwd_hint_a" class="textfield_solo " required="required" maxlength="500"/></td>
 			<div id="error-message-hint" style="color:black; margin-top:5px; font-size:15px;"></div>
 		</tr>
 		<tr>
@@ -183,7 +183,7 @@
 	</table>
 	<div align="center">
 		<input type="reset" value="다시작성" class="btstyle">
-		<input type="submit" value="가입" class="btstyle" onclick="setBday();">
+		<input type="submit" value="가입" class="btstyle" onclick="setBday(); checkValue();">
 	</div>
 	</form>
 	</fieldset>
@@ -191,6 +191,7 @@
 <%@include file="/footer.jsp" %>
 </body>
 <script>
+
 //Id중복검사 팝업창 띄우는 함수
 function openIdCheck(){
 	var option='width=500, height=300, resizable=no, top=200, left=470';
@@ -208,7 +209,10 @@ function setBday(){
 	
 	document.homesJoin.bday.value=bday;
 }
-
+function checkValue(){
+	var bda = document.homesJoin.bday.value;
+	window.alert(bda);
+}
 //비밀번호 설정 기준에 맞는지 확인하는 함수 (영어, 숫자, 특수문자(!, @, ^, *)를 포함한 8~15글자)
 function validatePwd(){
     var insertPwd = document.homesJoin.pwd.value;

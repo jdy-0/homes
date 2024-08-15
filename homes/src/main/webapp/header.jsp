@@ -43,8 +43,9 @@ function openLoginPopup(){
 				<a href="/homes/guest/mypage.jsp"><%=usernickname %>님<br>Profile</a>
 				<%
 				boolean unread = gdao.checkNonReadMsg(userid);
+				String msgicon = unread ? "&#128233;" : "&#9993;";
 				%>
-				<a href="/homes/guest/msg.jsp">&#128386;<%if(unread==true){%>&#128365;<%}%></a>
+				<a href="/homes/guest/msgMain.jsp"><%=msgicon %></a>							
 			</div>
 			<div id="header_top_right_logout">
 				<a href="/homes/guest/logout.jsp">LOGOUT</a>
