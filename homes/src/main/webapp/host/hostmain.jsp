@@ -12,8 +12,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
-    <style>
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<!-- <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css"> -->
+<!--     <style>
         img {
             width: 400px;
             height: 300px;
@@ -58,7 +59,35 @@
             box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 설정 */
         }
         
-    </style>
+    </style> -->
+<style>
+section{
+	font-family: 'SBAggroB';
+	display:flex;
+}
+#host_main_article{
+	width:100%;
+}
+#no_room_div{
+	margin:15px auto;
+}
+h3{	
+	padding:50px;
+	text-align:center;
+	font-size:30px;
+}
+form{
+	text-align:center;
+	padding:50px;
+}
+.button{
+	font-family: 'SBAggroB';
+	font-size:20px;
+	padding:5px;
+	background-color:#dec022;
+	border:4px solid black;
+}
+</style>
 </head>
 
 <body>
@@ -83,15 +112,20 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 	
 	
 
-<%@include file="hostheader.jsp" %>
+
+
 <section>
+<%@include file="hostheader.jsp" %>
+<article id="host_main_article">
 		<%
 		if(arr==null||arr.size()==0){
 			%>
+				<div id="no_room_div">
 				<h3>등록된 숙소가 없습니다. 등록하시겠습니까?</h3>
 				<form name="insertfm" action="hostinsert.jsp"> 
-				<input type="submit" value="숙소 등록하기">
+				<input type="submit" value="숙소 등록하기" class="button">				
 				</form>
+				</div>
 			<%
 		}else{
 			int a = arr.size();
@@ -147,6 +181,7 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 			}
 		}
 		%>
+</article>
 </section>
 </body>
 </html>
