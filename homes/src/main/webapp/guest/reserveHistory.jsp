@@ -54,6 +54,7 @@ int d = now.get(Calendar.DATE);
 		}else{
 			for(int i=0;i<arr.size();i++){
 				%>
+				<a href="res_detail.jsp?reserve_idx=<%=arr.get(i).getReserve_idx() %>"> 
 				<fieldset class="res_history_fs">
 					<table>
 						<tr>
@@ -68,7 +69,7 @@ int d = now.get(Calendar.DATE);
 						</tr>
 					</table>
 				</fieldset>
-					
+				</a>	
 				<%
 			}	
 		}

@@ -45,7 +45,6 @@
         } else {
         	
         	if(from.value!=null && from.value!=""){
-        		alert(1);
         	}
         	
         }
@@ -267,7 +266,6 @@
 
         if (document.querySelectorAll('.selected').length  == 1) {
         	date_from_to[0] = dayElement;
-        	alert('첫');
  /*             const firstDateId = selectedDates[0].id.replaceAll('d', '');
             const firstDate = new Date(
                     firstDateId.substring(0, 4),
@@ -299,7 +297,6 @@
 /*             calendar.style.display = 'none';
  */            
         } else if (document.querySelectorAll('.selected').length ==2){
-        	alert('둘');
 
         	date_from_to[1] = dayElement;
 
@@ -440,8 +437,7 @@
                     }
                 }
             });
-            alert(date_from_to[0].id);
-            alert(date_from_to[1].id);
+
 			
          	from.value = makeIdToDate(date_from_to[0].id)
          	to.value = makeIdToDate(date_from_to[1].id)

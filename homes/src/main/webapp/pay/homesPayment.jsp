@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+request.setCharacterEncoding("UTF-8");
+response.setCharacterEncoding("UTF-8");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,7 +119,7 @@ function validatePaymentForm() {
             <a href="../rooms/reservationConfirmation.jsp">← 돌아가기</a>
         </div>
         <div class="header">결제 정보 입력</div>
-        <form action="/homes/reserve/reserve.jsp" method="POST" onsubmit="return validatePaymentForm();">
+        <form action="/homes/reserve/reserve.jsp" method="POST" accept-charset="UTF-8" onsubmit="return validatePaymentForm();">
             <div class="form-group">
                 <label for="cardNumber">카드 번호:</label>
                 <input type="text" id="cardNumber" name="cardNumber" required>
@@ -125,10 +129,12 @@ function validatePaymentForm() {
                 <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
             </div>
             <div class="form-group">
+	            <input type="hidden" name="room_idx" value="<%= request.getParameter("room_idx") %>">
                 <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>">
                 <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>">
-                <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
+                <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>">
                 <input type="hidden" name="totalPrice" value="<%= request.getParameter("totalPrice") %>">
+                <input type="hidden" name="request" value="<%= request.getParameter("request") %>">
             </div>
             <button type="submit" class="payment-button">결제하기</button>
         </form>

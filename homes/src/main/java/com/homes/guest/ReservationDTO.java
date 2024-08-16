@@ -12,6 +12,7 @@ public class ReservationDTO {
 	private String request;
 	private String room_name;
 	private String image;
+	private int count;
 	
 	public ReservationDTO() {
 		
@@ -42,6 +43,32 @@ public class ReservationDTO {
 		this.check_in = check_in;
 		this.check_out = check_out;
 		this.request = request;
+	}
+	
+	
+
+	public ReservationDTO(int reserve_idx, int member_idx, int room_idx, String state, Date reserve_date, int price,
+			int reservation_detail_idx, Date check_in, Date check_out, String request, int count) {
+		super();
+		this.reserve_idx = reserve_idx;
+		this.member_idx = member_idx;
+		this.room_idx = room_idx;
+		this.state = state;
+		this.reserve_date = reserve_date;
+		this.price = price;
+		this.reservation_detail_idx = reservation_detail_idx;
+		this.check_in = check_in;
+		this.check_out = check_out;
+		this.request = request;
+		this.count = count;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public int getReserve_idx() {

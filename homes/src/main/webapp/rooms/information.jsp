@@ -229,24 +229,29 @@
             <div>
                 <input type="text" name="check_in" <%-- value="<%= request.getParameter("check_in") %>" --%> value="2024-11-01" >
                 <input type="text" name="check_out" <%-- value="<%= request.getParameter("check_out") %>" --%> value="2024-11-05">
-                    
-            	<input type="text">
             	<jsp:include page="information_cal.jsp">
             		<jsp:param value="<%=roomIdxParam %>" name="room"/>
+            		<jsp:param value="<%=room.getPrice() %>" name="price"/>
             	</jsp:include>
             	
             </div>
+			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="2" required>
             <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
             <div class="reservation-box">
                 <div class="details">
-                    <p>총 합계: ₩<%= totalCost %></p>
+
+                    <p>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
                 </div>
                 <form id="reservationForm" action="reservationConfirmation.jsp" method="get">
-                    <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>">
-                    <input type="hidden" name="check_in" value="<%= checkInParam %>">
-                    <input type="hidden" name="check_out" value="<%= checkOutParam %>">
-                    <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
-                    <button type="submit" class="button">예약하기</button>
+                	
+                    <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>" id="hid_room_idx">
+                    <input type="hidden" name="price" value="<%= room.getPrice() %>" id="hid_room_price">
+                    <input type="hidden" name="total_price" value="0" id="hid_room_total_price">
+                    <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
+                    <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
+                    <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
+                    <button type="submit" class="button" onclick="setInputValuesTohidden()">예약하기</button>
+
                 </form>
             </div>
         </div>
@@ -256,4 +261,23 @@
 </main>
 <%@ include file="/footer.jsp"%>
 </body>
+</html>
+<script>
+function setInputValuesTohidden(){
+	var ch_in = document.querySelector('input[name="check_in"]');
+	var ch_out = document.querySelector('input[name="check_out"]');
+	var gst_n = document.querySelector('input[name="guest_num"]');
+	var room_total_price = document.querySelector('#room_total_price');
+	
+	
+	document.querySelector('#hid_check_in').value = ch_in.value;
+	document.querySelector('#hid_check_out').value = ch_out.value;
+	document.querySelector('#hid_guest_num').value = gst_n.value;
+	document.querySelector('#hid_room_total_price').value = room_total_price.innerText;
+	
+
+}
+
+
+</script>
 </html>

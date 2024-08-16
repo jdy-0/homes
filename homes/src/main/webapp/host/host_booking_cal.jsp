@@ -216,6 +216,7 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 				data-type="start" value="<%=resdto.getCheck_in()%>">
 			<input type="text" 
 				data-type="end" name = "check_out" value="<%=resdto.getCheck_out()%>">
+			<input type="text" name="price" value="<%=resdto.getPrice()%>">
 		</form>
 		
 		
