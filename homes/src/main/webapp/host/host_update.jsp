@@ -151,7 +151,6 @@ function FileSelect(event) {
                 				%>
                 				<form name="host_delete_imgfm" action="host_delete_file.jsp">
                 					<a>
-                				
                 					<label><%=files[i].getName()%>
                 						<input type="submit" value="삭제">
 										<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
