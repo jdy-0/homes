@@ -1,55 +1,66 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.homes.room.RoomDAO, com.homes.room.RoomDTO" %>
+<%@ page import="com.homes.review.ReviewDAO" %>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date, java.util.concurrent.TimeUnit" %>
+<%@ page import="java.text.DecimalFormat" %>
 
 <%
     String roomIdxParam = request.getParameter("room_idx");
     RoomDTO room = null;
+    double averageRate = 0.0;
 
-    // room_idx가 null이거나 빈 문자열인 경우 기본값 또는 에러 처리
     if (roomIdxParam != null && !roomIdxParam.isEmpty()) {
         try {
             int roomIdx = Integer.parseInt(roomIdxParam);
             RoomDAO roomDAO = new RoomDAO();
             room = roomDAO.getRoomById(roomIdx);
-            if (room == null) {
+            if (room != null) {
+                // 평균 평점 계산
+                ReviewDAO reviewDAO = new ReviewDAO();
+                averageRate = reviewDAO.getAverageRateByRoomIdx(roomIdx);
+            } else {
                 out.println("<p>해당 숙소 정보를 찾을 수 없습니다.</p>");
             }
         } catch (NumberFormatException e) {
-            // room_idx 파라미터가 유효하지 않은 경우 처리
             out.println("<p>유효하지 않은 숙소 ID입니다.</p>");
         }
     } else {
-        // room_idx 파라미터가 유효하지 않은 경우 처리
         out.println("<p>유효하지 않은 숙소 ID입니다.</p>");
     }
+
+    String checkInParam = request.getParameter("check_in");
+    String checkOutParam = request.getParameter("check_out");
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    long numberOfNights = 1; // 기본값 1박
+
+    try {
+        if (checkInParam != null && checkOutParam != null) {
+            Date checkInDate = dateFormat.parse(checkInParam);
+            Date checkOutDate = dateFormat.parse(checkOutParam);
+
+            long diffInMillies = checkOutDate.getTime() - checkInDate.getTime();
+            numberOfNights = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            if (numberOfNights < 1) {
+                numberOfNights = 1; // 체크아웃이 체크인보다 빠르다면 기본값 1박
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    // 총 숙박 비용 계산
+    long totalCost = room != null ? room.getPrice() * numberOfNights : 0;
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>숙소 정보</title>
-<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
-<link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 추가된 rating.css 링크 -->
-<script>
-// 로그인 여부를 확인하는 함수
-function checkLogin() {
-    var isLoggedIn = '<%= session.getAttribute("userid") != null %>'; // 세션에 userid가 있는지 확인
-    if (!isLoggedIn) {
-        alert("로그인이 필요한 서비스입니다.");
-        openLoginPopup(); // 로그인 팝업을 띄우는 함수 호출
-    } else {
-        document.getElementById('reservationForm').submit(); // 로그인 상태이면 예약 진행
-    }
-}
-
-// 로그인 팝업을 여는 함수
-function openLoginPopup(){
-    var option = 'width=600, height=300, resizable=no, top=200, left=470';
-    window.open('/homes/guest/login_popup.jsp?redirect=information.jsp?room_idx=<%=request.getParameter("room_idx")%>&checkin=<%=request.getParameter("checkin")%>&checkout=<%=request.getParameter("checkout")%>&guests=<%=request.getParameter("guests")%>', 'login', option);
-}
-</script>
-<style>
+    <meta charset="UTF-8">
+    <title>숙소 정보</title>
+    <style>
     body {
         font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
         margin: 20px;
@@ -181,10 +192,10 @@ function openLoginPopup(){
         background-color: #e2dccc;
         transition: 0.5s;
     }
-</style>
+    </style>
 </head>
 <body>
-<%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
+<%@ include file="/header.jsp"%>
 <main class="container">
     <% if (room != null) { %>
         <div class="top">
@@ -203,8 +214,14 @@ function openLoginPopup(){
         </div>
         <div class="left">
             <div class="reviews">
-                <h3>후기 <a href="review.jsp?room_idx=<%= room.getRoom_idx() %>">(후기)</a></h3>
-                <p>별점: ★ </p>
+                <div style="display: flex; align-items: center; background-color: #dec022; padding: 10px; border-radius: 5px; border: 2px solid black;">
+                    <span style="font-size: 18px; font-family: 'SBAggroB', Arial, sans-serif; margin-right: auto;">
+                        (후기) ★ <%= new DecimalFormat("#.0").format(averageRate) %> / 5.0
+                    </span>
+                    <a href="review.jsp?room_idx=<%= room.getRoom_idx() %>" style="text-decoration: none; color: black; background-color: #dec022; border: 2px solid black; border-radius: 5px; padding: 5px 10px; font-family: 'SBAggroB', Arial, sans-serif; font-size: 18px;">
+                        후기 보기
+                    </a>
+                </div>
             </div>
         </div>
         <div class="right">
@@ -212,12 +229,12 @@ function openLoginPopup(){
             <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
             <div class="reservation-box">
                 <div class="details">
-                    <p>총 합계: ₩<%= room.getPrice() %></p>
+                    <p>총 합계: ₩<%= totalCost %></p>
                 </div>
                 <form id="reservationForm" action="reservationConfirmation.jsp" method="get">
                     <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>">
-                    <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>">
-                    <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>">
+                    <input type="hidden" name="check_in" value="<%= checkInParam %>">
+                    <input type="hidden" name="check_out" value="<%= checkOutParam %>">
                     <input type="hidden" name="guests" value="<%= request.getParameter("guests") %>">
                     <button type="submit" class="button">예약하기</button>
                 </form>
