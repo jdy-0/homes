@@ -60,7 +60,7 @@ if(roomArr==null && roomArr.size()<=0){
 		            <h2><%=rdto.getRoom_name() %></h2><!--db숙소 제목 -->
 		            <ul>
 		            	<li>신청자 : <%=resdto.getMember_idx() %></li>
-		                <li>기준 인원 : 0명 not db</li>
+		                <li>총 인원 : <%=resdto.getCount() %></li>
 		                <li>요청 사항 :
 		                    <label><%= resdto.getRequest() %>
 		                       	

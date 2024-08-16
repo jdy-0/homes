@@ -27,6 +27,9 @@ Date check_in = new Date(utilDate.getTime());
 utilDate = sdf.parse(s_end);
 Date check_out = new Date(utilDate.getTime());
 
+String s_price = request.getParameter("price");
+int price = Integer.parseInt(s_price);
+
 ReservationDTO dto = new ReservationDTO();
 
 dto.setReserve_idx(reserve_idx);
@@ -34,7 +37,7 @@ dto.setState(state);
 dto.setRoom_idx(room_idx);
 dto.setCheck_in(check_in);
 dto.setCheck_out(check_out);
-
+dto.setPrice(price);
 int count = resdao.updateSetResState(dto);
 
 if(count>0){

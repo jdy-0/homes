@@ -645,6 +645,8 @@ document.addEventListener("DOMContentLoaded", function() {
             firstClickedDate = dayElement;
             dayElement.classList.replace('none', 'selected');
             document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
+            setTotalPrice();
+
 			/* setDisabledSpan(dayElement);
              */
         } else if (!secondClickedDate) {
@@ -664,6 +666,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             document.querySelector("input[name='check_out']").value = makeIdToDate(secondClickedDate.id);
+            setTotalPrice();
+
             // 날짜 범위 선택 및 업데이트
             const allDays = calendar.querySelectorAll('span');
             let rangeStarted = false;
@@ -688,7 +692,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 secondClickedDate = null;
                                 document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
                                 document.querySelector("input[name='check_out']").value = "";
-                                
+                                setTotalPrice();
+
 
                             break;
                         }
@@ -776,7 +781,36 @@ document.addEventListener("DOMContentLoaded", function() {
 			
 			return date_id.slice(0, 4)+'-'+date_id.slice(4, 6)+'-'+date_id.slice(6, 8);
 		}
-    
+		
+		
+    	function setTotalPrice(){
+    		
+    		
+    		 var ch_in = document.querySelector('input[name="check_in"]');
+    		 var ch_out = document.querySelector('input[name="check_out"]');
+    		 var guest_num = document.querySelector('input[name="guest_num"]');
+    		 
+    		 if(ch_in.value=='' || ch_out.value==''){
+     			document.querySelector('#room_total_price').innerText =0;
+     			return;
+     		}
+     		
+    		 
+    		 var pricePerNight = '<%=request.getParameter("price")%>';
+			
+    	        var checkInDate = new Date(ch_in.value);
+    	        var checkOutDate = new Date(ch_out.value);
+
+    	        var timeDiff = checkOutDate - checkInDate;
+    	        var daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+    	        if (daysDiff > 0) {
+    	            var totalPrice = daysDiff * pricePerNight;
+    	            document.querySelector('#room_total_price').innerText = totalPrice;
+    	        } else {
+    	            document.querySelector('#room_total_price').innerText = `유효하지 않은 날짜 선택`;
+    	        }
+    	}
 
 })
 </script>

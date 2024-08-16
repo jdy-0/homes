@@ -10,17 +10,27 @@
  --%>
 
 <%
+request.setCharacterEncoding("UTF-8");
+response.setCharacterEncoding("UTF-8");
+
 int useridx =Integer.parseInt(session.getAttribute("useridx").toString());
 resdto.setMember_idx(useridx);
-resdto.setRoom_idx(1 );
+resdto.setRoom_idx(Integer.parseInt(request.getParameter("room_idx")));
 resdto.setState("예약대기중");
-resdto.setPrice(130000);
+resdto.setPrice(Integer.parseInt(request.getParameter("totalPrice")));
+resdto.setCount(Integer.parseInt(request.getParameter("guest_num")));
 
-Date start = new Date(124,8,22);
-Date end = new Date(124,8,25);
-resdto.setCheck_in(start);
-resdto.setCheck_out(end);
+java.sql.Date check_in = java.sql.Date.valueOf(request.getParameter("check_in"));
+java.sql.Date check_out = java.sql.Date.valueOf(request.getParameter("check_out"));
+
+
+resdto.setCheck_in(check_in);
+resdto.setCheck_out(check_out);
+resdto.setRequest(request.getParameter("request"));
+
 resdao.insertReservation(resdto);
+
+
 %>
 <script>
 	alert('성공');

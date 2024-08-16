@@ -55,12 +55,14 @@ public class ReservationDAO {
 		
 		try {
 			String sql = " insert into reservation_detail_test values("
-					+ " reservation_detail_test_idx.nextval, ?, ?, ?, ?, '') ";
+					+ " reservation_detail_test_idx.nextval, ?, ?, ?, ?, ?,?) ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, r_idx);
 			ps.setInt(2, rdto.getMember_idx());
 			ps.setDate(3, rdto.getCheck_in());
 			ps.setDate(4, rdto.getCheck_out());
+			ps.setString(5, rdto.getRequest());
+			ps.setInt(6,rdto.getCount());
 			
 			ps.executeUpdate();
 			
@@ -91,7 +93,8 @@ public class ReservationDAO {
 					+ "    rd.RESERVE_DETAIL_IDX, "
 					+ "    rd.CHECK_IN, "
 					+ "    rd.CHECK_OUT, "
-					+ "    rd.REQUEST "
+					+ "    rd.REQUEST,"
+					+ "	   rd.count "
 					+ "FROM  "
 					+ "    reservation_test r "
 					+ "JOIN  "
@@ -117,9 +120,9 @@ public class ReservationDAO {
 				Date checkIn = rs.getDate("CHECK_IN");
 				Date checkOut = rs.getDate("CHECK_OUT");
 				String request = rs.getString("REQUEST");
-
+				int count = rs.getInt("count");
 				ReservationDTO rdto = new ReservationDTO(reserveIdx, memberIdx, roomIdx, state, reserveDate,
-						price, reservationDetailIdx, checkIn, checkOut, request);
+						price, reservationDetailIdx, checkIn, checkOut, request,count);
 				arr.add(rdto);
 			}
 			return arr;
@@ -151,6 +154,7 @@ public class ReservationDAO {
 			
 			if(count>0 && dto.getState().equals("예약완료")) {
 				int tot_count = insertReserveToSchedule(dto);
+				insertPayment(dto);
 			} else {
 			}
 			
@@ -196,6 +200,23 @@ public class ReservationDAO {
             e.printStackTrace();
             return -1;
         }
+	}
+	
+	public void insertPayment(ReservationDTO dto) {
+		
+		try {
+            String sql = " insert into payment (payment_idx, reserve_idx, amount, payment_date, status) "
+            		+ " values (payment_seq.nextval, ?, ?, sysdate, 'Completed') "; 
+           
+           ps = conn.prepareStatement(sql);
+           ps.setInt(1, dto.getReserve_idx());
+           ps.setInt(2, dto.getPrice());
+           
+           ps.executeUpdate();
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }		
 	}
 
 	
