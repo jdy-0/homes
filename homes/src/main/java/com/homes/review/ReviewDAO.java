@@ -15,7 +15,7 @@ public class ReviewDAO {
      */
 	   // 리뷰 추가 메서드 (MEMBER_ID 추가)
     public void insertReview(ReviewDTO review) {
-        String sql = "INSERT INTO reviews (ROOM_IDX, RATE, MEMBER_ID, CONTENT) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO reviews (IDX, ROOM_IDX, RATE, MEMBER_ID, CONTENT) VALUES (Reviews_SEQ.NEXTVAL, ?, ?, ?, ?)";
 
         try (Connection conn = HomesDB.getConn();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -130,29 +130,52 @@ public class ReviewDAO {
         }
         return roomIds;
     }
+    public boolean isValidRoomIdx(int roomIdx) {
+        String sql = "SELECT COUNT(*) FROM Room WHERE ROOM_IDX = ?";
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, roomIdx);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public String submitReview(int roomIdx, String reviewContent, int rate, String userName) {
         if (userName != null && roomIdx > 0 && rate > 0 && reviewContent != null && !reviewContent.trim().isEmpty()) {
-            // ReviewDTO 객체 생성 및 데이터 설정
+            if (!isValidRoomIdx(roomIdx)) {
+                return "errorPage.jsp?message=Invalid%20room%20ID";
+            }
+
             ReviewDTO review = new ReviewDTO();
             review.setRoomIdx(roomIdx);
             review.setRate(rate);
             review.setContent(reviewContent);
 
-            // userName을 memberId로 변환하는 로직 추가 (필요시)
             String memberId = convertUserNameToMemberId(userName);
             review.setMemberId(memberId);
 
-            // 리뷰 추가
-            insertReview(review); // insertReview 메서드를 호출하여 리뷰 삽입
-
-            // 리뷰 추가 후 리디렉션할 URL 반환
-            return "review.jsp?room_idx=" + roomIdx;
+            try (Connection conn = HomesDB.getConn()) {
+                conn.setAutoCommit(false);
+                insertReview(review);
+                conn.commit();
+                return "review.jsp?room_idx=" + roomIdx;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "errorPage.jsp?message=Failed%20to%20submit%20review";
+            } catch (Exception e) {  // 여기에 추가된 catch 블록으로 Exception을 잡음
+                e.printStackTrace();
+                return "errorPage.jsp?message=Failed%20to%20submit%20review";
+            }
         } else {
-            // 파라미터가 잘못된 경우 에러 페이지로 리디렉션
             return "errorPage.jsp?message=Invalid%20review%20submission";
         }
     }
+
 
     // userName을 memberId로 변환하는 메서드 (필요시)
     private String convertUserNameToMemberId(String userName) {
@@ -161,5 +184,25 @@ public class ReviewDAO {
         // 간단히 반환한다고 가정할 경우:
         return userName; // 필요에 따라 실제 변환 로직 구현
     }
+    public double getAverageRateByRoomIdx(int roomIdx) throws Exception {
+        double averageRate = 0.0;
+        String sql = "SELECT AVG(rate) AS avgRate FROM reviews WHERE room_idx = ?";
+
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, roomIdx);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                averageRate = rs.getDouble("avgRate");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return averageRate;
+    }
+
 
 }
