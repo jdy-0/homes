@@ -130,7 +130,7 @@ window.alert("파일생성안됌");
 window.alert("<%=msg%>");
 </script>
 <script>
-	indow.alert('<%=savepath%>파일 올리기 성공!');
+	window.alert('<%=savepath%>파일 올리기 성공!');
 	window.location.href='/homes/host/hostinsert.jsp';
 </script>
 

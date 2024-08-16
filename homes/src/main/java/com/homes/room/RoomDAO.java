@@ -612,6 +612,56 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	public ArrayList<String> RoomDetailImg(String roomidx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="select * from room_image where room_idx=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, roomidx);
+			rs=ps.executeQuery();
+			ArrayList<String> arr= new ArrayList<String>();
+
+			
+			while(rs.next()) {
+				String photo_url=rs.getString("photo_url");
+				arr.add(photo_url);
+			}
+			return arr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	public int RoomDetailImg_insert(String room_idx,String Room_Path_SqlSet) {
+		int result=0;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="INSERT INTO ROOM_IMAGE (ROOM_IMAGE_IDX, ROOM_IDX, PHOTO_URL)"
+					+ "VALUES (ROOM_IMAGE_IDX.NEXTVAL, ?, ?)";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, room_idx);
+			ps.setString(2, Room_Path_SqlSet);
+			
+			
+			result=ps.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return result;
+		}finally {
+			try {
+				
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 }
 
 

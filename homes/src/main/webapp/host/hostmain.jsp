@@ -87,6 +87,10 @@ form{
 	background-color:#dec022;
 	border:4px solid black;
 }
+
+#roomselect {
+            list-style:none;
+        }
 </style>
 </head>
 
@@ -131,7 +135,7 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 			int a = arr.size();
 			for(int i=0;i<arr.size();i++){
 				%>
-			<form name="updatefm" action="host_update.jsp"> 
+			<form name="updatefm" action="host_update_image_ok.jsp?room_idx<%=arr.get(i).getRoom_idx()%>"> 
 			<div class="container">
 				<div>
 					<img id="selectedImage" src ="<%=arr.get(i).getImage()%>" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />

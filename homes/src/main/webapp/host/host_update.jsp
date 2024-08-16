@@ -8,14 +8,23 @@
 <jsp:useBean id="rdto" class="com.homes.room.RoomDTO" scope="session"></jsp:useBean>
 <%
     String roomIdxParam = request.getParameter("room_idx");
+	
 	session.setAttribute("room_idx", roomIdxParam);
 	String id= (String)session.getAttribute("userid");
+	
+	String room_path=(String)request.getParameter("roomsrc");
 	
 	String path=request.getRealPath("/");
 	wf.setHomePath(path);
 	
+	
+	
 	int idx= Integer.parseInt(roomIdxParam);
+	
     RoomDTO room = null;
+	
+	
+	
 	
     // room_idx가 null이거나 빈 문자열인 경우 기본값 또는 에러 처리
     if (roomIdxParam != null && !roomIdxParam.isEmpty()) {
@@ -35,6 +44,11 @@
         out.println("유효하지 않은 숙소 ID입니다.");
     }
     
+    File f= new File(wf.getHomePath()+wf.getEverypath()+id+"/"+room.getRoom_name());
+    String room_path_img=f.getPath();
+    session.setAttribute("room_path_img", room_path_img);
+    String room_path_sql="/homes/"+wf.getEverypath()+id+"/"+room.getRoom_name();//  /homes/img/host_img/id/숙소이름
+    
 %>
 
 <!DOCTYPE html>
@@ -45,6 +59,10 @@
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 추가된 rating.css 링크 -->
 <script>
+
+	
+
+
 // 로그인 여부를 확인하는 함수
 function checkLogin() {
     var isLoggedIn = '<%= session.getAttribute("userid") != null %>'; // 세션에 userid가 있는지 확인
@@ -96,6 +114,7 @@ function FileSelect(event) {
 
 </head>
 <link rel="stylesheet" href="/homes/css/updateLayout.css" type="text/css"/>
+
 <body>
 
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
@@ -108,30 +127,55 @@ function FileSelect(event) {
                 
                  <div class="room-images">
                 	<div class="room-main">
+                		<fieldset>
+                			<legend>대표 이미지</legend>
                     	<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
                     
                     	<input type="file" id="fileUpdate" accept="image/*" onchange="FileSelect(event)">
+                    	</fieldset>
                     </div>
                     
+                   
+                    <%
+                    ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
                     
-               		<div class="small-image">
-                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
-                    </div>
-                    <div class="small-image">
-                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
-                    </div>
-                    <div class="small-image">
-                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
-                    </div>
-                    	
-                    	
-                    </div>
+					if(arrImg != null && !arrImg.isEmpty()){
+						for(int i =0;i<4;i++){
+							%>
+						<div class="small-image">
+							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
+						</div>
+	
+							<%		
+						}
+						
+					}else{
+						%>
+						<div class="small-image">
+						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
+					</div>
+					<%
+					}
+					%>
+			
+
+				</div>
                 <div>
+                	<div class="img">
                 	<h2>상세 사진 관리</h2>
+                		<form name="img_detail" action="host_room_image_ok.jsp"  enctype="multipart/form-data"  method="post"
+                		>
+                			<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
+                			<input type="hidden" name="room_path" value="<%= room_path_sql  %>">
+                			<input type="file" accept="image/*" name="images_file" multiple >
+                			<input type="submit" value="등록하기">
+                		</form>
+                	
+                	</div>
                 	<div>
                 		<%
                 		String userpath= id;
-                		File f= new File(wf.getHomePath()+wf.getEverypath()+id+"/"+room.getRoom_name());
+                		
                 		File files[]=f.listFiles();
                 		if(files==null||files.length==0){
                 			System.out.println(f.getPath());
@@ -141,10 +185,7 @@ function FileSelect(event) {
                 			</script>
                 			
                 			<label>사진이 없습니다.</label>
-                			<form name="host_update_imgfm" action="host_update_image_ok.jsp">
-                				<input type="submit" value="사진 추가">
-                				<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
-                			</form>
+                			
                 			<%
                 		}else{
                 			for(int i=0;i<files.length;i++){
@@ -156,6 +197,7 @@ function FileSelect(event) {
 										<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
 										<input type="hidden" value="<%=id %>" name= "user_name">
 										<input type="hidden" value="<%= room.getRoom_name() %>" name= "room_name">
+										
 									</label>
                  					</a>
                  				</form>
@@ -253,6 +295,7 @@ function FileSelect(event) {
             </div>
             
         </div>
+       </div>
     </main>
     <%@ include file="/footer.jsp"%>
 </body>

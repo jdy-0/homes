@@ -38,9 +38,13 @@
 	String savepath=wf.getHomePath()+wf.getEverypath()+wf.getCrpath();
 	System.out.println(savepath+"@#@#@#!!@!@!@");
 	File f_id_rid= new File(savepath+"/"+room_name);
+	%>
+		<input type="hidden" value="<%=f_id_rid.getPath()%>" name="roomsrc">
+	<%
 	if(!f_id_rid.exists()){
 		f_id_rid.mkdir();
 		%>
+		
 		<script>
 			window.alert('<%=f_id_rid.getPath()%>에 숙소파일 생성 완료');
 			window.self.close();
@@ -56,4 +60,8 @@
 		<%
 	}
 %>
-			
+<script>
+
+window.location.href = '/homes/host/host_update.jsp?room_idx=<%=room_idx%>'; 
+</script>
+

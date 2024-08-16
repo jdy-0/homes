@@ -22,6 +22,7 @@ public class WebFolderDAO {
 		private String roomPath;
 		
 		
+		
 		private String hostpath="img/host_img";
 		
 		private String imgFile="/homes/img/";
