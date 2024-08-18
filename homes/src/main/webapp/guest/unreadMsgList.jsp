@@ -14,10 +14,10 @@
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/msgNav.jsp" %>
-<article id="msgList" class="msgContentArticle">
+<article id="unreadMsgList" class="msgContentArticle">
 	<fieldset class="label_fs">
-		<h3>받은 메세지</h3>
-	</fieldset>	
+		<h3>읽지 않은 메세지</h3>
+	</fieldset>
 	<%
 	int crpage = 1;
 	int msgSize = 10;
@@ -27,7 +27,7 @@
 		crpage = Integer.parseInt(request.getParameter("crpage"));
 	}
 	
-	ArrayList<MsgDTO> msgList = gdao.getMsgList(userid, crpage, msgSize, "receiver", "no");
+	ArrayList<MsgDTO> msgList = gdao.getMsgList(userid, crpage, msgSize, "receiver", "yes");
 	
 	if(msgList==null || msgList.size()==0){
 		%>
@@ -58,12 +58,12 @@
 			<tr>
 				<td align="center"><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=msgList.get(i).getIdx() %>"></td>
 				<td><%=msgList.get(i).getSender_id() %></td>
-				<td><a href="msgContent.jsp?msgidx=<%=msgList.get(i).getIdx()%>&crarticle=msgList&crpage=<%=crpage%>"><%=msgList.get(i).getTitle() %></a></td>
+				<td><a href="msgContent.jsp?msgidx=<%=msgList.get(i).getIdx()%>&crarticle=unreadMsgList&crpage=<%=crpage%>"><%=msgList.get(i).getTitle() %></a></td>
 				<%
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
 			    String formattedDate = sdf.format(msgList.get(i).getSend_time());
 				%>
-				<td style="font-size:15px;"><%=formattedDate.substring(0, 16) %></td>
+				<td><%=formattedDate.substring(0, 16) %></td>
 				<td align="center"><%=readState %></td>
 			</tr>
 			<%
@@ -77,14 +77,14 @@
 	</form>
 <div class="msgPageNav">
 <%
-	int totalMsg = gdao.getTotalMsgCount(userid, "receiver");
+	int totalMsg = gdao.countUnreadMsg(userid);
 	int totalPageNum = ((totalMsg-1)/msgSize)+1;
 	int startPageNum = ((crpage-1)/pageSize)*pageSize+1;
 	int endPageNum = Math.min(startPageNum+pageSize-1, totalPageNum);
 	
 	if(startPageNum > 1){
 		%>
-		<a href="/homes/guest/msg.jsp?crpage=<%=startPageNum-1 %>">&lt;&lt; 이전</a>
+		<a href="/homes/guest/unreadMsgList.jsp?crpage=<%=startPageNum-1 %>">&lt;&lt; 이전</a>
 		<%
 	}
 	
@@ -92,27 +92,28 @@
 		if(i==crpage){
 			%><span><%=i%></span><%
 		} else{
-			%><a href="/homes/guest/msg.jsp?crpage=<%=i%>"><%=i%></a><%
+			%><a href="/homes/guest/unreadMsgList.jsp?crpage=<%=i%>"><%=i%></a><%
 		}
 	}
 	
 	if(endPageNum<totalPageNum){
 		%>
-		<a href="/homes/guest/msg.jsp?crpage=<%=endPageNum+1 %>">다음&gt;&gt;</a>
+		<a href="/homes/guest/unreadMsgList.jsp?crpage=<%=endPageNum+1 %>">다음&gt;&gt;</a>
 		<%
 	}
 	%>
 </div>
-</article>
+</article>	
 </section>
 <%@include file="/footer.jsp" %>
 <script>
 function selectedMenu(){
-	document.getElementById("msgList_a").style.backgroundColor='white';
-	document.getElementById("msgList_a").style.borderRadius='300px';
+	document.getElementById("unreadMsg_a").style.backgroundColor='white';
+	document.getElementById("unreadMsg_a").style.borderRadius='300px';
 }
 window.onload=selectedMenu;
 
+//체크박스 일괄 선택 함수
 function checkAllMsg(){
 	if(document.getElementById("checkAll").checked == true){
 		for(var i=0; i<document.msgList_fm.msgCheck.length; i++){
