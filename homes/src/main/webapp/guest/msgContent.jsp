@@ -15,7 +15,7 @@
 	border-spacing:0px;
 	width:1000px;
 	margin:30px auto;
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 }
 #table_msgcontent th{
 	background-color:#dec022;
@@ -43,21 +43,13 @@ textarea{
 	outline:none;
 	font-size:20px;
 	color:black;
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 }
-.button{
-	width:80px;
-	background-color:#dec022;
-	color:black;
-	border:3px solid black;
-	outline:none;
-	padding:5px;
-	font-family: 'Ownglyph_meetme-Rg';
-	font-size:20px;
-}
+
 </style>
 </head>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/homes/css/msgLayout.css">
 <body>
 <%@include file="/header.jsp" %>
 <%
@@ -69,7 +61,11 @@ int msgidx = Integer.parseInt(msgidx_s);
 MsgDTO msgdto = gdao.getMsgContent(msgidx);
 %>
 <section>
-<article>	
+<%@include file="/guest/msgNav.jsp" %>
+<article id="msgContent" class="msgContentArticle">	
+	<fieldset class="label_fs">
+		<h3>메세지 보기</h3>
+	</fieldset>
 	<table id="table_msgcontent">
 		<tr>
 			<th>보낸사람</th>
@@ -86,8 +82,25 @@ MsgDTO msgdto = gdao.getMsgContent(msgidx);
 		</tr>
 		<tr>
 			<td colspan="2" align="center" class="td_nonbottom">
-			<input type="button" value="목록보기" onclick="location.href='msg.jsp?userid=<%=userid%>'" class="button">
-			<input type="button" value="답장하기" onclick="location.href='writeMsg.jsp?receiver_id=<%=msgdto.getSender_id()%>'" class="button">
+			<%
+			String crarticle=request.getParameter("crarticle");
+			String href = "";
+			if("msgList".equals(crarticle)){
+				href="msg.jsp";
+			}else if("sendMsgList".equals(crarticle)){
+				href="sendMsgList.jsp";
+			}else if("unreadMsgList".equals(crarticle)){
+				href="unreadMSgList.jsp";
+			}else{
+				href="msg.jsp";
+			}
+			int crpage=1;
+			if(request.getParameter("crpage")!=null ){
+				crpage = Integer.parseInt(request.getParameter("crpage"));
+			}
+			%>
+			<input type="button" value="목록보기" onclick="location.href='<%=href %>?userid=<%=userid%>&crpage=<%=crpage %>'" class="btstyle">
+			<input type="button" value="답장하기" onclick="location.href='writeMsg.jsp?receiver_id=<%=msgdto.getSender_id()%>'" class="btstyle">
 			</td>
 		</tr>
 	</table>

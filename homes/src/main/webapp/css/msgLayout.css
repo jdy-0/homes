@@ -1,0 +1,101 @@
+@charset "UTF-8";
+section{
+	display:flex;
+}
+.label_fs{
+	background-color:#dec022;
+	color:black;
+	border-bottom:5px solid black;
+	margin:0px;
+	font-family: 'SBAggroB';
+	text-align:start;
+}
+#msgNav{
+	width:420px;
+	border-right:5px solid black;
+	margin:0;
+}
+#msgNav ul{
+	list-style:none;
+	font-family: 'SBAggroB';
+	font-size:25px;
+}
+#msgNav ul li{
+	padding:30px 0px 30px 0px;
+}
+#msgNav ul a{
+	color:black;
+	text-decoration:none;
+	padding:15px 20px 15px 20px;
+}
+#msgNav ul a:hover{
+	background-color:white;
+	opacity:0.5;
+	border-radius:300px;
+}
+.msgContentArticle{width:100%;}
+
+/*메세지 일괄 처리 버튼 div*/
+.msgFnBar{
+	width:900px; margin:15px auto; font-size:25px; text-align:right;
+}
+/*메세지 리스트*/
+.msgListTable{
+	margin:30px auto;
+	width:900px;
+	font-family: 'SBAggroB';
+	border-spacing:0;
+}
+.msgListTable th{
+	border-top:4px solid black;
+	border-bottom:4px solid black;
+	background-color:#dec022;
+	font-size:25px;
+	padding:10px;
+}
+.msgListTable td{
+	font-size:22px;
+	padding:10px;
+}
+.msgListTable td a{color:black; text-decoration:none;}
+.msgListTable td a:hover{text-decoration:underline; font-size:23px; padding:0px;}
+.msgListTable tbody tr:hover{background-color:white; opacity:0.5;}
+/*메세지 페이징 네비게이션*/
+.msgPageNav{
+	text-align:center;
+	color:black;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	text-decoration:none;
+	padding:20px;	
+}
+.msgPageNav span{
+	padding:10px;
+}
+.msgPageNav a{
+	color:gray;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	text-decoration:none;
+	padding:10px;
+}
+.msgPageNav a:hover{
+	color:black;
+	text-decoration:underline;
+}
+.btstyle{
+	background-color:#dec022;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	padding:8px;
+	border:3px solid black;
+}
+.btstyle:hover{
+	background-color: #e2dccc;
+    transition: 0.5s;
+}
+.checkbox{
+	width:20px;
+	height:20px;
+	border:3px solid black;
+}

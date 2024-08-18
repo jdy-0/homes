@@ -36,7 +36,7 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	//동일인물 이미 있을 때 (이름과 email로 확인)
+	//동일인물 이미 있을 때 (email로 확인)
 	public boolean checkSameGuest(String email) {
 		try {		
 			conn=com.homes.db.HomesDB.getConn();
@@ -52,6 +52,8 @@ public class GuestDAO {
 		}finally {
 			try {
 				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
 			} catch (Exception e2) {}
 		}
 	}
@@ -213,7 +215,44 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	
+	//아이디찾기
+	public String findId(String name, String email) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT * FROM HOMES_MEMBER WHERE NAME = ? AND EMAIL=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setString(2, email);
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				String id = rs.getString("id");
+				return id;
+			}else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally{
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+
+	/*
+	 * //비밀번호 찾기 public boolean findPwdCheck(String id, String pwd_hint_q, String
+	 * pwd_hint_a) { try { conn = com.homes.db.HomesDB.getConn(); String sql =
+	 * "SELECT * FROM HOMES_MEMBER WHERE ID=?";
+	 * 
+	 * } catch (Exception e) { e.printStackTrace();
+	 * 
+	 * } finally { try {
+	 * 
+	 * } catch (Exception e2) {} } }
+	 */
 	//비밀번호 변경을 위한 현재 비밀번호 확인 메소드
 	public String pwdCheck(String id) {
 		try {
@@ -431,7 +470,9 @@ public class GuestDAO {
 	public MsgDTO getMsgContent(int msgidx){
 		try {
 			conn=com.homes.db.HomesDB.getConn();
+
 			setMsgRead(msgidx);
+
 			
 			String sql = "SELECT * FROM HOMES_MSG WHERE IDX=?";
 			ps=conn.prepareStatement(sql);
@@ -465,27 +506,36 @@ public class GuestDAO {
 	
 	//메세지 상태 읽음으로 변경하는 메소드
 	public void setMsgRead(int msgidx) {
+		boolean close = false;
 		try {
-			//conn = com.homes.db.HomesDB.getConn();
+				if(conn.isClosed()) {
+				conn=com.homes.db.HomesDB.getConn();
+				close = true;
+			}
+			
 			String sql = "UPDATE HOMES_MSG SET READ_STATE = 1 WHERE IDX = ?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, msgidx);
 			
-			int count = ps.executeUpdate();
+			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				
+				if(close) {
+					if(rs!=null) rs.close();
+					if(ps!=null) ps.close();
+					if(conn!=null) conn.close();
+				}
 			} catch (Exception e2) {}
 		}
 	}
 	
-	//받은 메세지 삭제하기
-	public int dltGotMsg(int msgidx) {
+	//메세지 삭제하기
+	public int dltGotMsg(int msgidx, String receiver_sender) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "UPDATE HOMES_MSG SET RECEIVER_STATE = 0 WHERE MSGIDX = ?";
+			String sql = "UPDATE HOMES_MSG SET "+receiver_sender+"_STATE = 0 WHERE IDX = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, msgidx);
 			

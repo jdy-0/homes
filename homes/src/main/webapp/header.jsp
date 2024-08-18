@@ -42,10 +42,11 @@ function openLoginPopup(){
 			<div id="header_top_right_profile">
 				<a href="/homes/guest/mypage.jsp"><%=usernickname %>님<br>Profile</a>
 				<%
+				int totalUnreadMsg = gdao.countUnreadMsg(userid);
 				boolean unread = gdao.checkNonReadMsg(userid);
-				String msgicon = unread ? "&#128233;" : "&#9993;";
+				String msgicon = unread ? "&#128233;"+" ("+totalUnreadMsg+")" : "&#9993;";
 				%>
-				<a href="/homes/guest/msgMain.jsp"><%=msgicon %></a>							
+				<a href="/homes/guest/msg.jsp"><%=msgicon %></a>							
 			</div>
 			<div id="header_top_right_logout">
 				<a href="/homes/guest/logout.jsp">LOGOUT</a>

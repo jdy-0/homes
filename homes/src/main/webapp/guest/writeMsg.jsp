@@ -6,14 +6,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/homes/css/msgLayout.css">
 </head>
 <style>
 #writeMsg_table{
-	width:1000px;
+	width:700px;
 	border:4px solid black;
 	margin:30px auto;
 	border-spacing:0px;
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 }
 #writeMsg_table th{
 	width:150px;
@@ -33,7 +34,7 @@
 	border:2px solid black;
 	outline:none;
 	padding:4px;
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 	font-size:20px;
 	width:800px;
 }
@@ -41,26 +42,20 @@ textarea{
 	border:2px solid black; 
 	/* border:0; */
 	/* background-color:#e2dccc; */
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 	font-size:20px;
 	outline:none;
 	width:970px;
-}
-.btstyle{
-	background-color:#dec022;
-	font-family: 'SBAggroB';
-	font-size:20px;
-	padding:8px;
-	border:0;
-}
-.btstyle:hover{
-	background-color: #e2dccc;
-    transition: 0.5s;
 }
 </style>
 <body>
 <%@include file="/header.jsp" %>
 <section>
+<%@include file="/guest/msgNav.jsp" %>
+<article class="msgContentArticle">
+<fieldset class="label_fs">
+	<h3>메세지 보내기</h3>
+</fieldset>
 <form name="writeMsg" action="writeMsg_ok.jsp">
 	<input type="hidden" name="sender_id" value="<%=userid%>">
 	<table id="writeMsg_table"> 
@@ -91,6 +86,7 @@ textarea{
 	</tr>
 	</table>
 </form>
+</article>
 </section>
 <%@include file="/footer.jsp" %>
 </body>

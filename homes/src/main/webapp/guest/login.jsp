@@ -110,7 +110,7 @@ if(cks!=null){
 	</table>
 	<div id="loginBottom_div">
 		<div id="findAccount_div">
-			<a href="/homes/guest/findAccount">ID 또는 비밀번호 찾기</a>
+			<a href="/homes/guest/findAccount.jsp">ID 또는 비밀번호 찾기</a>
 		</div>
 		<div id="joinMsg_div">
 			<label>아직 HOMES의 가족이 아니신가요?</label>

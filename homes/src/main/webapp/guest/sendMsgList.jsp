@@ -14,10 +14,10 @@
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/msgNav.jsp" %>
-<article id="msgList" class="msgContentArticle">
-	<fieldset class="label_fs">
-		<h3>받은 메세지</h3>
-	</fieldset>	
+<article class="msgContentArticle">
+<fieldset class="label_fs">
+		<h3>보낸 메세지</h3>
+</fieldset>
 	<%
 	int crpage = 1;
 	int msgSize = 10;
@@ -27,16 +27,15 @@
 		crpage = Integer.parseInt(request.getParameter("crpage"));
 	}
 	
-	ArrayList<MsgDTO> msgList = gdao.getMsgList(userid, crpage, msgSize, "receiver", "no");
+	ArrayList<MsgDTO> sendMsgList = gdao.getMsgList(userid, crpage, msgSize, "sender", "no");
 	
-	if(msgList==null || msgList.size()==0){
+	if(sendMsgList==null || sendMsgList.size()==0){
 		%>
 		<h2>메세지가 없습니다.</h2>
 		<%
 	}else{
 		%>
 		<div class="msgFnBar">
-			<input type="button" value="읽음" class="btstyle" onclick="setReadState();">
 			<input type="button" value="삭제" class="btstyle" onclick="dltMsg();">
 		</div>
 		<form name="msgList_fm">
@@ -52,18 +51,18 @@
 		</thead>
 		<tbody>
 		<%
-		for(int i=0; i<msgList.size(); i++){
-			String readState = (msgList.get(i).getRead_state() == 0) ? "안읽음" : "읽음" ;
+		for(int i=0; i<sendMsgList.size(); i++){
+			String readState = (sendMsgList.get(i).getRead_state() == 0) ? "안읽음" : "읽음" ;
 			%>
 			<tr>
-				<td align="center"><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=msgList.get(i).getIdx() %>"></td>
-				<td><%=msgList.get(i).getSender_id() %></td>
-				<td><a href="msgContent.jsp?msgidx=<%=msgList.get(i).getIdx()%>&crarticle=msgList&crpage=<%=crpage%>"><%=msgList.get(i).getTitle() %></a></td>
+				<td align="center"><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=sendMsgList.get(i).getIdx() %>"></td>
+				<td><%=sendMsgList.get(i).getSender_id() %></td>
+				<td><a href="msgContent.jsp?msgidx=<%=sendMsgList.get(i).getIdx()%>&crarticle=sendMsgList&crpage=<%=crpage%>"><%=sendMsgList.get(i).getTitle() %></a></td>
 				<%
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
-			    String formattedDate = sdf.format(msgList.get(i).getSend_time());
+			    String formattedDate = sdf.format(sendMsgList.get(i).getSend_time());
 				%>
-				<td style="font-size:15px;"><%=formattedDate.substring(0, 16) %></td>
+				<td><%=formattedDate.substring(0, 16) %></td>
 				<td align="center"><%=readState %></td>
 			</tr>
 			<%
@@ -77,7 +76,7 @@
 	</form>
 <div class="msgPageNav">
 <%
-	int totalMsg = gdao.getTotalMsgCount(userid, "receiver");
+	int totalMsg = gdao.getTotalMsgCount(userid, "sender");
 	int totalPageNum = ((totalMsg-1)/msgSize)+1;
 	int startPageNum = ((crpage-1)/pageSize)*pageSize+1;
 	int endPageNum = Math.min(startPageNum+pageSize-1, totalPageNum);
@@ -108,11 +107,12 @@
 <%@include file="/footer.jsp" %>
 <script>
 function selectedMenu(){
-	document.getElementById("msgList_a").style.backgroundColor='white';
-	document.getElementById("msgList_a").style.borderRadius='300px';
+	document.getElementById("sendMstList_a").style.backgroundColor='white';
+	document.getElementById("sendMstList_a").style.borderRadius='300px';
 }
 window.onload=selectedMenu;
 
+//체크박스 일괄 선택 함수
 function checkAllMsg(){
 	if(document.getElementById("checkAll").checked == true){
 		for(var i=0; i<document.msgList_fm.msgCheck.length; i++){
@@ -141,7 +141,7 @@ function dltMsg(){
 	
 	//체크됐을때
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "msgDlt_ok.jsp", true);
+	xhr.open("POST", "sendMsgDlt_ok.jsp", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.onload = function (){
 		if(xhr.status === 200){	//서버가 200을 띄워주면 처리 성공
@@ -152,36 +152,6 @@ function dltMsg(){
 		}
 	};
 	xhr.send(JSON.stringify({dltmsgidx: checkedValues})); //선택된 체크박스 아이디를 제이슨 객체로 전송	
-}
-
-function setReadState(){
-	var checkedValues = [];
-	for(var i=1; i<=document.msgList_fm.msgCheck.length; i++){
-		var ck = document.getElementById("ck_"+i);
-		if(ck && ck.checked){
-			var idx = ck.getAttribute("data-idx");
-			checkedValues.push(idx);
-		}
-	}
-	
-	//체크된 항목이 없을 때 유효성 검사
-	if(checkedValues.length==0){
-		window.alert('체크된 항목 없음');
-		return;
-	}
-	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "setMsgRead_ok.jsp", true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.onload = function(){
-		if(xhr.status === 200){
-			alert('읽음상태 변경');
-			location.reload();
-		}else{
-			alert('오류발생');
-		}
-	};
-	xhr.send(JSON.stringify({setReadidx: checkedValues}));
 }
 </script>
 </body>

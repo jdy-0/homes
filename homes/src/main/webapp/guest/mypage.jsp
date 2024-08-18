@@ -2,13 +2,15 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
-if(session.getAttribute("userid")==null || session.getAttribute("userid")==""){
-%>
-<script>
-window.location.href='/homes';
-</script>
-<%
-} else{
+if(session.getAttribute("useridx")==null || session.getAttribute("useridx")==""){
+	%>
+	<script>
+	window.alert('로그인 후 이용 가능합니다.');
+	location.href='/homes';
+	</script>
+	<%
+	return;
+}
 %>
 <html>
 <head>
@@ -202,4 +204,4 @@ function showSubMenu(submenuId){
 <%@include file="/footer.jsp" %>
 </body>
 </html>
-<%} %>
+
