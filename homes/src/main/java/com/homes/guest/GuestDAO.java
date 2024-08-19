@@ -815,24 +815,25 @@ public class GuestDAO {
 	 */
 
 	// 예약 내역 확인
-	public ArrayList<ReservationDTO> getReserveHistory(int member_idx) {
+	public ArrayList<ReservationDTO> getReserveHistory(int member_idx, String state) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT "
 					+ "FROM ROOM R, RESERVATION_TEST RES, RESERVATION_DETAIL_TEST RES_DE "
 					+ "WHERE RES.ROOM_IDX = R.ROOM_IDX " + "    AND RES.MEMBER_IDX=? "
-					+ "    AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX " + "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
-					+ "ORDER BY RES.RESERVE_IDX DESC";
+					+ "	AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX " + "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
+					+ "	AND RES.STATE = ? "
+					+ "ORDER BY res_de.check_in DESC";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_idx);
-
+			ps.setString(2, state);
 			ArrayList<ReservationDTO> arr = new ArrayList<ReservationDTO>();
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				int reserve_idx = rs.getInt("reserve_idx");
 				String image = rs.getString("image");
 				String room_name = rs.getString("room_name");
-				String state = rs.getString("state");
+				//String state = rs.getString("state");
 				java.sql.Date check_in = rs.getDate("check_in");
 				java.sql.Date check_out = rs.getDate("check_out");
 
@@ -854,6 +855,94 @@ public class GuestDAO {
 					conn.close();
 			} catch (Exception e2) {
 			}
+		}
+	}
+	
+	//내가 찜한 목록 가져오기
+//	public ArrayList<LikeDTO> getMyLike(String id){
+//		try {
+//			conn = com.homes.db.HomesDB.getConn();
+////			String sql = "SELECT * FROM HOMES_LIKE "
+////					+ "WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?) "
+////					+ "ORDER BY IDX";
+//			String sql = "SELECT ROOM_NAME, IMAGE, HOMES_MEMBER.NICKNAME HOST, REGION.REGION_NAME "
+//					+ "FROM ROOM, HOMES_MEMBER, REGION "
+//					+ "WHERE ROOM.ROOM_IDX IN (SELECT ROOM_IDX FROM HOMES_LIKE WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID=?) "
+//					+ "AND ROOM.HOST_IDX = HOMES_MEMBER.IDX "
+//					+ "AND ROOM.REGION_IDX = REGION.REGION_IDX";
+//			ps=conn.prepareStatement(sql);
+//			ps.setString(1, id);
+//			rs=ps.executeQuery();
+//			ArrayList<LikeDTO> arr = new ArrayList<LikeDTO>();
+//			while(rs.next()) {
+//				String room_name = rs.getString("room_name");
+//				String image = rs.getString("image");
+//				String host = rs.getString("host");
+//				String region_name = rs.getString("region_name");
+//				
+//				LikeDTO dto = new LikeDTO(room_name, image, host, region_name);
+//				arr.add(dto);
+//			}
+//			
+//			return arr;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			try {
+//				if(rs!=null) rs.close();
+//				if(ps!=null) ps.close();
+//				if(conn!=null) conn.close();
+//			} catch (Exception e2) {}
+//		}
+//	}
+	
+	//찜 목록에 추가
+	public int addLike(String id, int room_idx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "INSERT INTO HOMES_LIKE VALUES "
+					+ "(HOMES_LIKE_IDX.NEXTVAL, (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?), ?)";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setInt(2, room_idx);
+			
+			int count = ps.executeUpdate();
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//찜 목록에서 제거
+	public int dltLike(String id, int room_idx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "DELETE FROM HOMES_LIKE "
+					+ "WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?) "
+					+ "AND ROOM_IDX = ?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setInt(2, room_idx);
+			
+			int count = ps.executeUpdate();
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
 		}
 	}
 }

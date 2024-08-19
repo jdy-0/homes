@@ -17,6 +17,8 @@
 			<li><a href="javascript:showSubMenu('ul_myreserve');">&#127960;나의 예약</a>
     			<ul id="ul_myreserve" class="ul_submenu" style="display: none;">
         			<li><a href="/homes/guest/myReservation.jsp">예약 내역 보기</a></li>
+        			<li><a href="/homes/guest/myResereHistory.jsp">지난 여행</a></li>
+        			<li><a href="/homes/guest/myCancel.jsp">취소 내역 보기</a></li>
     			</ul>
 			</li>
 			<li><a href="javascript:showSubMenu('ul_myLike');">&#127960;LIKE</a>
