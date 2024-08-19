@@ -28,10 +28,11 @@ resdto.setCheck_in(check_in);
 resdto.setCheck_out(check_out);
 resdto.setRequest(request.getParameter("request"));
 
-resdao.insertReservation(resdto);
-
+int count = resdao.insertReservation(resdto);
+String msg = count>0?"성공":"실패";
 
 %>
 <script>
-	alert('성공');
+	alert('<%=msg%>');
+	window.location.href='../index.jsp';
 </script>

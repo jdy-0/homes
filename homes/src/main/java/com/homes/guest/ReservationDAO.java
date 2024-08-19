@@ -9,7 +9,7 @@ public class ReservationDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
-	public void insertReservation(ReservationDTO rdto) {
+	public int insertReservation(ReservationDTO rdto) {
 		
 		try {
 			conn = com.homes.db.HomesDB.getConn();
@@ -34,11 +34,13 @@ public class ReservationDAO {
 			
 			ps.executeUpdate();
 			
-			insertReservationDetail(r_idx,rdto);
+			return insertReservationDetail(r_idx,rdto);
+			
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return -1;
 		} finally {
 			try {
 				if(rs!=null) rs.close();
@@ -51,7 +53,7 @@ public class ReservationDAO {
 		}
 	}
 	
-	public void insertReservationDetail(int r_idx, ReservationDTO rdto) {
+	public int insertReservationDetail(int r_idx, ReservationDTO rdto) {
 		
 		try {
 			String sql = " insert into reservation_detail_test values("
@@ -64,11 +66,12 @@ public class ReservationDAO {
 			ps.setString(5, rdto.getRequest());
 			ps.setInt(6,rdto.getCount());
 			
-			ps.executeUpdate();
+			return ps.executeUpdate();
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return -1;
 		} finally {
 			try {
 				
@@ -103,7 +106,7 @@ public class ReservationDAO {
 					+ "    r.RESERVE_IDX = rd.RESERVE_IDX "
 					+ "WHERE state = '예약대기중' "
 					+ "	   and r.ROOM_IDX = ? "
-					+ "	   and check_in>sysdate ";
+					+ "	   and TRUNC(check_in) >= TRUNC(sysdate) ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1,room_idx);
 	        rs = ps.executeQuery();

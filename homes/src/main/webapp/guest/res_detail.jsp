@@ -11,7 +11,7 @@
 <%
 int reserve_idx =Integer.parseInt(request.getParameter("reserve_idx"));
 String res_state = refdao.checkCanRefund(reserve_idx);
-if(!res_state.contains("이용")){
+if(!res_state.contains("이용") && !res_state.contains("취소")){
 	
 %>
 <section>
