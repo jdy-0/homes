@@ -79,7 +79,21 @@
     font-size: 15px;
     text-align: center;
 }
+.region_img {
+	border: 1px solid #ccc;
+	width: 150px;
+	height: 100px;
+	position: relative;
+	background-size: contain;  
+    background-repeat: no-repeat;  
+    background-position: center;
+}
 </style>
+<script>
+function openrgProfile(param) {
+	location.href='/homes/admin/admin_region_profile.jsp?param='+param;
+}
+</script>
 </head>
 <body>
 <%@ include file="adminheader.jsp"%>
@@ -98,7 +112,13 @@
 			    <li><a href="#">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
-			    <li><a href="/homes/admin/admin_region.jsp">지역 관리</a></li>		
+			    <li>
+			    	지역 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_region.jsp">지역 목록</a></li>
+			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
+			    	</ul>
+			    </li>	
 			    <li><a href="#">후기 관리</a></li>
 			    <li><a href="#">숙소 관리</a></li>	    
 			    <li><a href="#">예약 관리</a></li>
@@ -108,7 +128,7 @@
 	    </nav>
 	    
 	</div>
-<form name="regionImg" action="admin_region_profile.jsp">
+	
 	<div class="content">
 		<h2>지역 관리</h2>
 		<table>
@@ -136,8 +156,10 @@
 					%>
 					<tr>
 						<td><%=adao.getParentName(arr.get(i).getRegion_idx()) %></td>
-						<td><%=arr.get(i).getImg()  %></td>
-						<td><input type="submit" name="<%=arr.get(i).getRegion_idx() %>" value="수정" class="rbutton"></td>		
+						<td><img class="region_img" src="<%=arr.get(i).getImg()  %>" onerror="this.src='/homes/img/no_image.jpg'"></td>
+						<td>
+							<input type="button" value="수정" class="rbutton" onclick="openrgProfile(<%=arr.get(i).getRegion_idx() %>);">	
+						</td>		
 						<td><%=arr.get(i).getClick()  %></td>
 					</tr>
 					<%
@@ -147,7 +169,6 @@
 			</tbody>
 		</table>
 	</div>
-</form>	
 </fieldset>
 </article>
 </section>

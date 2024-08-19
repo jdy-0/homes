@@ -103,7 +103,10 @@ function selectImage(event) {
     reader.readAsDataURL(event.target.files[0]);
 }
 </script>
-
+<%
+	String region_idx_s=request.getParameter("param");
+	int region_idx=Integer.parseInt(region_idx_s);
+%>
 </head>
 <body>
 <%@ include file="adminheader.jsp"%>
@@ -122,7 +125,13 @@ function selectImage(event) {
 			    <li><a href="#">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
-			    <li><a href="/homes/admin/admin_region.jsp">지역 관리</a></li>
+			    <li>
+			    	지역 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_region.jsp">지역 목록</a></li>
+			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
+			    	</ul>
+			    </li>
 			    <li><a href="#">후기 관리</a></li>
 			    <li><a href="#">숙소 관리</a></li>	    
 			    <li><a href="#">예약 관리</a></li>
@@ -138,8 +147,8 @@ function selectImage(event) {
 		<div>
 			<label for="region_sum" class="label">
 	       		<span>지역이름: </span>
-	       		<span>서울특별시</span>
-				<input type="hidden" name="ridx" value="1">
+	       		<span><%=adao.getParentName(region_idx) %></span>
+				<input type="hidden" name="ridx" value="<%=region_idx %>">
 	       </label>		
 
 		</div>

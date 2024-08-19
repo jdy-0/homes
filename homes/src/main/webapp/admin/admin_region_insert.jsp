@@ -27,7 +27,7 @@ fieldset{
 legend{
    font-size:30px;
 }
-#rgupdate_frame{
+#rginsert_frame{
    margin:20px auto;
    display:block;
    justify-content: space-between;
@@ -63,32 +63,20 @@ legend{
 }
 
 </style>
-<%
-	String region_idx_s=request.getParameter("param");
-	int region_idx=Integer.parseInt(region_idx_s);
-%>
 </head>
 <body>
 <fieldset>
-   <legend>지역수정</legend>
-   <form name="rgupdate" action="admin_region_update_ok.jsp">
-   <div id="rgupdate_frame">
-   <%
-		RegionDTO rg=new RegionDTO();
- 		rg=adao.getRegion(region_idx);
-	%>
+   <legend>지역추가</legend>
+   <form name="rginsert" action="admin_region_insert_ok.jsp">
+   <div id="rginsert_frame">
    <div>
       <label>지역이름</label>
-      <input type="text" name="regionName" id="regionName" value="<%=rg.getRegion_name()%>" required="required">      
+      <input type="text" name="regionName" id="regionName" required="required">      
    </div>
    <div>
       <label>상위지역</label>
       <select name="select_parent" class="select_things">
-      		<%
-      		if(rg.getParent_idx()==0){
-      			%><option value="0">-</option><%
-      		} else {
-      		%>
+      			<option value="0">-</option>
 				<%	
 				ArrayList<RegionDTO> region=new ArrayList<>();
 				region=rdao.getRegion();
@@ -97,12 +85,10 @@ legend{
 					<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
 		    	<%
 	    		} 
-			}
 	    	%>
 		</select>   
    </div>
-   		<input type="hidden" name="regionIdx" value="<%=rg.getRegion_idx() %>">
-      <input type="submit" id="button" value="수정">
+      <input type="submit" id="button" value="추가">
    </div>
    </form>
 </fieldset>

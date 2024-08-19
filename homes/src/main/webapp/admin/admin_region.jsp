@@ -84,6 +84,10 @@
 function openrgUpdate(param) {
 	window.open('/homes/admin/admin_region_update.jsp?param='+param,'adminrgUpdate','width=550,height=350');
 }
+
+function openrgInsert() {
+	window.open('/homes/admin/admin_region_insert.jsp','adminrgInsert','width=550,height=350');
+}
 </script>
 </head>
 <body>
@@ -103,7 +107,13 @@ function openrgUpdate(param) {
 			    <li><a href="#">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
-			    <li><a href="/homes/admin/admin_region.jsp">지역 관리</a></li>		
+			    <li>
+			    	지역 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_region.jsp">지역 목록</a></li>
+			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
+			    	</ul>
+			    </li>		
 			    <li><a href="#">후기 관리</a></li>
 			    <li><a href="#">숙소 관리</a></li>	    
 			    <li><a href="#">예약 관리</a></li>
@@ -142,8 +152,8 @@ function openrgUpdate(param) {
 					<tr>
 						<td><%=arr.get(i).getRegion_name() %></td>
 						<td><%=adao.getParentName(arr.get(i).getParent_idx())  %></td>
-						<td><input type="button" name="<%=arr.get(i).getRegion_idx() %>" value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
-						<td><input type="button" name="<%=arr.get(i).getRegion_idx() %>" value="삭제" class="rbutton"></td>
+						<td><input type="button"  value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
+						<td><input type="button"  value="삭제" class="rbutton"></td>
 					</tr>
 					<%
 				}
@@ -152,10 +162,9 @@ function openrgUpdate(param) {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3" align="center">
-						
+					<td colspan="3">
 					</td>
-					 <td><a href="#" style="text-decoration: none;">지역추가하기</a></td>
+					<td><input type="button" value="추가"  class="rbutton" onclick="openrgInsert();" ></td>
 				</tr>
 			</tfoot>
 			

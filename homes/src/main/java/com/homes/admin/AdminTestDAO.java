@@ -526,7 +526,7 @@ public class AdminTestDAO {
 	public  ArrayList<Region_DetailDTO> regionDetailTable() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select * from region_detail";
+			String sql="select * from region_detail order by region_idx asc";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			ArrayList<Region_DetailDTO> rdt= new ArrayList<>();
@@ -542,6 +542,158 @@ public class AdminTestDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 추가를 위한 nextval 받아오기*/
+	public int regionNextval(){
+		try {
+			String sql="select region_seq.nextval from dual";
+			ps = conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			int nval=0;
+			if(rs.next()) {
+				nval=rs.getInt(1);
+			}
+			return nval;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	/**지역 추가하는 메소드(대분류)*/
+	public int regionInsertSubmit(String name) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			
+			int ridx=regionNextval();
+			String sql="insert into region (region_idx, region_name, parent_idx, lev) values (?, ?, null, 1)";
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, ridx);
+			ps.setString(2, name);
+			
+			int count=ps.executeUpdate();
+			if(count>0) {
+				//지역 대분류 사진 no_image로 초기화하는 메소드
+				return regionImageInsert(ridx);
+			}
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 사진 추가하는 메소드(대분류)*/
+	public int regionImageInsert(int ridx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="insert into region_detail (region_idx, img, click) values (?, '/homes/img/no_image.jpg', 0)";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, ridx);
+	
+			int count=ps.executeUpdate();
+			
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**지역 추가하는 메소드(소분류)*/
+	public int regionInsertSubmit(String name, int pidx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="insert into region (region_idx, region_name, parent_idx, lev) values (region_seq.nextval, ?, ?, 2)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, pidx);
+			
+			int count=ps.executeUpdate();
+			
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**중복검사 관련 메소드(대분류)*/
+	public boolean nameCheck(String name) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select region_name from region where lev=1 and region_name=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, name);
+			rs=ps.executeQuery();
+			
+			return rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;		
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**중복검사 관련 메소드(소분류)*/
+	public boolean nameCheck(int pidx, String name) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select region_name from region where lev=2 and parent_idx=? and region_name=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, pidx);
+			ps.setString(2, name);
+			rs=ps.executeQuery();
+			
+			return rs.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;		
 		} finally {
 			try {
 				if(rs!=null) rs.close();
