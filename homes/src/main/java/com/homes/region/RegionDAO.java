@@ -15,7 +15,8 @@ public class RegionDAO {
 			conn=com.homes.db.HomesDB.getConn();
 			String sql="select * from region r "
 					+ "join region_detail rd on r.region_idx=rd.region_idx "
-					+ "where r.lev=1 ";
+					+ "where r.lev=1 "
+					+ "order by r.region_idx asc";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			ArrayList<RegionDTO> region= new ArrayList<>();

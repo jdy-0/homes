@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <jsp:useBean id="adao" class="com.homes.admin.AdminTestDAO"></jsp:useBean> 
 <%
-String idx_s=request.getParameter("regionIdx");
-int idx=Integer.parseInt(idx_s);
 String name=request.getParameter("regionName");
 String pidx_s=request.getParameter("select_parent");
 int pidx=Integer.parseInt(pidx_s);
@@ -18,12 +16,12 @@ if(pidx==0){
 if(!check){
 	int result=0;
 	if(pidx==0){	
-		result=adao.regionUpdateSubmit(idx, name);
+		result=adao.regionInsertSubmit(name);
 	} else {	
-		result=adao.regionUpdateSubmit(idx, name, pidx);
+		result=adao.regionInsertSubmit(name, pidx);
 	}
 	
-	String msg=result>0 ? "지역 수정 완료" : "지역 수정 실패";
+	String msg=(result==1) ? "지역 추가 완료" : "지역 추가 실패";
 	%>
 	<script>
 	window.alert('<%=msg %>');
