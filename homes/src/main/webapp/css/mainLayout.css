@@ -68,6 +68,9 @@ body{
     font-family: 'SBAggroB';
     font-size: 65px;
 }
+.top{
+	width:100%;
+}
 #header_top_center{
 	background:#6f7bd0;
 	width:650px;

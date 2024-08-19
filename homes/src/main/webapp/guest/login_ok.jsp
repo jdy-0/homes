@@ -57,7 +57,7 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	%>
 	<script>
 	window.alert('<%=usernickname%>님 로그인되었습니다.');
-	window.alert('room_arr세션저장');
+	//window.alert('room_arr세션저장');
 	window.location.href='/homes';
 	</script>
 	<%

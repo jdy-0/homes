@@ -118,6 +118,8 @@ function FileSelect(event) {
 <body>
 
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
+<section style="display: flex;">
+<%@ include file="hostheader.jsp" %>
     <main class="container">
     	
         <div class="top">
@@ -128,19 +130,25 @@ function FileSelect(event) {
                  <div class="room-images">
                 	<div class="room-main">
                 		<fieldset>
-                			<legend>대표 이미지</legend>
-                    	<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
-                    
-                    	<input type="file" id="fileUpdate" accept="image/*" onchange="FileSelect(event)">
+                		<legend>대표 이미지</legend>
+                		<form name="room-mainimg" action="host_room_mainimg_ok.jsp" enctype="multipart/form-data"  method="post">
+                			
+                    			<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+                    			<input type ="hidden" value=<%=idx %> name="room_idx">
+                    			<input type ="hidden" value=<%=room.getImage() %> name="room_path">
+                    			<input type ="hidden" value=<%=room.getRoom_name() %> name="room_name">
+                    			<input type="file" id="fileUpdate" accept="image/*" name="images_file" onchange="FileSelect(event)" >
+                    			<input type="submit" name="room-mainimg" value="등록">
+                    	</form>
                     	</fieldset>
                     </div>
                     
                    
                     <%
                     ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
-                    
+                    int imgCount = arrImg.size();
 					if(arrImg != null && !arrImg.isEmpty()){
-						for(int i =0;i<4;i++){
+						for(int i =0;i < imgCount && i < 4;i++){
 							%>
 						<div class="small-image">
 							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
@@ -167,7 +175,7 @@ function FileSelect(event) {
                 		>
                 			<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
                 			<input type="hidden" name="room_path" value="<%= room_path_sql  %>">
-                			<input type="file" accept="image/*" name="images_file" multiple >
+                			<input type="file" accept="image/*" name="images_file">
                 			<input type="submit" value="등록하기">
                 		</form>
                 	
@@ -197,7 +205,7 @@ function FileSelect(event) {
 										<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
 										<input type="hidden" value="<%=id %>" name= "user_name">
 										<input type="hidden" value="<%= room.getRoom_name() %>" name= "room_name">
-										
+										<input type="hidden" value="<%= room_path_sql  %>"  name="room_path">
 									</label>
                  					</a>
                  				</form>
@@ -209,9 +217,9 @@ function FileSelect(event) {
                 	
                 	
                 </div>
-
+				<form name="room_update" action="room_update_ok.jsp">
 				<div class="room-input">
-
+				
 					<!-- 숙소 이름 -->
 					<h2>숙소 이름: <input type="text"
 						id="room_name" name="room_name" value="<%=room.getRoom_name()%>"
@@ -246,8 +254,12 @@ function FileSelect(event) {
 						value="<%=room.getRoom_max()%>" placeholder="최대 인원수"
 						title="최대 인원수를 입력하세요" required> 명
 					</label>
+					
+					<input type="hidden" value="<%=roomIdxParam %>"name="room_idx">
+					<input type="submit" class="button" value="숙소 정보 수정">
+					
 				</div>
-
+				</form>
 
 				<h2>후기 관리</h2>
                 <%
@@ -285,10 +297,7 @@ function FileSelect(event) {
                     <input type="hidden" name="checkin" value="<%= request.getParameter("checkin") %>">
                     <input type="hidden" name="checkout" value="<%= request.getParameter("checkout") %>">
                     <input type="hidden" name="guests" value="<%=request.getParameter("guests") %>">
-                    
-                    
-                    
-                    <button type="submit" class="button">수정하기</button>
+                    <!-- <button type="submit" class="button">수정하기</button> -->
                		<%
                		} 
                		%>
@@ -297,6 +306,7 @@ function FileSelect(event) {
         </div>
        </div>
     </main>
+    </section>
     <%@ include file="/footer.jsp"%>
 </body>
 </html>
