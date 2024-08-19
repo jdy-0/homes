@@ -72,6 +72,10 @@ MsgDTO msgdto = gdao.getMsgContent(msgidx);
 			<td><%=msgdto.getSender_id() %></td>
 		</tr>
 		<tr>
+			<th>받는사람</th>
+			<td><%=msgdto.getReceiver_id() %></td>
+		</tr>
+		<tr>
 			<th>제목</th>
 			<td><%=msgdto.getTitle() %></td>
 		</tr>

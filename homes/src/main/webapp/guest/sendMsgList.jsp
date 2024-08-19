@@ -43,7 +43,7 @@
 		<thead>
 		<tr>
 			<th><input type="checkbox" class="checkbox" id="checkAll" onclick="checkAllMsg();"></th>
-			<th>보낸사람</th>
+			<th>받는사람</th>
 			<th>제목</th>
 			<th>전송시간</th>
 			<th>읽음</th>

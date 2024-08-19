@@ -2,53 +2,33 @@
     pageEncoding="UTF-8"%>
 <%@ page import = "java.util.*" %>
 <%@ page import = "com.homes.guest.*" %>
-<style>
-#myProfile{
-	font-family: 'SBAggroB';
-	width:1000px;
-	border-right:5px solid black;
-}
-#myProfile table{
-	margin: 100px 140px 20px;
-    /* width: 800px; */
-}
-#myProfile table th{
-	width:200px;
-	font-size:25px;
-	padding:15px;
-}
-#myProfile table td{
-	font-size:23px;
-	padding:15px;
-}
-.textfield{
-	width:280px;
-	padding:15px;
-	font-size:20px;
-	font-family: 'SBAggroB';
-	outline:none;
-	border:4px solid black;
-}
-.button{
-	width:100px;
-	padding:10px;
-	font-size:20px;
-	background-color:#dec022;
-	color:black;
-	font-family: 'SBAggroB';
-	border:4px solid black;
-	margin:10px;
-}
-.button:hover{
-	background-color:#dec022;
-}
-</style>
+<!DOCTYPE html>
 <%
-String id = (String)session.getAttribute("userid");
-GuestDAO dao = new GuestDAO();
-GuestDTO dto = dao.getUserProfile(id);
+if(session.getAttribute("useridx")==null || session.getAttribute("useridx")==""){
+	%>
+	<script>
+	window.alert('로그인 후 이용 가능합니다.');
+	location.href='/homes';
+	</script>
+	<%
+	return;
+}
 %>
-<article id="myProfile" style="display:none;">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/homes/css/myPageLayout.css">
+</head>
+<body>
+<%@include file="/header.jsp" %>
+<section>
+<%@include file="/guest/myPageNav.jsp" %>
+<%
+GuestDTO dto = gdao.getUserProfile(userid);
+%>
+<article id="myProfile" class="myPageContent_ar">
 	<fieldset class="label_fs">
 		<h3><%=session.getAttribute("usernickname") %>님 계정 정보</h3>
 	</fieldset>
@@ -93,10 +73,13 @@ GuestDTO dto = dao.getUserProfile(id);
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<input type="button" value="돌아가기" class="button">
 			<input type="submit" value="저장하기" class="button">
 		</td>
 	</tr>
 	</table>
-</form>
+	</form>
 </article>
+</section>
+<%@include file="/footer.jsp" %>
+</body>
+</html>
