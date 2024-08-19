@@ -1,6 +1,7 @@
 @charset "UTF-8";
 section{
 	display:flex;
+	font-family: 'SBAggroB';
 }
 .label_fs{
 	background-color:#dec022;
@@ -9,6 +10,9 @@ section{
 	margin:0px;
 	font-family: 'SBAggroB';
 	text-align:start;
+}
+h2{
+	text-align:center;
 }
 #msgNav{
 	width:420px;
