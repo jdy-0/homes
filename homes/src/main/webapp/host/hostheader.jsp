@@ -30,7 +30,7 @@
 </style>
 <nav id="host_nav">
 	<ul>
-		<li><a href="/homes/host/hostmain.jsp">호스트 메인</a></li>
+		
 		<li><a href="/homes/host/hostmain.jsp">숙소 관리</a></li>
 		<li><a href="/homes/host/hostbooking.jsp">예약 관리</a></li>
 		<li><a href="/homes/host/hostmanage.jsp">숙소 이용 현황</a></li>

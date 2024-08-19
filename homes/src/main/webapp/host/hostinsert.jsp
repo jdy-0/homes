@@ -10,52 +10,7 @@
     <meta charset="UTF-8">
     <title>숙소 등록</title>
     <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
-    <!-- <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css"> -->
-    <!-- <style>
-        img {
-            width: 400px;
-            height: 300px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        div {
-            border: 1px solid black;
-            text-align: center;
-            padding: 10px;  /* 패딩 추가 */
-        }
-        .container {
-            display: flex;
-            gap: 10px;  /* 열 사이의 간격을 조정합니다 (선택적) */
-        }
-        .column {
-            flex: 1; /* 열의 비율을 설정합니다 */
-            padding: 20px;
-            background-color: lightgray;
-            border: 1px solid #ccc;
-        }
-        .column:nth-child(1) {
-            background-color: lightcoral;
-        }
-        .column:nth-child(2) {
-            background-color: lightseagreen;
-        }
-        .column:nth-child(3) {
-            background-color: lightsteelblue;
-        }
-        #roominsert {
-            text-align: left;
-        }
-        #roominsert h2{
-        	text-align: center;
-        }
-        input[type="number"] {
-            font-size: 14px; /* 폰트 크기 설정 */
-            padding: 2px; /* 입력 필드 내 여백 설정 */
-            width: 50px; /* 적절한 너비 설정 */
-            box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 설정 */
-        }
-        
-    </style> -->
+  
 <style>
 section{
 	font-family: 'SBAggroB';

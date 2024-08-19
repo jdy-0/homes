@@ -662,6 +662,92 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	public int RoomDetailImg_delete(String Room_Path_SqlSet) {
+		int result=0;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="delete room_image where photo_url= ? " ;
+				
+
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, Room_Path_SqlSet);
+			
+			
+			result=ps.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return result;
+		}finally {
+			try {
+				
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	public int RoomMainImg_update(String setPath,String Room_idx,String Img_Path) {
+		int result=0;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql ="update room set image = ? "
+					+ "where room_idx = ? and "
+					+ "image= ?";
+			
+			ps=conn.prepareStatement(sql);
+			
+			
+			ps.setString(1, setPath);
+			ps.setString(2, Room_idx);
+			ps.setString(3, Img_Path);
+			
+			
+			
+			result=ps.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return result;
+		}finally {
+			try {
+				
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+}
+	
+	public int Room_update(RoomDTO rdto) {
+		int result=0;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "UPDATE room " +
+                    "SET room_name = ?, goodthing = ?, addr_detail = ?, price = ?, room_min = ?, room_max = ? " +
+                    "WHERE room_idx = ?";
+			
+			ps=conn.prepareStatement(sql);
+			
+			ps.setString(1, rdto.getRoom_name());
+            ps.setString(2, rdto.getGoodthing());
+            ps.setString(3, rdto.getAddr_detail());
+            ps.setInt(4, rdto.getPrice());
+            ps.setInt(5, rdto.getRoom_min());
+            ps.setInt(6, rdto.getRoom_max());
+            ps.setInt(7, rdto.getRoom_idx());
+			
+			result=ps.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return result;
+		}finally {
+			try {
+				
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+}
 }
 
 

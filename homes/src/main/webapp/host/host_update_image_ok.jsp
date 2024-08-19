@@ -6,12 +6,14 @@
 <%@page import="java.util.*"%>
 <%@ page import="com.homes.room.RoomDTO" %>
 <jsp:useBean id="wf" class="com.homes.host.WebFolderDAO" scope="session"></jsp:useBean>
-
+<jsp:useBean id="rdao" class="com.homes.room.RoomDAO" scope="session"></jsp:useBean>
 <%
 	String userid = (String)session.getAttribute("userid");
 	int useridx=(Integer)session.getAttribute("useridx");
 	int room_idx=Integer.parseInt(request.getParameter("room_idx"));
 	String room_name="";
+	
+	
 	ArrayList<RoomDTO> arr= (ArrayList<RoomDTO>)session.getAttribute("room_arr");
 	
 	String path=request.getRealPath("/");
@@ -23,6 +25,7 @@
 			room_name=arr.get(i).getRoom_name();
 			System.out.println(room_name);
 		}
+			
 	}
 	}else{
 		%>
@@ -60,6 +63,10 @@
 		<%
 	}
 %>
+
+
+
+
 <script>
 
 window.location.href = '/homes/host/host_update.jsp?room_idx=<%=room_idx%>'; 

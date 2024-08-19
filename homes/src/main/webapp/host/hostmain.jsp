@@ -88,9 +88,15 @@ form{
 	border:4px solid black;
 }
 
-#roomselect {
+#roomselect li{
             list-style:none;
         }
+  img {
+            width: 1000px;
+            height: 800px;
+            display: block;
+            margin-bottom: 10px;
+        }       
 </style>
 </head>
 
@@ -98,23 +104,23 @@ form{
 <%@ include file="/header.jsp"%>
 <%	
 
-	
- Integer useridx = (Integer)session.getAttribute("useridx");
-if(useridx==null){
-	%><script>
-	window.location='/homes/guest/login.jsp';
-	</script>
-	<%
-	
-	}
+//Integer useridx = (Integer)session.getAttribute("useridx");
+
+Integer useridx=0;
+useridx = (Integer)session.getAttribute("useridx");
+
+if (useridx == null || useridx == 0) {
+%>
+    <script>
+    window.location.href = '/homes/guest/login.jsp';
+    return;
+    </script>
+<%
+}
+
+
 ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 %>
-
-
-	<!--useridx1=Integer.parseInt((String)request.getAttribute("useridx"));  -->
-	
-	
-	
 
 
 

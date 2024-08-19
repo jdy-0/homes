@@ -35,6 +35,18 @@ public class RoomDTO {
 		
 	}
 	
+	public RoomDTO(int room_idx, String room_name, String goodthing, String addr_detail, int price, int room_min,
+			int room_max) {
+		
+		this.room_idx = room_idx;
+		this.room_name = room_name;
+		this.goodthing = goodthing;
+		this.addr_detail = addr_detail;
+		this.price = price;
+		this.room_min = room_min;
+		this.room_max = room_max;
+	}
+
 	public RoomDTO(int room_idx,String member_id, int rate, String content) {
 		super();
 		this.room_idx = room_idx;
