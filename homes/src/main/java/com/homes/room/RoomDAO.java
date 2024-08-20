@@ -25,7 +25,7 @@ public class RoomDAO {
                 String goodthing = rs.getString("goodthing");
                 String addr_detail = rs.getString("addr_detail");
                 int price = rs.getInt("price");
-                String map_url = rs.getString("map_url");
+                //String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
 
                 RoomDTO roomDTO = new RoomDTO();
@@ -63,10 +63,10 @@ public class RoomDAO {
                 String goodthing = rs.getString("goodthing");
                 String addr_detail = rs.getString("addr_detail");
                 int price = rs.getInt("price");
-                String map_url = rs.getString("map_url");
+                //String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
                 	
-                RoomDTO roomDTO = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+                RoomDTO roomDTO = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
                 roomList.add(roomDTO);
             }
         } catch (Exception e) {
@@ -88,8 +88,8 @@ public class RoomDAO {
         int result = 0;
         try {
             conn = com.homes.db.HomesDB.getConn();
-            String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, MAP_URL, IMAGE) "
-                    + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, IMAGE) "
+                    + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, roomDTO.getHost_idx());
             ps.setInt(2, roomDTO.getRegion_idx());
@@ -97,7 +97,7 @@ public class RoomDAO {
             ps.setString(4, roomDTO.getGoodthing());
             ps.setString(5, roomDTO.getAddr_detail());
             ps.setInt(6, roomDTO.getPrice());
-            ps.setString(7, roomDTO.getMap_url());
+           // ps.setString(7, roomDTO.getMap_url());
             ps.setString(8, roomDTO.getImage());
 
             result = ps.executeUpdate();
@@ -128,10 +128,10 @@ public class RoomDAO {
                 String goodthing = rs.getString("goodthing");
                 String addr_detail = rs.getString("addr_detail");
                 int price = rs.getInt("price");
-                String map_url = rs.getString("map_url");
+               // String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
 
-                room = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+                room = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,10 +257,10 @@ public class RoomDAO {
 					String goodthing=rs.getString("goodthing");
 					String addr_detail=rs.getString("addr_detail");
 					int price=rs.getInt("price");
-					String map_url=rs.getString("map_url");
+					//String map_url=rs.getString("map_url");
 					String image=rs.getString("image");
 					
-					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
 					room.add(dto);
 				}while(rs.next());
 				
@@ -324,10 +324,10 @@ public class RoomDAO {
 					String goodthing=rs.getString("goodthing");
 					String addr_detail=rs.getString("addr_detail");
 					int price=rs.getInt("price");
-					String map_url=rs.getString("map_url");
+					//String map_url=rs.getString("map_url");
 					String image=rs.getString("image");
 					
-					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
 					room.add(dto);
 				}while(rs.next());
 				
@@ -405,10 +405,10 @@ public class RoomDAO {
 						String goodthing=rs.getString("goodthing");
 						String addr_detail=rs.getString("addr_detail");
 						int price=rs.getInt("price");
-						String map_url=rs.getString("map_url");
+						//String map_url=rs.getString("map_url");
 						String image=rs.getString("image");
 
-						RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+						RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
 						room[i]=dto;
 					}while(rs.next());
 				}
@@ -448,10 +448,10 @@ public class RoomDAO {
 			String goodthing= rs.getString("goodthing");
 			String addr_detail= rs.getString("addr_detail");
 			int price= rs.getInt("price");
-			String map_url=rs.getString("map_url");
+			//String map_url=rs.getString("map_url");
 			String image= rs.getString("image");
 			int state= rs.getInt("state");
-			RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url,image,state);
+			RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state);
 			arr.add(dto);
 			System.out.println(arr.get(0).getRoom_name());
 		}
@@ -519,12 +519,12 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	public int insertRoom2(int hostIdx,int regionIdx,String roomName,String goodthing,String addrDetail,int price,String mapUrl,String img,int roomMin,int roomMax) {
+	public int insertRoom2(int hostIdx,int regionIdx,String roomName,String goodthing,String addrDetail,int price,String img,int roomMin,int roomMax) {
         int result = 0;
         try {
             conn = com.homes.db.HomesDB.getConn();
-            String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, MAP_URL, IMAGE, ROOM_MIN,ROOM_MAX) "
-                    + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, IMAGE, ROOM_MIN,ROOM_MAX) "
+                    + "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, hostIdx);
             ps.setInt(2, regionIdx);
@@ -532,7 +532,7 @@ public class RoomDAO {
             ps.setString(4, goodthing);
             ps.setString(5, addrDetail);
             ps.setInt(6, price);
-            ps.setString(7, mapUrl);
+          //  ps.setString(7, mapUrl);
             ps.setString(8, img);
             ps.setInt(9, roomMin);
             ps.setInt(10, roomMax);
