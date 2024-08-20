@@ -704,4 +704,111 @@ public class AdminTestDAO {
 			}
 		}
 	}
+	
+	
+	//host
+	/**승인 안 된 room 정보를 가져오는 메소드*/
+	public ArrayList<RoomDTO> getRoomState() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from room where state=0";
+			ps=conn.prepareStatement(sql);
+
+			rs=ps.executeQuery();
+			ArrayList<RoomDTO> room= new ArrayList<>();
+			if(rs.next()) {
+				do {
+					int room_idx=rs.getInt("room_idx");
+					int host_idx=rs.getInt("host_idx");
+					int region_idx=rs.getInt("region_idx");
+					String room_name=rs.getString("room_name");
+					String goodthing=rs.getString("goodthing");
+					String addr_detail=rs.getString("addr_detail");
+					int price=rs.getInt("price");
+					String map_url=rs.getString("map_url");
+					String image=rs.getString("image");
+					
+					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+					room.add(dto);
+				}while(rs.next());
+				
+			}
+			
+			return room;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**숙소 idx로 숙소 정보를 가져오는 메소드*/
+	public RoomDTO getRoom(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from room where room_idx="+idx;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			RoomDTO dto=null;
+			if(rs.next()) {
+				int room_idx=rs.getInt("room_idx");
+				int host_idx=rs.getInt("host_idx");
+				int region_idx=rs.getInt("region_idx");
+				String room_name=rs.getString("room_name");
+				String goodthing=rs.getString("goodthing");
+				String addr_detail=rs.getString("addr_detail");
+				int price=rs.getInt("price");
+				String map_url=rs.getString("map_url");
+				String image=rs.getString("image");
+				int state=rs.getInt("state");
+				int room_min=rs.getInt("room_min");
+				int room_max=rs.getInt("room_max");
+				//선언 잘못되어있어서 아직 못받아옴
+				//dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image, state, room_min, room_max);
+				
+			}
+			return dto;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**숙소 승인하는 메소드*/
+	public int roomStateUpdate(int ridx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update room set state=1 where room_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, ridx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 }
