@@ -158,7 +158,7 @@ function openhstRoom(param) {
 			<tfoot>
 				<tr>
 					<td colspan="4">
-					일괄승인을 해 말어
+					일괄승인 예정
 					</td>
 				</tr>
 			</tfoot>
