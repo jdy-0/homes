@@ -859,44 +859,70 @@ public class GuestDAO {
 	}
 	
 	//내가 찜한 목록 가져오기
-//	public ArrayList<LikeDTO> getMyLike(String id){
-//		try {
-//			conn = com.homes.db.HomesDB.getConn();
-////			String sql = "SELECT * FROM HOMES_LIKE "
-////					+ "WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?) "
-////					+ "ORDER BY IDX";
-//			String sql = "SELECT ROOM_NAME, IMAGE, HOMES_MEMBER.NICKNAME HOST, REGION.REGION_NAME "
-//					+ "FROM ROOM, HOMES_MEMBER, REGION "
-//					+ "WHERE ROOM.ROOM_IDX IN (SELECT ROOM_IDX FROM HOMES_LIKE WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID=?) "
-//					+ "AND ROOM.HOST_IDX = HOMES_MEMBER.IDX "
-//					+ "AND ROOM.REGION_IDX = REGION.REGION_IDX";
-//			ps=conn.prepareStatement(sql);
-//			ps.setString(1, id);
-//			rs=ps.executeQuery();
-//			ArrayList<LikeDTO> arr = new ArrayList<LikeDTO>();
-//			while(rs.next()) {
-//				String room_name = rs.getString("room_name");
-//				String image = rs.getString("image");
-//				String host = rs.getString("host");
-//				String region_name = rs.getString("region_name");
-//				
-//				LikeDTO dto = new LikeDTO(room_name, image, host, region_name);
-//				arr.add(dto);
-//			}
-//			
-//			return arr;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			try {
-//				if(rs!=null) rs.close();
-//				if(ps!=null) ps.close();
-//				if(conn!=null) conn.close();
-//			} catch (Exception e2) {}
-//		}
-//	}
-	
+	public ArrayList<LikeDTO> getMyLike(String id){
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "SELECT hl.idx as idx, r.room_idx, r.room_name, r.image as room_image, r.price, r.host_idx, hm.nickname as host_nickname, rg.region_name "
+					+ "FROM room r "
+					+ "JOIN region rg ON rg.region_idx = r.region_idx "
+					+ "JOIN homes_member hm ON hm.idx = r.host_idx "
+					+ "JOIN homes_member hm ON hm.idx = r.host_idx "
+					+ "JOIN (SELECT room_idx, idx FROM homes_like WHERE member_idx = (SELECT idx FROM homes_member WHERE id = ? ) "
+					+ "		) hl ON r.room_idx = hl.room_idx "
+					+ "ORDER BY hl.idx desc";
+			
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			rs=ps.executeQuery();
+			ArrayList<LikeDTO> arr = new ArrayList<LikeDTO>();
+			while(rs.next()) {
+				int idx = rs.getInt("idx");
+				int room_idx = rs.getInt("room_idx");
+				String room_name = rs.getString("room_name");
+				String room_image = rs.getString("room_image");
+				int price = rs.getInt("price");
+				int host_idx = rs.getInt("host_idx");
+				String host_nickname = rs.getString("host_nickname");
+				String region_name = rs.getString("region_name");
+				
+				LikeDTO dto = new LikeDTO(idx, room_idx, room_name, room_image, price, host_idx, host_nickname, region_name);
+				arr.add(dto);
+			}
+			return arr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	//해당 숙소가 찜 목록에 있는지 확인
+	public boolean existLike(int member_idx, int room_idx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "SELECT * FROM HOMES_LIKE WHERE MEMBER_IDX=? AND ROOM_IDX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, member_idx);
+			ps.setInt(2, room_idx);
+			
+			rs=ps.executeQuery();
+			return rs.next();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally{
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 	//찜 목록에 추가
 	public int addLike(String id, int room_idx) {
 		try {
@@ -922,15 +948,12 @@ public class GuestDAO {
 	}
 	
 	//찜 목록에서 제거
-	public int dltLike(String id, int room_idx) {
+	public int dltLike(int like_idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "DELETE FROM HOMES_LIKE "
-					+ "WHERE MEMBER_IDX = (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?) "
-					+ "AND ROOM_IDX = ?";
+			String sql = "DELETE FROM HOMES_LIKE WHERE IDX = ?";
 			ps=conn.prepareStatement(sql);
-			ps.setString(1, id);
-			ps.setInt(2, room_idx);
+			ps.setInt(1, like_idx);
 			
 			int count = ps.executeUpdate();
 			
