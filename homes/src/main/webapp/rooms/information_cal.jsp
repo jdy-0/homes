@@ -210,8 +210,6 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
 		<%
 
-
-
 	if(cal_arr!=null && cal_arr.size()!=0){
 		
 	

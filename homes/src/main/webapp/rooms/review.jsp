@@ -213,18 +213,38 @@
             ReviewDAO reviewDAO = new ReviewDAO();
 
             // 페이징된 리뷰 가져오기
-            List<ReviewDTO> reviews = reviewDAO.getReviewsByRoomIdxWithPaging(roomIdx, pageNum, pageSize);
-            int totalReviewCount = reviewDAO.getReviewCountByRoomIdx(roomIdx);
-            totalPageCount = (int) Math.ceil(totalReviewCount / (double) pageSize);
+            List<ReviewDTO> reviews = null;
+            try {
+                reviews = reviewDAO.getReviewsByRoomIdxWithPaging(roomIdx, pageNum, pageSize);
+                int totalReviewCount = reviewDAO.getReviewCountByRoomIdx(roomIdx);
+                totalPageCount = (int) Math.ceil(totalReviewCount / (double) pageSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+                out.println("<p>리뷰를 불러오는 중 오류가 발생했습니다.</p>");
+            }
 
             // 리뷰 출력
-            if (!reviews.isEmpty()) {
+            if (reviews != null && !reviews.isEmpty()) {
                 for (ReviewDTO review : reviews) {
+                    // 아이디 마스킹 처리
+                    String memberId = review.getMemberId();
+                    String displayedMemberId = "Unknown";  // 기본값 설정
+
+                    if (memberId != null) {  // Null 체크 추가
+                        if (memberId.length() <= 4) {
+                            displayedMemberId = memberId; // 아이디가 4자리 이하라면 마스킹 없이 그대로 반환
+                        } else {
+                            String visiblePart = memberId.substring(0, 4); // 처음 4자리
+                            String maskedPart = memberId.substring(4).replaceAll(".", "*"); // 나머지 부분을 *로 대체
+                            displayedMemberId = visiblePart + maskedPart;
+                        }
+                    }
     %>
                     <div class="review-item">
+                        <p><strong>아이디:</strong> <%= displayedMemberId %></p>
                         <p><strong>별점:</strong> <%= review.getRate() %>점</p>
                         <p><%= review.getContent() %></p>
-                        <button onclick="showReportModal(<%= review.getIdx() %>)">신고</button> <!-- 신고 버튼 추가 -->
+                        <button onclick="showReportModal(<%= review.getIdx() %>)">신고</button>
                     </div>
     <%
                 }
@@ -275,8 +295,8 @@
     <form method="post" action="submitReport.jsp" onsubmit="return submitReport();">
         <input type="hidden" id="comment-id" name="comment_id">
         <input type="hidden" id="room-idx" name="room_idx" value="<%= request.getParameter("room_idx") %>">
-        <div class="reason-list" style="margin-bottom: 20px; font-size: 1.2rem;"> <!-- 폰트 크기 조정 -->
-            <label style="display: block; margin-bottom: 15px;"><input type="radio" name="report_reason" value="스팸홍보/도배"> 스팸홍보/도배입니다.</label>               
+        <div class="reason-list" style="margin-bottom: 20px; font-size: 1.2rem;">
+            <label style="display: block; margin-bottom: 15px;"><input type="radio" name="report_reason" value="스팸홍보/도배"> 스팸홍보/도배입니다.</label>
             <label style="display: block; margin-bottom: 15px;"><input type="radio" name="report_reason" value="불법정보"> 불법정보를 포함하고 있습니다.</label>
             <label style="display: block; margin-bottom: 15px;"><input type="radio" name="report_reason" value="청소년유해"> 청소년에게 유해한 내용입니다.</label>
             <label style="display: block; margin-bottom: 15px;"><input type="radio" name="report_reason" value="욕설/혐오"> 욕설/생명경시/혐오/차별적 표현입니다.</label>

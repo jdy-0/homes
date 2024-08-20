@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, javax.naming.*, javax.sql.*" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.homes.report.ReportDAO" %>
+<%@ page import="com.homes.report.ReportDTO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +58,6 @@
         document.getElementById('report-form').action = "admin_rejectReport.jsp";
         document.getElementById('report-form').submit();
     }
-
 </script>
 </head>
 <body>
@@ -71,44 +73,20 @@
         <th>확인</th>
     </tr>
     <%
-        // DB에서 신고 내역 불러오기
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        ReportDAO reportDAO = new ReportDAO();
+        List<ReportDTO> reports = reportDAO.getAllReports();
 
-        try {
-            Context initContext = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
-            DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
-            conn = ds.getConnection();
-
-            String sql = "SELECT id, comment_id, room_idx, report_reason, TO_CHAR(report_date, 'YYYY-MM-DD HH24:MI:SS') as report_date FROM reports";
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                int reportId = rs.getInt("id");
-                int commentId = rs.getInt("comment_id");
-                int roomIdx = rs.getInt("room_idx");
-                String reason = rs.getString("report_reason");
-                String reportDate = rs.getString("report_date");
+        for (ReportDTO report : reports) {
     %>
     <tr>
-        <td><%= reportId %></td>
-        <td><%= commentId %></td>
-        <td><%= roomIdx %></td>
-        <td><%= reason %></td>
-        <td><%= reportDate %></td>
-        <td><button type="button" onclick="showReportModal('<%= reportId %>', '<%= commentId %>', '<%= roomIdx %>', '<%= reason %>')">확인</button></td>
+        <td><%= report.getId() %></td>
+        <td><%= report.getCommentId() %></td>
+        <td><%= report.getRoomIdx() %></td>
+        <td><%= report.getReportReason() %></td>
+        <td><%= report.getReportDate() %></td>
+        <td><button type="button" onclick="showReportModal('<%= report.getId() %>', '<%= report.getCommentId() %>', '<%= report.getRoomIdx() %>', '<%= report.getReportReason() %>')">확인</button></td>
     </tr>
     <%
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rs != null) try { rs.close(); } catch (SQLException e) {}
-            if (pstmt != null) try { pstmt.close(); } catch (SQLException e) {}
-            if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     %>
 </table>

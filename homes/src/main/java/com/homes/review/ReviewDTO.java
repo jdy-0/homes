@@ -10,6 +10,7 @@ public class ReviewDTO {
     private int rate;            // 별점
     private String content;      // 리뷰 내용
     private String memberId; // 추가된 필드
+
     // Getters and Setters
 
     public String getMemberId() {
@@ -51,4 +52,7 @@ public class ReviewDTO {
     public void setContent(String content) {
         this.content = content;
     }
+
+
+    
 }
