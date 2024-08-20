@@ -69,9 +69,8 @@
 			<label><input type="radio" name="report_reason" value="불쾌한표현"> 불쾌한 표현이 있습니다.</label>
 			<label><input type="radio" name="report_reason" value="저작권/명예훼손"> 저작권/명예훼손 등 권리 침해입니다.</label>
 			<label><input type="radio" name="report_reason" value="사기/거짓정보"> 사기/거짓 정보입니다.</label>
-			<label><input type="radio" name="report_reason"
- value="기타"> 기타</label>
-
+			<label><input type="radio" name="report_reason"value="기타"> 기타</label>
+			<input type="hidden" name="room_idx" value="">
             </div>
             <button type="submit">신고하기</button>
         </form>

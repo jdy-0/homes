@@ -207,8 +207,8 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 		<%
 
 
-
-	if(cal_arr!=null || cal_arr.size()!=0){
+//||을 &&로 고침
+	if(cal_arr!=null && cal_arr.size()!=0){
 		
 	
 		for(int j=0; j<cal_arr.size(); j++){

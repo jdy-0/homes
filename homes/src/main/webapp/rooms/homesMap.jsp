@@ -104,7 +104,9 @@
             RoomDAO roomDAO = new RoomDAO();
             RoomDTO room = roomDAO.getRoomById(roomIdx);
             String location = room.getAddr_detail(); // 숙소의 위치 정보 가져오기
-            String mapImagePath = "/homes/images/maps/" + roomIdx + ".jpg"; // 지도 이미지 경로 (가정)
+            
+            // 실제 지도 이미지 파일 경로를 생성합니다.
+            String mapImagePath = "/homes/images/maps/" + roomIdx + ".jpg"; // 서버에 저장된 지도 이미지 파일
         %>
         <div class="location-header">
             <h2>숙소 위치</h2>

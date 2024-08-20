@@ -66,7 +66,8 @@ public class ReviewDAO {
 
             int startRow = (pageNum - 1) * pageSize + 1;
             int endRow = pageNum * pageSize;
-
+            System.out.println(startRow);
+            System.out.println(endRow);
             pstmt.setInt(1, roomIdx);
             pstmt.setInt(2, endRow);
             pstmt.setInt(3, startRow - 1);
@@ -79,6 +80,7 @@ public class ReviewDAO {
                 review.setRoomIdx(rs.getInt("room_idx"));
                 review.setRate(rs.getInt("rate"));
                 review.setContent(rs.getString("content"));
+                review.setMemberId(rs.getString("MEMBER_ID"));
                 reviews.add(review);
             }
         } catch (SQLException e) {
@@ -145,8 +147,8 @@ public class ReviewDAO {
         return false;
     }
 
-    public String submitReview(int roomIdx, String reviewContent, int rate, String userName) {
-        if (userName != null && roomIdx > 0 && rate > 0 && reviewContent != null && !reviewContent.trim().isEmpty()) {
+    public String submitReview(int roomIdx, String reviewContent, int rate, String memberId) {
+        if (memberId != null && roomIdx > 0 && rate > 0 && reviewContent != null && !reviewContent.trim().isEmpty()) {
             if (!isValidRoomIdx(roomIdx)) {
                 return "errorPage.jsp?message=Invalid%20room%20ID";
             }
@@ -155,21 +157,35 @@ public class ReviewDAO {
             review.setRoomIdx(roomIdx);
             review.setRate(rate);
             review.setContent(reviewContent);
+            review.setMemberId(memberId);  // MEMBER_ID 설정
 
-            String memberId = convertUserNameToMemberId(userName);
-            review.setMemberId(memberId);
+            Connection conn = null;
 
-            try (Connection conn = HomesDB.getConn()) {
-                conn.setAutoCommit(false);
-                insertReview(review);
-                conn.commit();
+            try {
+                conn = HomesDB.getConn();  // 데이터베이스 연결
+                conn.setAutoCommit(false);  // 트랜잭션 시작
+                insertReview(review);  // 실제 리뷰 삽입 메서드 호출
+                conn.commit();  // 성공적으로 삽입되면 커밋
                 return "review.jsp?room_idx=" + roomIdx;
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();  // SQL 예외 출력
+                if (conn != null) {
+                    try {
+                        conn.rollback();  // 에러 발생 시 롤백
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
                 return "errorPage.jsp?message=Failed%20to%20submit%20review";
-            } catch (Exception e) {  // 여기에 추가된 catch 블록으로 Exception을 잡음
-                e.printStackTrace();
-                return "errorPage.jsp?message=Failed%20to%20submit%20review";
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.setAutoCommit(true);  // 트랜잭션 모드를 원래대로 되돌림
+                        conn.close();  // 연결 닫기
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } else {
             return "errorPage.jsp?message=Invalid%20review%20submission";
