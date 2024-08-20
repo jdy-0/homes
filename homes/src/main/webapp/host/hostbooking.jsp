@@ -37,7 +37,7 @@
 </style>
 </head>
 <body>
-<%@ include file="/header.jsp" %>
+<%@ include file="../header.jsp" %>
 <%@ include file="hostheader.jsp" %>
 
 <section>
@@ -52,37 +52,52 @@ if(roomArr==null && roomArr.size()<=0){
 <%
 } else {
 	for(RoomDTO rdto : roomArr){
+
 		ArrayList<ReservationDTO> resArr =  resdao.getReserveLists(rdto.getRoom_idx());
-		for(ReservationDTO resdto : resArr){
-			%>	
-			<div class="contentWrapper">
-				<article class="booking">
-		            <h2><%=rdto.getRoom_name() %></h2><!--db숙소 제목 -->
-		            <ul>
-		            	<li>신청자 : <%=resdto.getMember_idx() %></li>
-		                <li>총 인원 : <%=resdto.getCount() %></li>
-		                <li>요청 사항 :
-		                    <label><%= resdto.getRequest() %>
-		                       	
-		                    </label>
-		                </li>
-		            </ul>
-		        </article>
-				 
-		        <article class="calendarart">
-		        <%
-		        
-		        request.setAttribute("resdto",resdto);
-		        %>
-		        
-		        <jsp:include page="host_booking_cal.jsp"/>
-		        </article>
-		         <article class="buttonart">
-		        </article>
-    	</div>
-			<%
+%>
+		<div class = "resByRoom">
+		<h2 class = "roomName"><%=rdto.getRoom_name() %></h2> 
+<%					
+		if(resArr!=null && resArr.size()>0){
+
+			for(ReservationDTO resdto : resArr){
+				%>	
+				<div class="contentWrapper" style="display:none">
+					<article class="booking">
+			            <ul>
+			            	<li>신청자 : <%=resdto.getMember_id() %></li>
+			                <li>총 인원 : <%=resdto.getCount() %></li>
+			                <li>요청 사항 :
+			                    <label><%= resdto.getRequest() %>
+			                       	
+			                    </label>
+			                </li>
+			            </ul>
+			        </article>
+					 
+			        <article class="calendarart">
+			        <%
+			        
+			        request.setAttribute("resdto",resdto);
+			        %>
+			        
+			        <jsp:include page="host_booking_cal.jsp"/>
+			        </article>
+			         <article class="buttonart">
+			        </article>
+	    		</div>
+				<%
+			}
+%>
+			</div>
+<%
+		} else {
+%>		
+		<div class="contentWrapper" style="display:none">
+			<h2>없음</h2>
+		</div>
+<%
 		}
-		
 		%>
 		<hr>
 		<%
@@ -97,7 +112,33 @@ if(roomArr==null && roomArr.size()<=0){
         <!-- hr 요소를 추가하려면 아래에 넣으세요 -->
     </div>
     <hr>
-    <h2>----------db연동 후 for문으로 쏴줘야 할듯----------------------------------</h2>
 </section>
 </body>
+
+<script>
+
+const roomNames = document.querySelectorAll(".resByRoom > .roomName");
+let check = true;
+
+roomNames.forEach(function(roomName) {
+    roomName.addEventListener("click", function() {
+        const parent = roomName.parentElement;
+        const contentWrappers = parent.querySelectorAll(".contentWrapper");
+        
+        if(contentWrappers.length > 0){  // contentWrappers가 비어있지 않은지 확인
+            contentWrappers.forEach(function(contentWrapper) {
+                // check가 true일 때만 display 속성을 block으로 설정하고, check를 false로 변경
+                if(check){
+                    contentWrapper.style.display = "block";
+                } else {
+                    contentWrapper.style.display = "none";
+                }
+            });
+            // check 변수 토글
+            check = !check;
+        }
+    });
+});
+	
+</script>
 </html>

@@ -13,6 +13,7 @@ public class ReservationDTO {
 	private String room_name;
 	private String image;
 	private int count;
+	private String member_id;
 	
 	public ReservationDTO() {
 		
@@ -61,6 +62,16 @@ public class ReservationDTO {
 		this.check_out = check_out;
 		this.request = request;
 		this.count = count;
+	}
+	
+	
+	
+	public String getMember_id() {
+		return member_id;
+	}
+
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 	public int getCount() {

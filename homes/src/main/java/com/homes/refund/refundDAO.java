@@ -49,7 +49,7 @@ public class refundDAO {
             result = updateResStateToCanceled(conn, reserve_idx);
             if (result == -1) throw new SQLException("Failed to update reservation state");
 
-            result = updatePayStatusToCanceled(conn, reserve_idx);
+            result = updatePaymentStatusToCanceled(conn, reserve_idx);
             if (result == -1) throw new SQLException("Failed to update payment status");
 
             int refundAmount = changePriceToAmount(conn, reserve_idx);
@@ -115,9 +115,9 @@ public class refundDAO {
 		}
 	}
 	
-	public int updatePayStatusToCanceled(Connection conn, int reserve_idx) throws SQLException{
+	public int updatePaymentStatusToCanceled(Connection conn, int reserve_idx) throws SQLException{
 		try {
-			String sql = " update payment set status = 'Refunded' where reserve_idx = ? ";
+			String sql = " update payment set status = '환불대기중' where reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
 			int count = ps.executeUpdate();

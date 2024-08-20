@@ -227,16 +227,18 @@
         <div class="right">
             <p class="price">₩<%= room.getPrice() %> / 박</p>
             <div>
-                <input type="text" name="check_in" <%-- value="<%= request.getParameter("check_in") %>" --%> value="2024-11-01" >
-                <input type="text" name="check_out" <%-- value="<%= request.getParameter("check_out") %>" --%> value="2024-11-05">
+				<input type="text" name="check_in" value="<%= (request.getParameter("check_in") != null) ? request.getParameter("check_in") : "" %>" readonly="readonly">
+				<input type="text" name="check_out" value="<%= (request.getParameter("check_out") != null) ? request.getParameter("check_out") : "" %>" readonly="readonly">
             	<jsp:include page="information_cal.jsp">
             		<jsp:param value="<%=roomIdxParam %>" name="room"/>
             		<jsp:param value="<%=room.getPrice() %>" name="price"/>
             	</jsp:include>
             	
             </div>
-			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="2" required>
-            
+
+			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="<%=(request.getParameter("guest_num")!=null) ?request.getParameter("guest_num"):2 %>" required>
+            <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
+
             <div class="reservation-box">
                 <div class="details">
 
