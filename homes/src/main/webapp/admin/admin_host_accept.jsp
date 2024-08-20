@@ -83,6 +83,10 @@
 function openhstRoom(param) {
 	location.href='/homes/admin/admin_host_acceptroom.jsp?param='+param;
 }
+
+function openhstState(param) {
+	location.href='/homes/admin/admin_host_accept_ok.jsp?param='+param;
+}
 </script>
 </head>
 <body>
@@ -99,7 +103,7 @@ function openhstRoom(param) {
 	    <h2>관리자 메뉴</h2>
 	    <nav>
 	      	<ul id="ul_menu">
-			    <li><a href="#">대시보드</a></li>
+			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
 			    <li>
@@ -110,10 +114,13 @@ function openhstRoom(param) {
 			    	</ul>
 			    </li>		
 			    <li><a href="#">후기 관리</a></li>
-			    <li><a href="#">숙소 관리</a></li>	    
+			    <li>
+			    	숙소 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
+			    	</ul>
+			    </li>	    
 			    <li><a href="#">예약 관리</a></li>
-			    <li><a href="#">QNA</a></li>
-			    <li><a href="#">설정</a></li>
 		    </ul>
 	    </nav>
 	    
@@ -137,7 +144,7 @@ function openhstRoom(param) {
 				%>
 				<tr>
 					<td colspan="4" align="center">
-						등록된 게시글이 없습니다
+						승인 대기중인 숙소가 없습니다
 					</td>
 				</tr>
 				<%
@@ -148,7 +155,7 @@ function openhstRoom(param) {
 						<td><%=arr.get(i).getRoom_name() %></td>
 						<td><%=arr.get(i).getHost_idx()  %></td>
 						<td><input type="button"  value="확인" class="rbutton" onclick="openhstRoom(<%=arr.get(i).getRoom_idx() %>)"></td>
-						<td><input type="button"  value="승인" class="rbutton"></td>
+						<td><input type="button"  value="승인" class="rbutton" onclick="openhstState(<%=arr.get(i).getRoom_idx() %>)"></td>
 					</tr>
 					<%
 				}
@@ -157,8 +164,8 @@ function openhstRoom(param) {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4">
-					일괄승인 예정
+					<td colspan="4" style="text-align: right; padding: 3px 3px 0 0; border-top: 3px dotted gray;">
+					<input type="button"  value="일괄승인" class="rbutton" onclick="openhstState(0)" style="width: 90px;">
 					</td>
 				</tr>
 			</tfoot>

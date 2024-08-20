@@ -350,7 +350,7 @@ if(cp%listSize==0)userGroup--;
 	</fieldset>
 </article>
 <fieldset class="index_label_fs">
-<h2>HOMES의 추천 여행지</h2>
+<h2>HOMES의 인기 여행지</h2>
 </fieldset>
 <article id="recommend_region">
 <table id="recommend_region_table">
@@ -370,7 +370,7 @@ if(cp%listSize==0)userGroup--;
 		for(int i=userGroup*listSize+1;i<=userGroup*listSize+listSize;i++){%>
 	      		<td>
 	      			<a href="searchlist.jsp?&select_location=<%=rcname.get(i-1).getRegion_idx() %>"><img src="<%=img.get(i-1) %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a>
-	      			<p>추천여행지:<%= rcname.get(i-1).getRegion_name()%></p>
+	      			<p><%= rcname.get(i-1).getRegion_name()%></p>
 	      		</td>
 	      		<%
 				if(i==totalPage){

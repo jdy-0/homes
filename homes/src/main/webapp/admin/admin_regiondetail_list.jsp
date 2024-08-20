@@ -109,7 +109,7 @@ function openrgProfile(param) {
 	    <h2>관리자 메뉴</h2>
 	    <nav>
 	      	<ul id="ul_menu">
-			    <li><a href="#">대시보드</a></li>
+			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
 			    <li>
@@ -118,12 +118,15 @@ function openrgProfile(param) {
 			    		<li><a href="/homes/admin/admin_region.jsp">지역 목록</a></li>
 			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
 			    	</ul>
-			    </li>	
+			    </li>		
 			    <li><a href="#">후기 관리</a></li>
-			    <li><a href="#">숙소 관리</a></li>	    
+			    <li>
+			    	숙소 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
+			    	</ul>
+			    </li>	    
 			    <li><a href="#">예약 관리</a></li>
-			    <li><a href="#">QNA</a></li>
-			    <li><a href="#">설정</a></li>
 		    </ul>
 	    </nav>
 	    

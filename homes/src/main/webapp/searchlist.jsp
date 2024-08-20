@@ -343,24 +343,18 @@ function validateForm() {
 
 
    <div class="date-picker">
-
 			<div id="date-input">
 				<div class="search_item">
-					<label for="checkin">체크인</label> <input type="text"
-						id="check_in" class="date" required readonly="readonly"
-						id="from">
+					<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly">
 				</div>
 				<div class="search_item">
-					<label for="checkin">체크아웃</label> <input type="text"
-						id="check_out" class="date" required readonly="readonly"
-						id="to">
+					<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly">
 				</div>
 			</div>
 
 			<%@ include file="cal.jsp"%>
 			<div id="select_guest_div">
-				<label for="checkin">인원수</label> <input type="number" name="인원수"
-					id="select_guest" min="1" required>
+				<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" required>
 			</div>
 			<div class="search_button">
 				<input type="submit" value="검색" class="button">

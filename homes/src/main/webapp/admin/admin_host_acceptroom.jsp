@@ -120,7 +120,7 @@
 	    <h2>관리자 메뉴</h2>
 	    <nav>
 	      	<ul id="ul_menu">
-			    <li><a href="#">대시보드</a></li>
+			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
 			    <li>
@@ -131,22 +131,27 @@
 			    	</ul>
 			    </li>		
 			    <li><a href="#">후기 관리</a></li>
-			    <li><a href="#">숙소 관리</a></li>	    
+			    <li>
+			    	숙소 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
+			    	</ul>
+			    </li>	    
 			    <li><a href="#">예약 관리</a></li>
-			    <li><a href="#">QNA</a></li>
-			    <li><a href="#">설정</a></li>
 		    </ul>
 	    </nav>
 	    
 	</div>
 
 	<div class="content" style="display: flex;">
-
+		<%
+			RoomDTO room=adao.getRoom(room_idx);
+		%>
 		<fieldset id="insert_mainImg_fs">
 			<div>
 				<h2>대표 이미지</h2>
 			</div>		
-			<img id="selectedImage" src="default-image.jpg" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />		
+			<img id="selectedImage" src="<%=room.getImage() %>" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />		
 		</fieldset>
 		<fieldset id="insert_room_fs" style="border:0;">
 			<h2>숙소 정보</h2>
@@ -154,42 +159,55 @@
 				<tr>
 					<th>숙소이름</th>
 					<td>
+					<%=room.getRoom_name() %>
 					</td>
 				</tr>
 				<tr>
 					<th>인원수</th>
 					<td>
+					<%=room.getRoom_min() %>
+					<%if(room.getRoom_min()!=room.getRoom_max()) {%>
+						~<%=room.getRoom_max() %>
+					
+					<%}%> 명 
+					
 					</td>
 				</tr>
 				<tr>
 					<th>지역</th>
 					<td>
+					<%
+					if(adao.getRegion(room.getRegion_idx()).getLev()==2){
+					%>
+						<%=adao.getParentName(adao.getRegion(room.getRegion_idx()).getParent_idx()) %>
+					<%
+					}
+					%>
+					<%=adao.getRegion(room.getRegion_idx()).getRegion_name() %>
 					</td>
 				</tr>
 				<tr>
 					<th>상세주소</th>
 					<td>
+					<%=room.getAddr_detail() %>
 					</td>
 				</tr>
 				<tr>
 					<th>편의시설</th>
 					<td>
+					<%=room.getGoodthing() %>
 					</td>
 				</tr>
 				<tr>
 					<th>가격</th>
 					<td>
-					</td>
-				</tr>
-				<tr>
-					<th>지도</th>
-					<td>
+					<%=room.getPrice() %> 원
 					</td>
 				</tr>
 			</table>
 			</fieldset>
 		<div style="display: flex; align-items: flex-end;">
-			<input type="button" value="뒤로" class="button">
+			<input type="button" value="뒤로" class="button" onClick="location.href='admin_host_accept.jsp'">
 		</div>
 	</div>
 </fieldset>

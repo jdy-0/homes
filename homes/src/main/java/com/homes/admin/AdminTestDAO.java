@@ -418,6 +418,35 @@ public class AdminTestDAO {
 		}
 	}
 	
+	/**대분류의 지역 사진을 가져오는 메소드*/
+	public String getRegionImg(int region_idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select img from region_detail where region_idx="+region_idx;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			String img="";
+			
+			if(rs.next()) {
+				img=rs.getString("img");
+				
+			} 
+			
+			return img;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
 	/**지역 idx로 지역 정보를 가져오는 메소드*/
 	public RegionDTO getRegion(int idx) {
 		try {
@@ -725,10 +754,12 @@ public class AdminTestDAO {
 					String goodthing=rs.getString("goodthing");
 					String addr_detail=rs.getString("addr_detail");
 					int price=rs.getInt("price");
-					String map_url=rs.getString("map_url");
 					String image=rs.getString("image");
+					int state=rs.getInt("state");
+					int room_min=rs.getInt("room_min");
+					int room_max=rs.getInt("room_max");
 					
-					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image);
+					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image, state, room_min, room_max);
 					room.add(dto);
 				}while(rs.next());
 				
@@ -765,13 +796,12 @@ public class AdminTestDAO {
 				String goodthing=rs.getString("goodthing");
 				String addr_detail=rs.getString("addr_detail");
 				int price=rs.getInt("price");
-				String map_url=rs.getString("map_url");
 				String image=rs.getString("image");
 				int state=rs.getInt("state");
 				int room_min=rs.getInt("room_min");
 				int room_max=rs.getInt("room_max");
-				//선언 잘못되어있어서 아직 못받아옴
-				//dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, map_url, image, state, room_min, room_max);
+				
+				dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image, state, room_min, room_max);
 				
 			}
 			return dto;
@@ -796,6 +826,28 @@ public class AdminTestDAO {
 			String sql="update room set state=1 where room_idx=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, ridx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**숙소 일괄승인하는 메소드*/
+	public int roomStateUpdate() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update room set state=1 where state=0";
+			ps = conn.prepareStatement(sql);
 			
 			int count=ps.executeUpdate();
 			return count;

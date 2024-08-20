@@ -12,12 +12,8 @@
     
     String ridx_s=mr.getParameter("ridx");
     int ridx=Integer.parseInt(ridx_s);
-    
-    System.out.println(imgpath);
-    System.out.println(ridx);
 %>
 <script>
-<%--window.alert('파일올리기 성공: <%= fileName %>');--%>
 <%
 int result=adao.regionImageUpdate(imgpath, ridx);
 String msg=result>0 ? "지역 이미지 수정 완료" : "지역 이미지 수정 실패";
