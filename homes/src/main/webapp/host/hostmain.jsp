@@ -7,6 +7,7 @@
 
 <jsp:useBean id="homedto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="homedao" class="com.homes.room.RoomDAO"></jsp:useBean>
+<jsp:useBean id="rdao" class="com.homes.region.RegionDAO"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,10 +93,11 @@ form{
             list-style:none;
         }
   img {
-            width: 1000px;
-            height: 800px;
+  			
+            width: 800px;
+            height: 700px;
             display: block;
-            margin-bottom: 10px;
+             margin: 0 auto 10px auto;
         }       
 </style>
 </head>
@@ -106,20 +108,21 @@ form{
 
 //Integer useridx = (Integer)session.getAttribute("useridx");
 
-Integer useridx=0;
-useridx = (Integer)session.getAttribute("useridx");
-
+Integer useridx=0 ;
+useridx = session.getAttribute("useridx")==null || session.getAttribute("useridx").equals("")?0:(Integer)session.getAttribute("useridx");
 if (useridx == null || useridx == 0) {
+	System.out.println(useridx);
+
 %>
     <script>
     window.location.href = '/homes/guest/login.jsp';
-    return;
     </script>
 <%
 }
 
 
 ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
+
 %>
 
 
@@ -140,7 +143,9 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 		}else{
 			int a = arr.size();
 			for(int i=0;i<arr.size();i++){
+				
 				%>
+				
 			<form name="updatefm" action="host_update_image_ok.jsp?room_idx<%=arr.get(i).getRoom_idx()%>"> 
 			<div class="container">
 				<div>
@@ -150,25 +155,26 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 					<h2><%=arr.get(i).getRoom_name() %></h2>
 					<ul>
 						<li><label>지역:</label> 
-						<label><%=arr.get(i).getRegion_idx()%></label>
+						
+						<label><%=arr.get(i).getSelectedRegionName()+" "+arr.get(i).getParentRegionName()%></label>
 						<li>
 							<label for="room_goodthing">편의 시설 : </label> 
 							<label><%=arr.get(i).getGoodthing()%></label>
 						</li>
 						<li>
-							<label for="room_addr">주소:</label> 
+							<label for="room_addr">상세 주소:</label> 
 							<label><%=arr.get(i).getAddr_detail()%></label>
 						</li>
 						<li>
 							<label for="price">가격:</label> 
-							<label><%=arr.get(i).getPrice()%></label>
+							<label><%=arr.get(i).getPrice()%> / 박</label>
 						</li>
 						
 						
-						<li>
+						<!-- <li>
 							<label for="map_url">맵 url :</label> 
 							<label>맵 쓰기</label>
-						</li>
+						</li> -->
 						<li>
 							<input type="hidden" value=<%=arr.get(i).getRoom_idx() %> name="room_idx">
 						<li>

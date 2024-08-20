@@ -28,9 +28,12 @@ public class RoomDTO {
 	private String content;
 	private String member_id;
 	
+	String selectedRegionName;
+	String parentRegionName;
 	
 	
 	
+
 	public RoomDTO() {
 		
 	}
@@ -99,6 +102,15 @@ public class RoomDTO {
 		this.image= image; // 이미지 경로
 		this.state= state;//숙소 등록 y/n
 	}
+	/*
+	 * public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name,
+	 * String goodthing, String addr_detail, int price, String image,int
+	 * state,String) { super(); this.room_idx = room_idx; //방 인덱스 this.host_idx =
+	 * host_idx; //호스트 인덱스 this.region_idx = region_idx; //지역 번호 this.room_name =
+	 * room_name; //숙소 이름 this.goodthing = goodthing; // 편의시설 this.addr_detail =
+	 * addr_detail; // 주소 this.price = price; // 숙소 가격 //this.map_url = map_url; //
+	 * 주소 좌표 this.image= image; // 이미지 경로 this.state= state;//숙소 등록 y/n }
+	 */
 
 	public RoomDTO(String room_name,String image,java.sql.Date startday, java.sql.Date endday, String reason) {
 		super();
@@ -116,6 +128,22 @@ public class RoomDTO {
 		this.host_idx = host_idx;
 		this.room_name = room_name;
 		this.state = state;
+	}
+	
+	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
+			int price, String image, int state, String selectedRegionName, String parentRegionName) {
+		super();
+		this.room_idx = room_idx;
+		this.host_idx = host_idx;
+		this.region_idx = region_idx;
+		this.room_name = room_name;
+		this.goodthing = goodthing;
+		this.addr_detail = addr_detail;
+		this.price = price;
+		this.image = image;
+		this.state = state;
+		this.selectedRegionName = selectedRegionName;
+		this.parentRegionName = parentRegionName;
 	}
 
 	/*
@@ -254,4 +282,19 @@ public class RoomDTO {
 		this.member_id = member_id;
 	}
 
+	public String getSelectedRegionName() {
+		return selectedRegionName;
+	}
+
+	public void setSelectedRegionName(String selectedRegionName) {
+		this.selectedRegionName = selectedRegionName;
+	}
+
+	public String getParentRegionName() {
+		return parentRegionName;
+	}
+
+	public void setParentRegionName(String parentRegionName) {
+		this.parentRegionName = parentRegionName;
+	}
 }

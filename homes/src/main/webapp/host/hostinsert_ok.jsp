@@ -24,7 +24,7 @@
 	File f= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath());
 	String path=f.getPath();
 	File f0= new File(wf.getHomePath()+wf.getHostpath());
-	
+
 	//File f2= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath()+"/"+roompath);
 	
 	//File imgFile= new File(wf.getHomePath()+wf.getImgpath());
@@ -89,7 +89,7 @@ window.alert("파일생성안됌");
 	roomName.replaceAll(" ", "");
 	int roomMin = Integer.parseInt(mr.getParameter("room_min"));
 	int roomMax = Integer.parseInt(mr.getParameter("room_max"));
-	int regionIdx = Integer.parseInt(mr.getParameter("region_idx"));
+	int regionIdx = Integer.parseInt(mr.getParameter("select_location_detail"));
 	String goodthing = mr.getParameter("goodthing");
 	String addrDetail = mr.getParameter("addr_detail");
 	int price = Integer.parseInt(mr.getParameter("price"));
