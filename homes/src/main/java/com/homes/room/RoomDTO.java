@@ -12,7 +12,7 @@ public class RoomDTO {
 	private String goodthing;
 	private String addr_detail;
 	private int price;
-	private String map_url;
+	//private String map_url;
 	private String image;
 	
 	private int room_min;
@@ -56,7 +56,7 @@ public class RoomDTO {
 	}
 
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
-			int price, String map_url, String image, String state,int room_min,int room_max) {
+			int price, String image, int state,int room_min,int room_max) {
 		this.room_idx = room_idx;
 		this.host_idx = host_idx;
 		this.region_idx = region_idx;
@@ -64,7 +64,7 @@ public class RoomDTO {
 		this.goodthing = goodthing;
 		this.addr_detail = addr_detail;
 		this.price = price;
-		this.map_url = map_url;
+		
 		this.image = image;
 		this.room_min= room_min;
 		this.room_max= room_max;
@@ -72,7 +72,7 @@ public class RoomDTO {
 	
 	
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
-			int price, String map_url, String image) {
+			int price, String image) {
 		super();
 		this.room_idx = room_idx;
 		this.host_idx = host_idx;
@@ -81,12 +81,12 @@ public class RoomDTO {
 		this.goodthing = goodthing;
 		this.addr_detail = addr_detail;
 		this.price = price;
-		this.map_url = map_url;
+		
 		this.image = image;
 	}
 
 	public RoomDTO(int room_idx, int host_idx, int region_idx, String room_name, String goodthing, String addr_detail,
-			int price, String map_url, String image,int state) {
+			int price, String image,int state) {
 		super();
 		this.room_idx = room_idx; //방 인덱스
 		this.host_idx = host_idx; //호스트 인덱스
@@ -95,7 +95,7 @@ public class RoomDTO {
 		this.goodthing = goodthing; // 편의시설
 		this.addr_detail = addr_detail; // 주소
 		this.price = price; // 숙소 가격
-		this.map_url = map_url; // 주소 좌표
+		//this.map_url = map_url; // 주소 좌표
 		this.image= image; // 이미지 경로
 		this.state= state;//숙소 등록 y/n
 	}
@@ -203,12 +203,11 @@ public class RoomDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getMap_url() {
-		return map_url;
-	}
-	public void setMap_url(String map_url) {
-		this.map_url = map_url;
-	}
+
+	/*
+	 * public String getMap_url() { return map_url; } public void setMap_url(String
+	 * map_url) { this.map_url = map_url; }
+	 */
 	public String getImage() {
 		return image;
 	}

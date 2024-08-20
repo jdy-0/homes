@@ -206,10 +206,10 @@ wf.setCrpath(crpath);
 				<th>가격</th>
 				<td><input type="text" name="price" class="text" required placeholder="가격 입력"></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<th>지도</th>
-				<td><input type="text" name="map_url" class="text" required placeholder="map_url"></td><!-- 지도 이미지 경로를 입력하라는 의미?  -->
-			</tr>
+				<td><input type="text" name="map_url" class="text" required placeholder="map_url"></td>지도 이미지 경로를 입력하라는 의미? 
+			</tr> -->
 		</table>
 		</fieldset>
 		<input type="hidden" name="host_idx" value="<%=Host_idx%>">

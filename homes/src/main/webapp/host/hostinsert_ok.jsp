@@ -93,12 +93,12 @@ window.alert("파일생성안됌");
 	String goodthing = mr.getParameter("goodthing");
 	String addrDetail = mr.getParameter("addr_detail");
 	int price = Integer.parseInt(mr.getParameter("price"));
-	String mapUrl = mr.getParameter("map_url");
+	//String mapUrl = mr.getParameter("map_url");
 	int hostIdx = Integer.parseInt(mr.getParameter("host_idx"));
 	String img = wf.getImgFile()+roomName+".jpg";
 	//
 	
-	int result = rdao.insertRoom2(hostIdx,regionIdx,roomName,goodthing,addrDetail,price,mapUrl,img,roomMin,roomMax);
+	int result = rdao.insertRoom2(hostIdx,regionIdx,roomName,goodthing,addrDetail,price,img,roomMin,roomMax);
 	String msg = result > 0 ? "숙소등록 요청성공" : "숙소등록 요청실패";
 	
 	//보내는 input file의 이름

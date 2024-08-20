@@ -236,7 +236,7 @@
             	
             </div>
 			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="2" required>
-            <a href="<%= room.getMap_url() %>" class="button map-link">지도 보기</a>
+            
             <div class="reservation-box">
                 <div class="details">
 
