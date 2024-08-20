@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.homes.guest.ReservationDTO;
+
 public class ScheduleDAO {
 
 	Connection conn;
@@ -117,5 +119,7 @@ public class ScheduleDAO {
 	            }
 	        }
 		}
+	
+	
 	
 }

@@ -38,7 +38,27 @@ dto.setRoom_idx(room_idx);
 dto.setCheck_in(check_in);
 dto.setCheck_out(check_out);
 dto.setPrice(price);
-int count = resdao.updateSetResState(dto);
+
+
+int count = 0;
+
+System.out.println(state);
+
+if(state.equals("승인거절")){
+	 count = resdao.updateSetResState(dto);
+} else {
+		int resAvail = resdao.checkAvailableScheduleForRes(dto);
+		if(resAvail==0){
+			 count = resdao.updateSetResState(dto);
+		} else {
+		%>
+		<script>
+			alert("해당 기간에 일정(예약 및 휴무)이 존재합니다.");
+			location.href="hostbooking.jsp";
+		</script>
+		<%
+		}
+}
 
 if(count>0){
 %>

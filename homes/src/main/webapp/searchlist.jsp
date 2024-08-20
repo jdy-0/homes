@@ -400,7 +400,7 @@ function validateForm() {
 			<%if(i%2==0) {%>
 		   		<tr>
 		   	<%} %>
-	      		<td><a href="rooms/information.jsp?room_idx=<%= room.get(i).getRoom_idx() %>"><img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room.get(i).getRoom_name() %></p></td>
+	      		<td><a href="rooms/information.jsp?room_idx=<%= room.get(i).getRoom_idx() %>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num%>"><img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room.get(i).getRoom_name() %></p></td>
 	   		<%if(i%2==1 || i==room.size()-1) {%>
 		   		</tr>
 		   	<%} %>

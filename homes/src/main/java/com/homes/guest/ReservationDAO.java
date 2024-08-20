@@ -3,6 +3,8 @@ package com.homes.guest;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.homes.host.ScheduleDTO;
+
 public class ReservationDAO {
 
 	private Connection conn;
@@ -86,27 +88,21 @@ public class ReservationDAO {
 		
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT  "
-					+ "    r.RESERVE_IDX AS RESERVE_IDX,    "
-					+ "    r.MEMBER_IDX AS MEMBER_IDX,      "
-					+ "    r.ROOM_IDX, "
-					+ "    r.STATE, "
-					+ "    r.RESERVE_DATE, "
-					+ "    r.PRICE, "
-					+ "    rd.RESERVE_DETAIL_IDX, "
-					+ "    rd.CHECK_IN, "
-					+ "    rd.CHECK_OUT, "
-					+ "    rd.REQUEST,"
-					+ "	   rd.count "
-					+ "FROM  "
+			String sql = " select * "
+					+ "FROM   "
 					+ "    reservation_test r "
-					+ "JOIN  "
+					+ "JOIN   "
 					+ "    reservation_detail_test rd "
-					+ "ON  "
+					+ "ON   "
 					+ "    r.RESERVE_IDX = rd.RESERVE_IDX "
-					+ "WHERE state = '예약대기중' "
-					+ "	   and r.ROOM_IDX = ? "
-					+ "	   and TRUNC(check_in) >= TRUNC(sysdate) ";
+					+ "JOIN "
+					+ "    homes_member m "
+					+ "ON "
+					+ "    r.MEMBER_IDX = m.idx "
+					+ "WHERE  "
+					+ "    r.STATE = '예약대기중' "
+					+ "    AND r.ROOM_IDX = ? "
+					+ "    AND TRUNC(rd.CHECK_IN) >= TRUNC(SYSDATE) ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1,room_idx);
 	        rs = ps.executeQuery();
@@ -126,6 +122,7 @@ public class ReservationDAO {
 				int count = rs.getInt("count");
 				ReservationDTO rdto = new ReservationDTO(reserveIdx, memberIdx, roomIdx, state, reserveDate,
 						price, reservationDetailIdx, checkIn, checkOut, request,count);
+				rdto.setMember_id(rs.getString("id"));
 				arr.add(rdto);
 			}
 			return arr;
@@ -209,7 +206,7 @@ public class ReservationDAO {
 		
 		try {
             String sql = " insert into payment (payment_idx, reserve_idx, amount, payment_date, status) "
-            		+ " values (payment_seq.nextval, ?, ?, sysdate, 'Completed') "; 
+            		+ " values (payment_seq.nextval, ?, ?, sysdate, '결제완료') "; 
            
            ps = conn.prepareStatement(sql);
            ps.setInt(1, dto.getReserve_idx());
@@ -220,6 +217,84 @@ public class ReservationDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }		
+	}
+	
+	public ArrayList<ReservationDTO> getUncommitedRes(int room_idx){
+
+        try {
+            conn = com.homes.db.HomesDB.getConn(); 
+            String sql = " select * from reservation_test r, reservation_detail_test rd "
+            		+ " WHERE r.reserve_idx = rd.reserve_idx and room_idx = ? and state = '예약대기중' "; 
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, room_idx); 
+            rs = ps.executeQuery();
+            
+            ArrayList<ReservationDTO> arr = new ArrayList<ReservationDTO>();
+            while(rs.next()) {
+            	ReservationDTO dto = new ReservationDTO();
+            	dto.setCheck_in(rs.getDate("check_in"));
+            	dto.setCheck_out(rs.getDate("check_out"));
+            			
+            	arr.add(dto);
+            }
+            return arr;
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 예외 발생
+        } finally {
+            // 자원 해제 (메모리 누수 방지)
+            try {
+            	if (rs != null) rs.close(); 
+            	if (ps != null) ps.close();
+            	if (conn != null) conn.close();
+            } catch (Exception e2) {
+            	e2.printStackTrace();
+            }
+        }
+	}
+	
+	public int checkAvailableScheduleForRes(ReservationDTO dto) {
+		
+		try {
+			 conn = com.homes.db.HomesDB.getConn(); 
+			 String sql = " SELECT * "
+			 		+ "FROM unavailable_schedule "
+			 		+ "WHERE  "
+			 		+ "    room_idx = ? "
+			 		+ "    AND ( "
+			 		+ "        (? BETWEEN start_day AND end_day) OR "
+			 		+ "        (? BETWEEN start_day AND end_day) OR "
+			 		+ "        (? <= start_day AND ? >= end_day) "
+			 		+ "    )  "; 
+			 ps = conn.prepareStatement(sql);
+	         ps.setInt(1, dto.getRoom_idx());
+	         ps.setDate(2, dto.getCheck_in());
+	         ps.setDate(3, dto.getCheck_out());
+	         ps.setDate(4, dto.getCheck_in());
+	         ps.setDate(5, dto.getCheck_out());
+	         
+	         rs = ps.executeQuery();
+	         
+	         while(rs.next()) {
+	             return 1;
+	         }
+	         
+			 return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+            	if (rs != null) rs.close(); 
+            	if (ps != null) ps.close();
+            	if (conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
 	}
 
 	

@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.homes.host.ScheduleDTO"%>
+<%@ page import="com.homes.guest.ReservationDTO"%>
 <%@ page import="java.util.*"%>
 <jsp:useBean id="sdao" class="com.homes.host.ScheduleDAO"></jsp:useBean>
+<jsp:useBean id="rdao" class="com.homes.guest.ReservationDAO"></jsp:useBean>
 <style>
 .date {
 	width: 200px;
@@ -198,6 +200,8 @@ if(s_room!=null && !s_room.equals("")){
 
 String seq = request.getParameter("seq");
 ArrayList<ScheduleDTO> cal_arr = sdao.showAllSchdule(room);
+ArrayList<ReservationDTO> res_arr =  rdao.getUncommitedRes(room);
+
 String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 %>
 
@@ -208,7 +212,7 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 
 
 
-	if(cal_arr!=null || cal_arr.size()!=0){
+	if(cal_arr!=null && cal_arr.size()!=0){
 		
 	
 		for(int j=0; j<cal_arr.size(); j++){
@@ -220,11 +224,20 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 		<%
 		}
 	}
+		
+	if(res_arr!=null && res_arr.size()!=0){
+		for(int j=0; j<res_arr.size(); j++){
+		%>
+		<input type="hidden" class ="" data-type="start" value="<%=res_arr.get(j).getCheck_in()%>" readonly>
+		<input type="hidden" class ="" data-type="end" value="<%=res_arr.get(j).getCheck_out()%>" readonly>
+		<%
+		}
+		
+	}
 		%>
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year">초기화</span> <span class="submit">휴무 등록
-				및 수정</span>
+			<span class="month-year">초기화</span> 
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
@@ -313,70 +326,7 @@ document.addEventListener("DOMContentLoaded", function() {
     	side_cal.querySelectorAll('.line').forEach(span => span.classList.replace('line','none'));
     	
     }
-    
-
-    
-    
-    function getAllhol_selected(){
-    	
-    	var hol_sel = calendar.querySelectorAll('.hol_selected');
-    	
-    	const hol_sel_date = [];
-    	
-    	hol_sel.forEach(hol=>{
-    		hol_sel_date.push(new Date(makeIdToDate(hol.id)));
-    		
-    	});
-		alert('길이'+hol_sel_date.length);
-    	var s_date = hol_sel_date[0];
-    	var e_date = hol_sel_date[0];
-    	
-    	
-    	var range_date= [];
-    	for(var i = 1; i<hol_sel_date.length; i++){
-    		
-    		const c_s_date = hol_sel_date[i-1];
-    		const next_date = new Date(c_s_date);
-     		next_date.setDate(c_s_date.getDate()+1);
-    		const sideDate = hol_sel_date[i];
-
-    		if(next_date.getTime()==sideDate.getTime()){
-    			e_date = sideDate;
-    			
-    		} else {
-					
-    			range_date.push([s_date.getTime(),e_date.getTime()]);
-				s_date=hol_sel_date[i];	
-				e_date=hol_sel_date[i];	
-    		}
-    	}
-    	
-		range_date.push([s_date.getTime(),e_date.getTime()]);
-		return range_date;
-    }
-    
-    function makeHidden(range_date){
-    	var form = calendar.querySelector('form[name="host_roomSchedule"]');
-    	
-    	range_date.forEach((r,index)=>{
-    		const input = document.createElement('input');
-        	input.value=r;
-        	input.type='hidden';
-        	input.name = 'range_'+index;
-        	
-        	form.appendChild(input);
-    	});
-    	form.submit();
-    	
-    	
-    }
-    
-    submit.addEventListener('click', () => {
         
-    	const range_date = getAllhol_selected();
-    	makeHidden(range_date);
-    	
-    });
     
     atStart();
     
@@ -603,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // 체크인 체크아웃 값 있을경우, 해당 체크인 체크아웃에 클래스 부여 + 사이에 클래스 부여
             var dayId =  dayElement.id
             
-            if(check_in!=null && check_in!='' &&check_out!=null && check_out!='' ){
+       	 if(check_in!=null && check_in!='' &&check_out!=null && check_out!='' ){
                 if(makeIdToDate(dayId)==check_in.value){
 
 
