@@ -7,6 +7,9 @@ import java.sql.Date;
 import javax.naming.*;
 import javax.sql.*;
 
+import java.io.*;
+import javax.servlet.http.Part;
+
 public class GuestDAO {
 
 	private Connection conn;
@@ -203,7 +206,89 @@ public class GuestDAO {
 			}
 		}
 	}
+	
+	//프로필이미지 변경 메소드
+	public boolean uploadProfileImage(int idx, Part filePart, String uploadDir) {
+	    if (filePart == null || filePart.getSize() == 0) {
+	        return false; // 파일이 없으면 업로드 X
+	    }
 
+	    String fileName = idx + ".jpg"; //파일 이름을 useridx로 저장
+	    String filePath = uploadDir + File.separator + fileName;
+
+	    // 이미 해당 사용자의 사진 파일이 있으면 덮어쓰기
+	    try (InputStream inputStream = filePart.getInputStream();
+	         FileOutputStream outputStream = new FileOutputStream(filePath)) {
+
+	        int read;
+	        byte[] bytes = new byte[1024];
+	        while ((read = inputStream.read(bytes)) != -1) {
+	            outputStream.write(bytes, 0, read);
+	        }
+
+	        // 데이터베이스에 이미지 경로 업데이트
+	        int count = updateProfileImagePath(idx, "/homes/guest/profileimg/" + fileName);
+	        
+	        boolean result = count > 0 ? true : false;
+	        return result;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+//	public boolean uploadProfileImage(int idx, Part filePart, String uploadDir) {
+//        if (filePart == null || filePart.getSize() == 0) {
+//            return false; // 파일이 없으면 업로드하지 않음
+//        }
+//
+//        String fileName = idx + ".jpg"; //파일 이름을 useridx로 저장
+//        String filePath = uploadDir + File.separator + fileName;
+//
+//        // 이미 해당 사용자의 사진 파일이 있을 경우 자동으로 덮어쓰기
+//        try (InputStream inputStream = filePart.getInputStream();
+//             FileOutputStream outputStream = new FileOutputStream(filePath)) {
+//
+//            int read;
+//            byte[] bytes = new byte[1024];
+//            while ((read = inputStream.read(bytes)) != -1) {
+//                outputStream.write(bytes, 0, read);
+//            }
+//
+//            // 데이터베이스에 이미지 경로 업데이트 (경로가 변경되지 않으므로 필요하지 않음)
+//            return true; // 성공적으로 파일을 저장했을 경우 true 반환
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+	
+	//프로필 이미지 경로 업데이트 메소드
+    public int updateProfileImagePath(int idx, String imagePath) {
+    	try {
+            // 데이터베이스 연결
+            conn = com.homes.db.HomesDB.getConn();
+            String sql = "UPDATE HOMES_MEMBER SET IMG = ? WHERE IDX = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, imagePath);
+            ps.setInt(2, idx);
+
+            int count = ps.executeUpdate();
+            return count;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ERROR; 
+        } finally {
+            try {
+                if(ps != null) ps.close();
+                if(conn != null) conn.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 	// 계정 정보 보기 메소드
 	public GuestDTO getUserProfile(String id) {
 		try {
@@ -405,19 +490,8 @@ public class GuestDAO {
 		}
 	}
 
-	// 받은 메세지 or 보낸 메세지 리스트 가져오기 메소드 (사용자 id = receiver_id -> 받은 메세지 / 사용자 id =
-	// sender_id -> 보낸 메세지)
-	public ArrayList<MsgDTO> getMsgList(String id, int page, int size, String receiver_sender, String unread) { // receiver_sender
-																												// 는
-																												// 화면에서
-																												// 받은
-																												// 메세지,
-																												// 보낸
-																												// 메세지
-																												// 선택해서
-																												// 파라미터로
-																												// 가져올
-																												// 예정
+	// 받은 메세지 or 보낸 메세지 리스트 가져오기 메소드 (사용자 id = receiver_id -> 받은 메세지 / 사용자 id =sender_id -> 보낸 메세지)
+	public ArrayList<MsgDTO> getMsgList(String id, int page, int size, String receiver_sender, String unread) { 
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 
@@ -735,85 +809,6 @@ public class GuestDAO {
 		}
 	}
 
-	// 회원별 예약 내역 불러오기 메소드
-//	public ArrayList<ReservationDTO> getReserveHistory(int member_idx){
-//		try {
-//			conn = com.homes.db.HomesDB.getConn();
-//			String sql = "SELECT * FROM RESERVATION_TEST WHERE MEMBER_IDX = ?";
-//			ps=conn.prepareStatement(sql);
-//			ps.setInt(1, member_idx);
-//			
-//			rs=ps.executeQuery();
-//			ArrayList<ReservationDTO> arr = new ArrayList<ReservationDTO>();
-//			while(rs.next()) {
-//				int reservation_idx = rs.getInt("reservation_idx");
-//				int room_idx = rs.getInt("room_idx");
-//				String state = rs.getString("state");
-//				java.sql.Date reserve_date = rs.getDate("reserve_date");
-//				int price = rs.getInt("price");
-//				
-//				ReservationDTO dto = new ReservationDTO(reservation_idx, member_idx, room_idx, state, reserve_date, price);
-//				arr.add(dto);
-//			}
-//			
-//			return arr;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			try {
-//				if(rs!=null) rs.close();
-//				if(ps!=null) ps.close();
-//				if(conn!=null) conn.close();
-//			} catch (Exception e2) {}
-//		}
-//	}
-
-	// 회원별 예약 상세 내역
-	/*
-	 * public ArrayList<Reservation_detailDTO> getReserveDetail(int member_idx){ try
-	 * { conn = com.homes.db.HomesDB.getConn(); String sql =
-	 * "SELECT * FROM RESERVATION_DETAIL_TEST WHERE MEMBER_IDX = ?";
-	 * ps=conn.prepareStatement(sql); ps.setInt(1, member_idx);
-	 * 
-	 * rs=ps.executeQuery(); ArrayList<Reservation_detailDTO> arr = new
-	 * ArrayList<Reservation_detailDTO>(); while(rs.next()) { int
-	 * reservation_detail_idx = rs.getInt(1); int reserve_idx = rs.getInt(2);
-	 * java.sql.Date check_in = rs.getDate("check_in"); java.sql.Date check_out =
-	 * rs.getDate("check_out"); String request = rs.getString("request");
-	 * 
-	 * Reservation_detailDTO dto = new Reservation_detailDTO(reservation_detail_idx,
-	 * reserve_idx, member_idx, check_in, check_out, request); arr.add(dto); }
-	 * 
-	 * return arr; } catch (Exception e) { e.printStackTrace(); return null; }
-	 * finally { try { if(rs!=null) rs.close(); if(ps!=null) ps.close();
-	 * if(conn!=null) conn.close(); } catch (Exception e2) {} } }
-	 */
-
-	/*
-	 * public ArrayList<ReservationDTO> getReserve(int member_idx){ try {
-	 * conn=com.homes.db.HomesDB.getConn(); String sql
-	 * ="SELECT RT.RESERVE_IDX, ROOM_IDX, RESERVE_DATE, CHECK_IN, CHECK_OUT, STATE, PRICE "
-	 * + "FROM RESERVATION_TEST RT, RESERVATION_DETAIL_TEST RDT " +
-	 * "WHERE RT.MEMBER_IDX = ? " + "AND RT.RESERVE_IDX = RDT.RESERVE_IDX";
-	 * 
-	 * ps=conn.prepareStatement(sql); ps.setInt(1, member_idx);
-	 * 
-	 * rs=ps.executeQuery(); ArrayList<ReservationDTO> arr = new
-	 * ArrayList<ReservationDTO>(); while(rs.next()) { int reserve_idx =
-	 * rs.getInt("reserve_idx"); int room_idx = rs.getInt("room_idx"); java.sql.Date
-	 * reserve_date = rs.getDate("reserve_date"); java.sql.Date check_in =
-	 * rs.getDate("check_in"); java.sql.Date check_out = rs.getDate("check_out");
-	 * String state = rs.getString("state"); int price = rs.getInt("price");
-	 * 
-	 * ReservationDTO dto = new ReservationDTO(reserve_idx, room_idx, reserve_date,
-	 * check_in, check_out, state, price);
-	 * 
-	 * arr.add(dto); } return arr; } catch (Exception e) { e.printStackTrace();
-	 * return null; } finally { try { if(rs!=null) rs.close(); if(ps!=null)
-	 * ps.close(); if(conn!=null) conn.close(); } catch (Exception e2) {} } }
-	 */
-
 	// 예약 내역 확인
 	public ArrayList<ReservationDTO> getReserveHistory(int member_idx, String state) {
 		try {
@@ -855,6 +850,86 @@ public class GuestDAO {
 					conn.close();
 			} catch (Exception e2) {
 			}
+		}
+	}
+	
+	//예약 상세 페이지에 예약 정보 가져오기
+	public HashMap<String, Object> getReserveInfo(int reserve_idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql = "SELECT "
+					+ "    res.RESERVE_IDX, "
+					+ "    res.MEMBER_IDX, "
+					+ "    res.ROOM_IDX, "
+					+ "    res.STATE, "
+					+ "    res.RESERVE_DATE, "
+					+ "    res.PRICE as totalprice, "
+					+ "    rd.RESERVE_DETAIL_IDX, "
+					+ "    rd.CHECK_IN, "
+					+ "    rd.CHECK_OUT, "
+					+ "    rd.REQUEST, "
+					+ "    hm.id as host_id, "
+					+ "    hm.NICKNAME as host_nickname, "
+					+ "    hm.idx as host_idx, "
+					+ "    rm.image as room_img, "
+					+ "    rm.price as price, "
+					+ "	   rm.room_name "
+					+ "FROM reservation_test res "
+					+ "JOIN reservation_detail_test rd ON res.reserve_idx = rd.reserve_idx "
+					+ "JOIN room rm ON res.room_idx = rm.room_idx "
+					+ "JOIN homes_member hm ON rm.host_idx = hm.idx "
+					+ "WHERE hm.idx = rm.host_idx and res.reserve_idx = ?";
+			
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, reserve_idx);
+			
+			rs=ps.executeQuery();
+			HashMap<String, Object> hm = new HashMap<String, Object>();
+			if(rs.next()) {
+				int member_idx = rs.getInt("member_idx");
+				int room_idx = rs.getInt("room_idx");
+				String state = rs.getString("state");
+				java.sql.Date reserve_date = rs.getDate("reserve_date");
+				int totalprice = rs.getInt("totalprice");
+				int reserve_detail_idx = rs.getInt("reserve_detail_idx");
+				java.sql.Date check_in = rs.getDate("check_in");
+				java.sql.Date check_out = rs.getDate("check_out");
+				String request = rs.getString("request");
+				String host_id = rs.getString("host_id");
+				String host_nickname = rs.getString("host_nickname");
+				int host_idx = rs.getInt("host_idx");
+				String room_img = rs.getString("room_img");
+				int price = rs.getInt("price");
+				String room_name = rs.getString("room_name");
+				
+				hm.put("reserve_idx", reserve_idx);
+				hm.put("member_idx", member_idx);
+				hm.put("room_idx", room_idx);
+				hm.put("state", state);
+				hm.put("reserve_date", reserve_date);
+				hm.put("totalprice", totalprice);
+				hm.put("reserve_detail_idx", reserve_detail_idx);
+				hm.put("check_in", check_in);
+				hm.put("check_out", check_out);
+				hm.put("request", request);
+				hm.put("host_id", host_id);
+				hm.put("host_nickname", host_nickname);
+				hm.put("host_idx", host_idx);
+				hm.put("room_img", room_img);
+				hm.put("price", price);
+				hm.put("room_name", room_name);
+			}
+			
+			return hm;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally{
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
 		}
 	}
 	
@@ -963,6 +1038,53 @@ public class GuestDAO {
 			return ERROR;
 		} finally {
 			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	//내가 쓴 리뷰
+	public ArrayList<HashMap<String, Object>> getMyReview(String id){
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "SELECT REVIEWS.*, ROOM.ROOM_NAME, ROOM.IMAGE "
+					+ "FROM REVIEWS, ROOM "
+					+ "WHERE REVIEWS.ROOM_IDX = ROOM.ROOM_IDX "
+					+ "AND REVIEWS.MEMBER_ID = ? "
+					+ "ORDER BY IDX DESC";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			
+			ArrayList<HashMap<String, Object>> arr = new ArrayList<HashMap<String, Object>>();
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				int review_idx = rs.getInt("idx");
+				int room_idx = rs.getInt("room_idx");
+				int rate = rs.getInt("rate");
+				//member_id
+				String content = rs.getString("content");
+				String room_name = rs.getString("room_name");
+				String room_img = rs.getString("image");
+				
+				HashMap<String, Object> review = new HashMap<String, Object>();
+				review.put("review_idx", review_idx);
+				review.put("room_idx", room_idx);
+				review.put("rate", rate);
+				review.put("content", content);
+				review.put("room_name", room_name);
+				review.put("room_img", room_img);
+				
+				arr.add(review);
+			}
+			return arr;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
 				if(ps!=null) ps.close();
 				if(conn!=null) conn.close();
 			} catch (Exception e2) {}
