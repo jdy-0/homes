@@ -74,7 +74,6 @@
 	width: 300px;
 	height: 200px;
 	position: relative;
-	background-image: url('<%= request.getContextPath() %>/img/no_image.jpg');
 	background-size: contain;  
     background-repeat: no-repeat;  
     background-position: center;
@@ -89,6 +88,10 @@ img {
 	padding : 10px;
 }
 </style>
+<%
+	String region_idx_s=request.getParameter("param");
+	int region_idx=Integer.parseInt(region_idx_s);
+%>
 <script>
 function loadImage(reader) {
     var output = document.querySelector('.rg_img');
@@ -102,11 +105,23 @@ function selectImage(event) {
     };    
     reader.readAsDataURL(event.target.files[0]);
 }
+
+function setInitialBackground() {
+    var img = new Image();
+    var output = document.querySelector('.rg_img');
+    img.src = '<%=adao.getRegionImg(region_idx) %>';
+    
+    img.onload = function() {
+        output.style.backgroundImage = 'url(' + img.src + ')';
+    };
+    
+    img.onerror = function() {
+        output.style.backgroundImage = 'url(/homes/img/no_image.jpg)';
+    };
+}
+
+window.onload = setInitialBackground;
 </script>
-<%
-	String region_idx_s=request.getParameter("param");
-	int region_idx=Integer.parseInt(region_idx_s);
-%>
 </head>
 <body>
 <%@ include file="adminheader.jsp"%>
@@ -122,7 +137,7 @@ function selectImage(event) {
 	    <h2>관리자 메뉴</h2>
 	    <nav>
 	      	<ul id="ul_menu">
-			    <li><a href="#">대시보드</a></li>
+			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
 			    <li><a href="#">회원 관리</a></li>
 			    <li><a href="#">호스트 관리</a></li>
 			    <li>
@@ -131,12 +146,15 @@ function selectImage(event) {
 			    		<li><a href="/homes/admin/admin_region.jsp">지역 목록</a></li>
 			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
 			    	</ul>
-			    </li>
+			    </li>		
 			    <li><a href="#">후기 관리</a></li>
-			    <li><a href="#">숙소 관리</a></li>	    
+			    <li>
+			    	숙소 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
+			    	</ul>
+			    </li>	    
 			    <li><a href="#">예약 관리</a></li>
-			    <li><a href="#">QNA</a></li>
-			    <li><a href="#">설정</a></li>
 		    </ul>
 	    </nav>
 	    
@@ -162,9 +180,9 @@ function selectImage(event) {
         		<label for="thumb_nail" class="label">	
 					<span style="font-size: 15px;">지역을 대표하는 이미지</span>
 					<br>
-					<small style="color: #A6A6A6;">확장자: jpg, jpeg, png, 이미지에 한글을 포함할 수 없습니다</small>
+					<small style="color: #A6A6A6;">확장자: jpg, jpeg, png</small>
 				</label>
-			
+				<br>
 				<input type="file" name="selectFile" class="form-control" accept="image/*" style="width: 500px; margin-top: 15px;" onchange="selectImage(event)">
         		
 	        	<div style="float : right; margin-top: 50px; margin-right: 10px;">
