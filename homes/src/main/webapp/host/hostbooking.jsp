@@ -64,15 +64,33 @@ if(roomArr==null && roomArr.size()<=0){
 				%>	
 				<div class="contentWrapper" style="display:none">
 					<article class="booking">
-			            <ul>
-			            	<li>신청자 : <%=resdto.getMember_id() %></li>
-			                <li>총 인원 : <%=resdto.getCount() %></li>
-			                <li>요청 사항 :
-			                    <label><%= resdto.getRequest() %>
-			                       	
-			                    </label>
-			                </li>
-			            </ul>
+						<table>
+							<tr>
+								<th>신청자</th>
+								<td><%=resdto.getMember_id() %></td>
+							</tr>
+							<tr>
+								<th>총 인원</th>
+								<td><%=resdto.getCount() %></td>
+							</tr>
+							<tr>
+								<th>체크인</th>
+								<td><%=resdto.getCheck_in() %></td>
+							</tr>
+							<tr>
+								<th>체크아웃</th>
+								<td><%=resdto.getCheck_out() %></td>
+							</tr>
+							<tr>
+								<th>가격</th>
+								<td><%=resdto.getPrice() %></td>
+							</tr>
+							<tr>
+								<th>요청 사항</th>
+								<td><%= resdto.getRequest() %></td>
+							</tr>
+						</table>
+			            
 			        </article>
 					 
 			        <article class="calendarart">
@@ -118,24 +136,19 @@ if(roomArr==null && roomArr.size()<=0){
 <script>
 
 const roomNames = document.querySelectorAll(".resByRoom > .roomName");
-let check = true;
 
 roomNames.forEach(function(roomName) {
     roomName.addEventListener("click", function() {
         const parent = roomName.parentElement;
-        const contentWrappers = parent.querySelectorAll(".contentWrapper");
-        
-        if(contentWrappers.length > 0){  // contentWrappers가 비어있지 않은지 확인
-            contentWrappers.forEach(function(contentWrapper) {
-                // check가 true일 때만 display 속성을 block으로 설정하고, check를 false로 변경
-                if(check){
-                    contentWrapper.style.display = "block";
-                } else {
-                    contentWrapper.style.display = "none";
-                }
-            });
-            // check 변수 토글
-            check = !check;
+        const contentWrapper = parent.querySelector(".contentWrapper"); // 해당 roomName의 부모 안에 있는 첫 번째 contentWrapper를 선택
+
+        if (contentWrapper) {
+            // 현재 display 상태를 확인하고 토글
+            if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
+                contentWrapper.style.display = "block";
+            } else {
+                contentWrapper.style.display = "none";
+            }
         }
     });
 });

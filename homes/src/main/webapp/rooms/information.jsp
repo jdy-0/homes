@@ -552,7 +552,7 @@ try {
             </div>
 
 			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="<%=(request.getParameter("guest_num")!=null) ?request.getParameter("guest_num"):2 %>" required>
-           
+
 
             <div class="reservation-box">
                 <div class="details">
