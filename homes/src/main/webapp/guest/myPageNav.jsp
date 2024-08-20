@@ -29,7 +29,6 @@
 			<li><a href="javascript:showSubMenu('ul_myActivity');">&#127960;나의 활동</a>
     			<ul id="ul_myActivity" class="ul_submenu" style="display: none;">
         			<li><a href="/homes/guest/myReview.jsp">내가 쓴 리뷰</a></li>
-        			<li><a href="/homes/guest/reviewToMe.jsp">내가 받은 리뷰</a></li>
         			<li><a href="/homes/guest/msg.jsp">쪽지</a></li>
     			</ul>
 			</li>

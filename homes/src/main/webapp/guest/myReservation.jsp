@@ -31,8 +31,8 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 		<h3><%=session.getAttribute("usernickname") %>님 예약 내역</h3>
 	</fieldset>
 	<div style="text-align:center;">
-		<input type="button" value="예약완료" class="button" onclick="showDiv('planned');">
-		<input type="button" value="예약대기" class="button" onclick="showDiv('waiting');">
+		<input type="button" value="예약완료" class="button" id="bt_complete" onclick="showDiv('planned');">
+		<input type="button" value="예약대기" class="button" style="background-color:gray; color:white; opacity:0.5;"id="bt_waiting" onclick="showDiv('waiting');">
 	</div>
 	<div id="planned">
 	<%
@@ -105,9 +105,21 @@ function showDiv(divId){
 	if('waiting' == divId){
 		document.getElementById('waiting').style.display="block";
 		document.getElementById('planned').style.display="none";
+		document.getElementById('bt_complete').style.backgroundColor="gray";
+		document.getElementById('bt_complete').style.color="lightgray";
+		document.getElementById('bt_complete').style.opacity="0.5";
+		document.getElementById('bt_waiting').style.backgroundColor="#dec022";
+		document.getElementById('bt_waiting').style.color="black";
+		document.getElementById('bt_waiting').style.opacity="1";
 	}else{
 		document.getElementById('waiting').style.display="none";
 		document.getElementById('planned').style.display="block";
+		document.getElementById('bt_complete').style.backgroundColor="#dec022";
+		document.getElementById('bt_complete').style.color="black";
+		document.getElementById('bt_complete').style.opacity="1";
+		document.getElementById('bt_waiting').style.backgroundColor="gray";
+		document.getElementById('bt_waiting').style.color="lightgray";
+		document.getElementById('bt_waiting').style.opacity="0.5";
 	}
 	/* var articles = ['waiting', 'planned'];
 	
