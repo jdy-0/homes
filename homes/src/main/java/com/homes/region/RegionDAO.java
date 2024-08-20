@@ -79,4 +79,23 @@ public class RegionDAO {
 		}
 	}
 	
+	//hostinsert에서 해당 지역에 해당하는 region_idx값 가져오기
+	/*
+	 * public String[] getRegion_info(int Region_idx){ try {
+	 * conn=com.homes.db.HomesDB.getConn(); String sql="SELECT " +
+	 * "r1.region_name AS selected_region_name," +
+	 * "r2.region_name AS parent_region_name" + "FROM region r1" +
+	 * "LEFT JOIN region r2 ON r1.parent_idx = r2.region_idx" +
+	 * "WHERE r1.region_idx = ?;"; ps=conn.prepareStatement(sql); ps.setInt(1,
+	 * Region_idx); rs=ps.executeQuery(); String[] str= new String[1];
+	 * 
+	 * while(rs.next()) {
+	 * 
+	 * str[0]=rs.getString("region_name"); str[1]=rs.getString("region_name"); }
+	 * 
+	 * return str; } catch (Exception e) { e.printStackTrace(); return null; }
+	 * finally { try { if(rs!=null) rs.close(); if(ps!=null) ps.close();
+	 * if(conn!=null) conn.close(); } catch (Exception e2) { e2.printStackTrace(); }
+	 * } }
+	 */
 }

@@ -16,7 +16,7 @@ public class RegionDTO {
 		this.parent_idx = parent_idx;
 		this.lev = lev;
 	}
-
+	
 	public int getRegion_idx() {
 		return region_idx;
 	}

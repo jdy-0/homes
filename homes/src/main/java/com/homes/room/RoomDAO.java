@@ -434,7 +434,24 @@ public class RoomDAO {
 	public ArrayList<RoomDTO> HomesList(int useridx){
 		try {
 		conn=com.homes.db.HomesDB.getConn();
-		String sql="SELECT * FROM ROOM WHERE HOST_IDX = (SELECT idx FROM Homes_Member WHERE idx = ?) and STATE = 1 ";
+		String sql = "SELECT "
+	               + "r.room_idx, "
+	               + "r.host_idx, "
+	               + "r.region_idx, "
+	               + "r.room_name, "
+	               + "r.goodthing, "
+	               + "r.addr_detail, "
+	               + "r.price, "
+	               + "r.image, "
+	               + "r.state, "
+	               + "r1.region_name AS selected_region_name, "
+	               + "r2.region_name AS parent_region_name "
+	               + "FROM ROOM r "
+	               + "JOIN region r1 ON r.region_idx = r1.region_idx "
+	               + "LEFT JOIN region r2 ON r1.parent_idx = r2.region_idx "
+	               + "WHERE r.host_idx = (SELECT idx FROM Homes_Member WHERE idx = ?) "
+	               + "AND r.state = 1";
+
 		ps=conn.prepareStatement(sql);
 		ps.setInt(1, useridx);
 		rs=ps.executeQuery();
@@ -448,12 +465,16 @@ public class RoomDAO {
 			String goodthing= rs.getString("goodthing");
 			String addr_detail= rs.getString("addr_detail");
 			int price= rs.getInt("price");
-			//String map_url=rs.getString("map_url");
 			String image= rs.getString("image");
 			int state= rs.getInt("state");
-			RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state);
+			String selectedRegionName = rs.getString("selected_region_name");
+            String parentRegionName = rs.getString("parent_region_name");
+            if(parentRegionName==null||parentRegionName.isEmpty()) {
+            	parentRegionName="";
+            }
+			RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state,selectedRegionName,parentRegionName);
 			arr.add(dto);
-			System.out.println(arr.get(0).getRoom_name());
+			//System.out.println(arr.get(0).getRoom_name());
 		}
 		return arr;
 		} catch (Exception e) {
@@ -516,6 +537,7 @@ public class RoomDAO {
 				if(rs!=null)rs.close();
 				if(ps!=null)ps.close();
 				if(conn!=null)conn.close();
+				
 			} catch (Exception e2) {}
 		}
 	}
@@ -533,9 +555,9 @@ public class RoomDAO {
             ps.setString(5, addrDetail);
             ps.setInt(6, price);
           //  ps.setString(7, mapUrl);
-            ps.setString(8, img);
-            ps.setInt(9, roomMin);
-            ps.setInt(10, roomMax);
+            ps.setString(7, img);
+            ps.setInt(8, roomMin);
+            ps.setInt(9, roomMax);
 
             result = ps.executeUpdate();
             return result;

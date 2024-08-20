@@ -754,12 +754,20 @@ public class AdminTestDAO {
 					String goodthing=rs.getString("goodthing");
 					String addr_detail=rs.getString("addr_detail");
 					int price=rs.getInt("price");
+
+
+					//String map_url=rs.getString("map_url");
+
 					String image=rs.getString("image");
 					int state=rs.getInt("state");
 					int room_min=rs.getInt("room_min");
 					int room_max=rs.getInt("room_max");
 					
+
 					RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image, state, room_min, room_max);
+
+					//RoomDTO dto=new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
+
 					room.add(dto);
 				}while(rs.next());
 				
