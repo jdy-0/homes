@@ -59,7 +59,7 @@ public class ReviewDAO {
 
     public List<ReviewDTO> getReviewsByRoomIdxWithPaging(int roomIdx, int pageNum, int pageSize) throws Exception {
         List<ReviewDTO> reviews = new ArrayList<>();
-        String sql = "SELECT * FROM (SELECT ROWNUM rnum, a.* FROM (SELECT idx, room_idx, rate, content FROM reviews WHERE room_idx = ? ORDER BY idx DESC) a WHERE ROWNUM <= ?) WHERE rnum > ?";
+        String sql = "SELECT * FROM (SELECT ROWNUM rnum, a.* FROM (SELECT idx, room_idx, rate, content, member_id FROM reviews WHERE room_idx = ? ORDER BY idx DESC) a WHERE ROWNUM <= ?) WHERE rnum > ?";
 
         try (Connection conn = HomesDB.getConn();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -219,6 +219,81 @@ public class ReviewDAO {
 
         return averageRate;
     }
+    /**
+     * 특정 리뷰 ID로 리뷰를 조회하는 메서드
+     * @param reviewId 조회할 리뷰의 ID
+     * @return 조회된 ReviewDTO 객체 (없으면 null)
+     * @throws Exception 
+     */
+    public ReviewDTO getReviewById(int reviewId) throws Exception {
+        ReviewDTO review = null;
+        String sql = "SELECT idx, room_idx, rate, member_id, content FROM reviews WHERE idx = ?";
 
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, reviewId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                review = new ReviewDTO();
+                review.setIdx(rs.getInt("idx"));
+                review.setRoomIdx(rs.getInt("room_idx"));
+                review.setRate(rs.getInt("rate"));
+                review.setMemberId(rs.getString("member_id"));
+                review.setContent(rs.getString("content"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return review;
+    }
+
+    /**
+     * 리뷰를 업데이트하는 메서드
+     * @param review 업데이트할 ReviewDTO 객체
+     * @return 업데이트 성공 시 true, 실패 시 false
+     * @throws Exception 
+     */
+    public boolean updateReview(ReviewDTO review) throws Exception {
+        String sql = "UPDATE reviews SET content = ?, rate = ? WHERE idx = ?";
+        int result = 0;
+
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, review.getContent());
+            pstmt.setInt(2, review.getRate());
+            pstmt.setInt(3, review.getIdx());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result > 0;
+    }
+    /**
+     * 특정 리뷰 ID로 리뷰를 삭제하는 메서드
+     * @param reviewId 삭제할 리뷰의 ID
+     * @return 삭제 성공 시 true, 실패 시 false
+     * @throws Exception 
+     */
+    public boolean deleteReviewById(int reviewId) throws Exception {
+        String sql = "DELETE FROM reviews WHERE idx = ?";
+        int result = 0;
+
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, reviewId);
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result > 0;
+    }
 
 }

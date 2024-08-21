@@ -10,6 +10,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.homes.db.HomesDB;
+
 public class ReportDAO {
     private DataSource dataSource;
 
@@ -140,6 +142,31 @@ public class ReportDAO {
             if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     }
+    // 특정 숙소의 모든 신고를 가져오는 메서드
+    public List<ReportDTO> getReportsByRoomIdx(int roomIdx) {
+        List<ReportDTO> reports = new ArrayList<>();
+        String sql = "SELECT * FROM reports WHERE room_idx = ?";
 
+        try (Connection conn = HomesDB.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, roomIdx);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ReportDTO report = new ReportDTO();
+                report.setId(rs.getInt("id"));
+                report.setRoomIdx(rs.getInt("room_idx"));
+                report.setCommentId(rs.getInt("comment_id"));
+                report.setReportReason(rs.getString("report_reason"));
+                reports.add(report);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
 }
+
+
 

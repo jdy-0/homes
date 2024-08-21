@@ -9,6 +9,7 @@
 <%
 
 try {
+	 request.setCharacterEncoding("UTF-8");
     // 처리할 작업을 결정하는 파라미터
     String action = request.getParameter("action");
 
@@ -455,6 +456,83 @@ try {
             height: 100px;
             resize: vertical;
         }
+        #edit-review-modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#edit-review-modal h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+}
+
+#edit-review-modal .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#edit-review-form {
+    width: 100%;
+}
+
+#edit-review-text {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#edit-review-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #dec022;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#edit-review-form button:hover {
+    background-color: #e2dccc;
+}
+/* 별점 스타일 */
+.star-rating {
+    direction: rtl;
+    display: inline-flex;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 20px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    color: #ddd;
+    transition: color 0.2s ease-in-out;
+}
+
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffc107;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107;
+}
+
     </style>
 </head>
 <body>
@@ -513,16 +591,19 @@ try {
     <div class="review-list">
         <% if (reviews != null && !reviews.isEmpty()) { %>
             <% for (ReviewDTO review : reviews) { %>
-                <div class="review-item">
-                    <p><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
-                    <p><strong>별점:</strong> <%= review.getRate() %>점</p>
-                    <p><%= review.getContent() %></p>
-                    <% if (userid != null &&  review.getMemberId().equals(userid)) { %>
-                        <span class="edit-btn" onclick="editReview(<%= review.getIdx() %>)">수정</span>
-                        <span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>)">삭제</span>
-                    <% } %>
-                    <span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
-                </div>
+<div class="review-item">
+    <p><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
+    <p><strong>별점:</strong> <span id="review-rate-<%= review.getIdx() %>"><%= review.getRate() %></span>점</p>
+    <p id="review-content-<%= review.getIdx() %>"><%= review.getContent() %></p>
+    <% if (userid != null &&  review.getMemberId().equals(userid)) { %>
+        <span class="edit-btn" onclick="editReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">수정</span>
+        <span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">삭제</span>
+    <% } %>
+    <span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
+</div>
+
+
+
             <% } %>
         <% } else { %>
             <p>아직 후기가 없습니다.</p>
@@ -584,7 +665,7 @@ try {
     <div class="modal-content">
         <span class="close-btn" onclick="closeReviewModal()">&times; 닫기</span>
         <h2 style="margin-bottom: 20px;">후기 작성</h2>
-        <form method="post" action="information.jsp?action=submitReview" onsubmit="return submitReview();">
+        <form method="post" action="information.jsp?action=submitReview" accept-charset="UTF-8" onsubmit="return submitReview();">
             <div class="review-inputs">
                 <input type="text" name="member_id" value="<%=userid%>" readonly>
                 <textarea name="review" placeholder="후기를 작성하세요..." required></textarea>
@@ -607,7 +688,7 @@ try {
     <div class="modal-content">
         <span class="close-btn" onclick="closeReportModal()">&times; 닫기</span>
         <h2 style="margin-bottom: 20px;">신고하기</h2>
-        <form method="post" action="information.jsp?action=submitReport" onsubmit="return submitReport();">
+        <form method="post" action="information.jsp?action=submitReport" accept-charset="UTF-8" onsubmit="return submitReport();">
             <input type="hidden" id="comment-id" name="comment_id" value="">
             <div class="reason-list">
                 <label><input type="radio" name="report_reason" value="스팸홍보/도배"> 스팸홍보/도배입니다.</label>               
@@ -626,6 +707,30 @@ try {
         </form>
     </div>
 </div>
+<!-- 리뷰 수정 모달 -->
+<div id="edit-review-modal" style="display:none; position:fixed; z-index:1000; left:50%; top:50%; transform:translate(-50%, -50%); background-color:white; padding:30px; border:2px solid black; width:600px; height:auto;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeEditReviewModal()">&times; 닫기</span>
+        <h2>리뷰 수정</h2>
+        <form id="edit-review-form" method="post" action="editReview_ok.jsp" accept-charset="UTF-8">
+            <input type="hidden" id="edit-review-id" name="review_id" value="">
+            <input type="hidden" id="edit-room-idx" name="room_idx" value="">
+            <textarea id="edit-review-text" name="review_content" placeholder="수정할 내용을 입력하세요..." required></textarea>
+            
+            <!-- 별점 선택 -->
+            <div class="star-rating">
+                <input type="radio" id="edit-star5" name="rate" value="5"><label for="edit-star5">★</label>
+                <input type="radio" id="edit-star4" name="rate" value="4"><label for="edit-star4">★</label>
+                <input type="radio" id="edit-star3" name="rate" value="3"><label for="edit-star3">★</label>
+                <input type="radio" id="edit-star2" name="rate" value="2"><label for="edit-star2">★</label>
+                <input type="radio" id="edit-star1" name="rate" value="1"><label for="edit-star1">★</label>
+            </div>
+            
+            <button type="submit">수정 완료</button>
+        </form>
+    </div>
+</div>
+
 
 <%@ include file="/footer.jsp"%>
 <%
@@ -667,15 +772,36 @@ function submitReport() {
     return true;
 }
 
-function editReview(reviewId) {
-    alert("리뷰 수정 기능은 아직 구현되지 않았습니다.");
+function editReview(reviewId, roomIdx) {
+    // 리뷰 수정 모달을 띄웁니다.
+    const reviewContent = document.getElementById('review-content-' + reviewId).innerText;
+    const reviewRate = document.getElementById('review-rate-' + reviewId).innerText; // 기존 별점 가져오기
+    
+    document.getElementById('edit-review-modal').style.display = 'block';
+    document.getElementById('edit-review-id').value = reviewId;
+    document.getElementById('edit-room-idx').value = roomIdx;
+    document.getElementById('edit-review-text').value = reviewContent;
+    
+    // 기존 별점 설정
+    document.querySelector(`input[name="rate"][value="${reviewRate}"]`).checked = true;
 }
 
-function deleteReview(reviewId) {
+// 모달을 닫는 함수
+function closeEditReviewModal() {
+    document.getElementById('edit-review-modal').style.display = 'none';
+}
+
+// 리뷰 수정 폼을 제출하는 함수
+function submitEditReview() {
+    document.getElementById('edit-review-form').submit();
+}
+
+function deleteReview(reviewId, roomIdx) {
     if (confirm("정말로 이 후기를 삭제하시겠습니까?")) {
-        window.location.href = "deleteReview.jsp?review_id=" + reviewId;
+        window.location.href = "deleteReview_ok.jsp?review_id=" + reviewId + "&room_idx=" + roomIdx;
     }
 }
+
 </script>
 </body>
 <script>

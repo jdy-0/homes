@@ -268,7 +268,7 @@
     <!-- 후기 작성 폼 -->
     <div class="review-form">
         <% if (validRoom) { %>
-        <form method="post" action="submitReview.jsp" onsubmit="return validateReviewForm();">
+        <form method="post" action="submitReview.jsp" onsubmit="return validateReviewForm();" accept-charset="UTF-8">
             <div class="review-header">
                 <h3>후기 작성</h3>
                 <div class="star-rating">
@@ -292,7 +292,7 @@
 <!-- 신고 모달 창 -->
 <div id="report-modal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); padding:20px; background-color:#fff; border:1px solid #ccc; z-index:1000;">
     <h3>신고하기</h3>
-    <form method="post" action="submitReport.jsp" onsubmit="return submitReport();">
+   <form method="post" action="submitReport.jsp" onsubmit="return submitReport();" accept-charset="UTF-8">
         <input type="hidden" id="comment-id" name="comment_id">
         <input type="hidden" id="room-idx" name="room_idx" value="<%= request.getParameter("room_idx") %>">
         <div class="reason-list" style="margin-bottom: 20px; font-size: 1.2rem;">
