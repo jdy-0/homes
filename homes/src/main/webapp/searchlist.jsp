@@ -336,7 +336,7 @@ function validateForm() {
 		region=rdao.getRegion();
 				
 		for(int i=0;i<region.size();i++){%>
-	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option> 
+	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option>
 	    <%} %>
 		</select>
 	</div> 
