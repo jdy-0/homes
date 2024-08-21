@@ -105,8 +105,13 @@ function openrgInsert() {
 	    <nav>
 	      	<ul id="ul_menu">
 			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
-			    <li><a href="#">회원 관리</a></li>
-			    <li><a href="#">호스트 관리</a></li>
+			    <li>
+					회원 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_member_report.jsp">신고 회원 목록</a></li>
+			    		<li><a href="/homes/admin/admin_member_block.jsp">차단 회원 목록</a></li>
+			    	</ul>
+			    </li>
 			    <li>
 			    	지역 관리
 			    	<ul>
@@ -140,7 +145,6 @@ function openrgInsert() {
 					<th>지역명</th>
 					<th>상위지역</th>
 					<th>수정</th>
-					<th>삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -149,7 +153,7 @@ function openrgInsert() {
 			if(arr==null||arr.size()==0){
 				%>
 				<tr>
-					<td colspan="4" align="center">
+					<td colspan="3" align="center">
 						등록된 게시글이 없습니다
 					</td>
 				</tr>
@@ -161,7 +165,6 @@ function openrgInsert() {
 						<td><%=arr.get(i).getRegion_name() %></td>
 						<td><%=adao.getParentName(arr.get(i).getParent_idx())  %></td>
 						<td><input type="button"  value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
-						<td><input type="button"  value="삭제" class="rbutton"></td>
 					</tr>
 					<%
 				}
@@ -170,7 +173,7 @@ function openrgInsert() {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="3">
+					<td colspan="2">
 					</td>
 					<td><input type="button" value="추가"  class="rbutton" onclick="openrgInsert();" ></td>
 				</tr>
