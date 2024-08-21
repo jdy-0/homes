@@ -5,11 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%
+String crpage="/homes";
+if(request.getParameter("crpage")!=null && request.getParameter("crpage")!=""){
+	crpage = request.getParameter("crpage");
+}
+%>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 </head>
 <script>
 function goToJoin(){
-	opener.location.href='homesJoin.jsp';
+	opener.location.href='<%=crpage%>';
 	self.close();
 }
 </script>
@@ -50,7 +56,7 @@ if(cks!=null){
 </form>
 <div>
 	<label>아직 회원이 아니신가요?</label>
-	<a href="javascript:goToJoin();">[회원가입]</a>
+	<a href="/homes/guest/homesJoin.jsp">[회원가입]</a>
 </div>
 </section>
 </body>

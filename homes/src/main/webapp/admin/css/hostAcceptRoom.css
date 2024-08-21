@@ -1,0 +1,46 @@
+@charset "UTF-8";#selectedImage{
+	width:400px;
+	height:300px;
+	display:block;
+	margin-bottom:10px;
+}
+#insert_mainImg_fs{
+	border:0; 
+	border-right:3px dashed black; 
+	padding:20px;
+}
+
+#insert_mainImg_fs img{
+	margin:10px auto;
+}
+#insert_room_fs{
+	border:0; 
+	padding:20px;
+}
+#insert_room_fs table{
+	margin:15px auto;
+	width:500px;
+	font-size:20px;
+}
+#insert_room_fs table th{width:100px;}
+#insert_room_fs table select{
+	border:3px solid black;
+	font-family: 'SBAggroB';
+	padding:5px;
+	font-size:18px;
+}
+.text{
+	border:3px solid black;
+	padding:5px;
+	font-family: 'SBAggroB';
+	font-size:18px;
+}
+.button{
+	font-family: 'SBAggroB';
+	font-size:20px;
+	padding:5px;
+	background-color:#dec022;
+	border:4px solid black;
+	margin:15px;
+}
+.button:hover{background-color:#e2dccc; transition:0.5s;}

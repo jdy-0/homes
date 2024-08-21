@@ -4,7 +4,6 @@
 <%@page import="java.util.Date" %>
 <jsp:useBean id="roomdto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="roomdao" class="com.homes.room.RoomDAO"></jsp:useBean>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,18 +11,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
 </head>
-
 <body>
 <%@ include file="/header.jsp" %>
-<%@include file="hostheader.jsp" %>
+
 <%
 Object o_useridx = session.getAttribute("useridx");
 int useridx = (Integer) o_useridx;
 ArrayList<RoomDTO> rarr= roomdao.HomesList(useridx);
 %>
 <section>
+<%@include file="hostheader.jsp" %>
 <%
 if (rarr == null || rarr.size() == 0) {
 %>

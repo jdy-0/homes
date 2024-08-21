@@ -1,0 +1,114 @@
+@charset "UTF-8";
+/*admin.jsp*/
+section{
+	font-family: 'SBAggroB';
+}
+.admin{
+	display: flex;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    border-bottom: 5px solid black;
+    width: 100%;
+    height: auto;
+    font-family: 'SBAggroB';
+}
+.title{
+	background-color:#dec022;
+	color:black;
+	border-bottom:5px solid black;
+	margin:0px;
+	font-family: 'SBAggroB';
+}
+.sidebar {
+    width: 20%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+}
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+.card {
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.adminContent{
+	display:flex;
+}
+/*신고내역*/
+#reportList{
+	width:100%;
+}
+#reportListTable {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+#reportListTable th, td {
+	border: 1px solid black;
+	padding: 10px;
+	text-align: left;
+}
+
+#reportListTable th{
+	background-color: #f2f2f2;
+}
+#report-modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	padding: 20px;
+	border: 1px solid black;
+	width: 400px;
+}
+.content h2{
+	text-align: center;
+}
+.content table {
+	width: 550px;
+	margin: 0px auto;
+	border-top: 3px double black;
+	border-bottom: 3px double black;
+}
+.content table th{
+	background-color: #dec022;
+}
+
+.content table td{
+	text-align: center;
+}
+.rbutton {
+    width: 70px;
+    background-color: #dec022;
+    border: 3px solid black;
+    font-family: 'SBAggroB';
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+.region_img {
+	border: 1px solid #ccc;
+	width: 150px;
+	height: 100px;
+	position: relative;
+	background-size: contain;  
+    background-repeat: no-repeat;  
+    background-position: center;
+}
+.fs_adminContent{
+	width:100%;
+}

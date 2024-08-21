@@ -10,59 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-@font-face {   /*제목용 굵은 폰트*/
-    font-family: 'SBAggroB';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-body{background-color:#e2dccc;}
-fieldset{
-   width:480px;
-   font-family: 'SBAggroB';
-   margin:100px auto;
-   border:0;
-}
-legend{
-   font-size:30px;
-}
-#rginsert_frame{
-   margin:20px auto;
-   display:block;
-   justify-content: space-between;
-   font-family: 'SBAggroB';
-   font-size:25px;
-   align-items: center;
-}
-#regionName{
-   width:300px;
-   outline:none;
-   border:3px solid black;
-   font-family: 'SBAggroB';
-   font-size:23px;
-   padding:5px;
-}
-#button{
-   border:3px solid black;
-   background-color:#dec022;
-   font-family: 'SBAggroB';
-   font-size:23px;
-   padding:10px;
-}
-#button:hover{
-   background-color:#e2dccc;
-   transition:0.5s;
-}
-.select_things{
-	border: 3px solid black;
-    width: 300px;
-    padding: 10px;
-    font-size: 20px;
-    font-family: 'SBAggroB';
-}
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/regionInsert.css">
 </head>
 <body>
 <fieldset>

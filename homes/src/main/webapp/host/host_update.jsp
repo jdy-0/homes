@@ -116,7 +116,6 @@ function FileSelect(event) {
 <link rel="stylesheet" href="/homes/css/updateLayout.css" type="text/css"/>
 
 <body>
-
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
 <section style="display: flex;">
 <%@ include file="hostheader.jsp" %>

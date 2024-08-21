@@ -60,7 +60,7 @@ function openLoginPopup(){
 		</div>
 	</div>
 </div>
-<div id="header_bottom">
+<%-- <div id="header_bottom">
 	<div>
 	<table id="table_barcode">
 		<tr>
@@ -91,5 +91,5 @@ function openLoginPopup(){
 		</tr>
 	</table>
 	</div>
-</div>
+</div> --%>
 </header>

@@ -18,10 +18,9 @@
     font-style: normal;
 }
 body{
-	background: #e2dccc;
+	background-color:cornsilk;
 	width:1400px;
 	margin:30px auto;;
-	border:5px solid black;
 }
 #header_top{
 	width:1400px;
@@ -32,39 +31,43 @@ body{
 #header_top table{
 	width:300px;
 	border-spacing:0;
-	border-bottom:5px solid black;
 	text-align:center;
 }
 #header_top table td a{
 	text-decoration:none;
-	color:white;
+	color:lemonchiffon;
 }
 #header_top table td a:hover{
-	color:#dec022;
 	transition:0.5s;
+	color:powderblue;
 }
 .logo_black{
 	witdh:70px;
 	height:100px;
-	background-color: black;
-    color: #dec022;
+	/* background-color: black; */
+	background-color:#cd280e;
+    /* color: #dec022; */
+    color:lemonchiffon;
     font-family: 'SBAggroB';
     font-size: 65px;
 }
 .logo_icon{
 	witdh:70px;
 	height:100px;
-	background-color: black;
-    color: white;
+	/* background-color: black; */
+	background-color:#cd280e; 
+    /* color: white; */
+    color:#eed4af; 
     font-family: 'SBAggroB';
     font-size: 65px;
 }
 .logo_yellow{
 	width:70px;
 	height:100px;
-	background-color: #dec022;
-    color: black;
-    /* color: blue; */
+	/* background-color: #dec022; */
+	background-color:lemonchiffon;
+    /* color: black; */
+    color:#cd280e; 
     font-family: 'SBAggroB';
     font-size: 65px;
 }
@@ -72,25 +75,30 @@ body{
 	width:100%;
 }
 #header_top_center{
-	background:#6f7bd0;
+	/* background:#6f7bd0; */
+	background-color:powderblue;
 	width:650px;
-	color: #e2dccc;
+	color: #cd280e; 
 	padding-left:50px;
 	font-family: 'Ownglyph_meetme-Rg';
-	vertical-align:middle;
-	border-bottom:5px solid black;
+	display: flex;
+    align-items: center;
+    text-align: center;
+	/* border-bottom:5px solid black; */
 }
 #header_top_center h1{
 	/* margin:80px; */
-	font-family: 'Ownglyph_meetme-Rg';
-	font-size:80px;
+	/* font-family: 'Ownglyph_meetme-Rg'; */
+	font-family: 'SBAggroB';
+	font-size:45px;
+	text-align:center;
 }
 #header_top_right{
-	background-color: black;
+	background-color: #cd280e; 
 	width:350px;
-	color:#e2dccc;
+	color:lemonchiffon;;
 	padding-left:50px;
-	font-family: 'Ownglyph_meetme-Rg';
+	font-family: 'SBAggroB';
 	display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -104,8 +112,8 @@ body{
 }
 #header_top_right_login a{
 	text-decoration:none;
-	color:#e2dccc;
-	font-family: 'Ownglyph_meetme-Rg';
+	color:lemonchiffon;
+	font-family: 'SBAggroB';
 	font-size:30px;
 	padding:10px;
 }
@@ -120,8 +128,8 @@ body{
 }
 #header_top_right_profile a{
 	text-decoration:none;
-	color:#e2dccc;
-	font-family: 'Ownglyph_meetme-Rg';
+	color:lemonchiffon;
+	font-family: 'SBAggroB';
 	font-size:30px;
 	padding:10px;
 }

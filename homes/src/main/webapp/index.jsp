@@ -17,8 +17,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="css/indexLayout.css">
 </head>
-<style>
+<!-- <style>
 .search_item {
     padding: 10px 20px;
    
@@ -255,7 +256,7 @@
 	height:400px;
 	margin:0px;
 }
-</style>
+</style> -->
 <script>
 function validateForm() {
     var checkin = document.getElementById('check_in').value;
@@ -306,10 +307,8 @@ if(cp%listSize==0)userGroup--;
 <%@ include file="header.jsp"%>
 <section>
 <article id="search_box">
-<fieldset class="index_label_fs">
-<h2>Find Home >></h2>
-</fieldset>
-<fieldset id="search_box_fs">
+<!-- 검색 바 -->
+<fieldset class="search_box_fs">
 <form name="search" action="searchlist.jsp" onsubmit="return validateForm()">
 <div class="select_box">
 	<div class="search_item">
@@ -325,35 +324,34 @@ if(cp%listSize==0)userGroup--;
 		</select>
 	</div> 
 
-
-   <div class="date-picker">
-			<div id="date-input">
-				<div class="search_item">
-					<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly">
-				</div>
-				<div class="search_item">
-					<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly">
-				</div>
+	<div class="date-picker">
+		<div id="date-input">
+			<div class="search_item">
+				<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly">
 			</div>
-
-			<%@ include file="cal.jsp"%>
-			<div id="select_guest_div">
-				<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" required>
-			</div>
-			<div class="search_button">
-				<input type="submit" value="검색" class="button">
+			<div class="search_item">
+				<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly">
 			</div>
 		</div>
 
+		<%@ include file="cal.jsp"%>
+		<div id="select_guest_div">
+			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" required>
+		</div>
+		<div class="search_button">
+			<input type="submit" value="검색" class="button">
+		</div>
 	</div>
+</div>
 </form>
-	</fieldset>
-</article>
-<fieldset class="index_label_fs">
-<h2>HOMES의 인기 여행지</h2>
 </fieldset>
+</article>
+
 <article id="recommend_region">
-<table id="recommend_region_table">
+	<fieldset class="index_label_fs">
+		<h2>HOMES의 인기 여행지</h2>
+	</fieldset>
+	<table id="recommend_region_table">
 	<tr>
 		<td class="td_arrow">
 		<%
@@ -388,12 +386,13 @@ if(cp%listSize==0)userGroup--;
 		%>
 	   </td>
    </tr>
-</table>
+	</table>
 </article>
-<fieldset class="index_label_fs">
-<h2>HOMES의 추천 HOME</h2>
-</fieldset>
+
 <article id="recommend_room">
+<fieldset class="index_label_fs">
+<h2>HOMES의 랜덤 추천</h2>
+</fieldset>
 <table id="recommend_room_table">
 	<%
 	if(rmdao.roomCount()>=6){

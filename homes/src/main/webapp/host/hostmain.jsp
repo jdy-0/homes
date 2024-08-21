@@ -4,7 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-
 <jsp:useBean id="homedto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="homedao" class="com.homes.room.RoomDAO"></jsp:useBean>
 <jsp:useBean id="rdao" class="com.homes.region.RegionDAO"></jsp:useBean>
@@ -14,7 +13,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
-<!-- <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css"> -->
+<link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
 <!--     <style>
         img {
             width: 400px;
@@ -61,47 +60,8 @@
         }
         
     </style> -->
-<style>
-section{
-	font-family: 'SBAggroB';
-	display:flex;
-}
-#host_main_article{
-	width:100%;
-}
-#no_room_div{
-	margin:15px auto;
-}
-h3{	
-	padding:50px;
-	text-align:center;
-	font-size:30px;
-}
-form{
-	text-align:center;
-	padding:50px;
-}
-.button{
-	font-family: 'SBAggroB';
-	font-size:20px;
-	padding:5px;
-	background-color:#dec022;
-	border:4px solid black;
-}
 
-#roomselect li{
-            list-style:none;
-        }
-  img {
-  			
-            width: 800px;
-            height: 700px;
-            display: block;
-             margin: 0 auto 10px auto;
-        }       
-</style>
 </head>
-
 <body>
 <%@ include file="/header.jsp"%>
 <%	
@@ -198,5 +158,6 @@ ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 		%>
 </article>
 </section>
+<%@include file="/footer.jsp" %>
 </body>
 </html>

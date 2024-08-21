@@ -4,36 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>회사 세부 정보</title>
-    <style>
-        body {
-            font-family: 'Ownglyph_meetme-Rg';
-            background-color: #e2dccc;
-            line-height: 1.6;
-        }
-        #content {
-            width: 1000px;
-            margin: 30px auto;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border: 4px solid black;
-            font-size: 20px;
-            color: black;
-        }
-        h1, h2, h3 {
-            color: black;
-        }
-        ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        .sub-section {
-            margin-left: 20px;
-        }
-        .highlight {
-            color: blue;
-            font-weight: bold;
-        }
-    </style>
+<link rel="stylesheet" type="text/css" href="/homes/css/termLayout.css">   
 </head>
 <body>
     <div id="content">

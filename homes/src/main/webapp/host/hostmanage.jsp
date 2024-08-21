@@ -12,20 +12,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
 </head>
 <%
 int roomidx = Integer.parseInt(String.valueOf(session.getAttribute("useridx")));
-
-	
-	
-ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx); 
-	
+ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx); 	
 %>
 <body>
 <%@ include file="/header.jsp" %>
-<%@include file="hostheader.jsp" %>
 <section>
+<%@include file="hostheader.jsp" %>
 <%
 		if(arr==null||arr.size()==0){
 			%>
@@ -60,7 +57,6 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 			}
 		}
 	%>
-
 </section>
 </body>
 </html>

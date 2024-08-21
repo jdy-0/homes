@@ -8,34 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>신고 내역 관리</title>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    table, th, td {
-        border: 1px solid black;
-    }
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    #report-modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 20px;
-        border: 1px solid black;
-        width: 400px;
-    }
-</style>
 <script>
     function showReportModal(reportId, commentId, roomIdx, reason) {
         document.getElementById('report-id').value = reportId;
@@ -59,11 +31,32 @@
         document.getElementById('report-form').submit();
     }
 </script>
+<link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="../css/adminLayout.css">
 </head>
 <body>
-
+<%@ include file="adminheader.jsp"%>
+<section>
+<article>
+<fieldset class="title">
+<h2>관리자페이지</h2>
+</fieldset>
+</article>
+<article class="adminContent">
+<%@include file="adminSideBar.jsp" %>
+<fieldset id="reportList">
 <h2>신고 내역 관리</h2>
-<table>
+<%
+	ReportDAO reportDAO = new ReportDAO();
+	List<ReportDTO> reports = reportDAO.getAllReports();
+	
+	if(reports == null || reports.size()==0){
+		%>
+		<h2>신고 내역이 없습니다.</h2>
+		<%
+	}else{
+%>
+<table id="reportListTable">
     <tr>
         <th>신고 ID</th>
         <th>댓글 ID</th>
@@ -73,8 +66,7 @@
         <th>확인</th>
     </tr>
     <%
-        ReportDAO reportDAO = new ReportDAO();
-        List<ReportDTO> reports = reportDAO.getAllReports();
+        
 
         for (ReportDTO report : reports) {
     %>
@@ -90,7 +82,9 @@
         }
     %>
 </table>
-
+	<%} %>
+</fieldset>
+</article>
 <!-- 신고 확인 모달 -->
 <div id="report-modal">
     <form id="report-form" method="post">
@@ -104,5 +98,6 @@
     </form>
 </div>
 
+</section>
 </body>
 </html>
