@@ -1,4 +1,3 @@
-<%@page import="com.homes.admin.AdminRefundDTO"%>
 <%@page import="com.homes.room.RoomDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -12,6 +11,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
+
 <style>
 .admin{
 	display: flex;
@@ -81,8 +81,8 @@
 }
 </style>
 <script>
-function openrfStatus(param) {
-	location.href='/homes/admin/admin_refund_accept_ok.jsp?param='+param;
+function openmsUpdate(param) {
+	location.href='/homes/admin/admin_member_block_ok.jsp?param='+param;
 }
 </script>
 </head>
@@ -134,62 +134,46 @@ function openrfStatus(param) {
 	</div>
 
 	<div class="content">
-		<h2>환불 승인 관리</h2>
+		<h2>차단 회원 관리</h2>
 		<table>
 			<thead>
 				<tr>
-					<th>예약번호</th>
-					<th>숙소명</th>
-					<th>예약자</th>
-					<th>체크인</th>
-					<th>체크아웃</th>
-					<th>결제날짜</th>
-					<th>환불요청날짜</th>
-					<th>결제금액</th>
-					<th>환불금액</th>
-					<th>승인</th>
+					<th>이름</th>
+					<th>아이디</th>
+					<th>이메일</th>
+					<th>번호</th>
+					<th>차단</th>
 				</tr>
 			</thead>
 			<tbody>
 			<%
-			ArrayList<AdminRefundDTO> arr=adao.getRefundStatus();
+			ArrayList<GuestDTO> arr=adao.getMember();
 			if(arr==null||arr.size()==0){
 				%>
 				<tr>
-					<td colspan="10" align="center">
-						환불 대기중인 예약이 없습니다
+					<td colspan="5" align="center">
+						차단당한 회원이 없습니다
 					</td>
 				</tr>
 				<%
 			}else{
 				for(int i=0;i<arr.size();i++){
-					%>
-					<tr>				
-						<td><%=arr.get(i).getReserve_idx()  %></td>
-						<td><%=arr.get(i).getRoom_name() %></td>
-						<td><%=arr.get(i).getNickname()  %></td>
-						<td><%=arr.get(i).getCheck_in()  %></td>
-						<td><%=arr.get(i).getCheck_out()  %></td>
-						<td><%=arr.get(i).getPayment_date()  %></td>
-						<td><%=arr.get(i).getRefund_date()  %></td>
-						<td><%=arr.get(i).getPrice()  %></td>
-						<td><%=arr.get(i).getAmount()  %></td>
-						<td><input type="button"  value="승인" class="rbutton" onclick="openrfStatus(<%=arr.get(i).getReserve_idx() %>)"></td>
-					</tr>
-					<%
+					if(arr.get(i).getState()==0){
+						%>
+						<tr>
+							<td><%=arr.get(i).getName() %></td>
+							<td><%=arr.get(i).getId() %></td>
+							<td><%=arr.get(i).getEmail() %></td>
+							<td><%=arr.get(i).getTel() %></td>
+							<td><input type="button"  value="해제" class="rbutton" onclick="openmsUpdate(<%=arr.get(i).getIdx() %>);"></td>
+						</tr>
+						<%
+					}
 				}
 			}
 			%>
 			</tbody>
-			<!--
-			<tfoot>
-				<tr>
-					<td colspan="10" style="text-align: right; padding: 3px 3px 0 0; border-top: 3px dotted gray;">
-					<input type="button"  value="일괄승인" class="rbutton" onclick="" style="width: 90px;">
-					</td>
-				</tr>
-			</tfoot>
-			-->
+			
 		</table>
 	</div>
 </fieldset>

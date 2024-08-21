@@ -138,8 +138,13 @@ window.onload = setInitialBackground;
 	    <nav>
 	      	<ul id="ul_menu">
 			    <li><a href="/homes/admin/admin.jsp">대시보드</a></li>
-			    <li><a href="#">회원 관리</a></li>
-			    <li><a href="#">호스트 관리</a></li>
+			    <li>
+					회원 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_member_report.jsp">신고 회원 목록</a></li>
+			    		<li><a href="/homes/admin/admin_member_block.jsp">차단 회원 목록</a></li>
+			    	</ul>
+			    </li>
 			    <li>
 			    	지역 관리
 			    	<ul>

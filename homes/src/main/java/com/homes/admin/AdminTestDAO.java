@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.homes.region.RegionDTO;
 import com.homes.region.Region_DetailDTO;
 import com.homes.room.RoomDTO;
+import com.homes.guest.GuestDTO;
 
 public class AdminTestDAO {
 	private Connection conn;
@@ -951,6 +952,127 @@ public class AdminTestDAO {
 			String sql="update payment set status='환불완료' where reserve_idx=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, ridx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	//member
+	/**member 정보를 가져오는 메소드*/
+	public ArrayList<GuestDTO> getMember() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select * from homes_member";
+			ps=conn.prepareStatement(sql);
+
+			rs=ps.executeQuery();
+			ArrayList<GuestDTO> member= new ArrayList<>();
+			if(rs.next()) {
+				do {
+					int idx=rs.getInt("idx");
+					String id=rs.getString("id"); 
+					String pwd=rs.getString("pwd"); 
+					String name=rs.getString("name"); 
+					String nickname=rs.getString("nickname");
+					String bday=rs.getString("bday");
+					String email=rs.getString("email");
+					String tel=rs.getString("tel");
+					java.sql.Date joindate=rs.getDate("joindate");;
+					String img=rs.getString("img");
+					int state=rs.getInt("state");;
+					
+					GuestDTO dto=new GuestDTO(idx, id, pwd, name, nickname, bday, email, tel, joindate, img, state);
+					member.add(dto);
+				}while(rs.next());
+				
+			}
+			
+			return member;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**회원 id로 그 회원이 신고당한 횟수 가져오는 메소드*/
+	public int memberReport(String mid) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select count(*) "
+					+ "from reviews rv "
+					+ "left outer join reports rp on rv.idx = rp.comment_id "
+					+ "where rv.member_id=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, mid);
+			rs=ps.executeQuery();
+			int count=0;
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**회원 차단하는 메소드*/
+	public int memberStateBlock(int midx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update homes_member set state=0 where idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, midx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**회원 차단해제하는 메소드*/
+	public int memberStateNoBlock(int midx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update homes_member set state=1 where idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, midx);
 			
 			int count=ps.executeUpdate();
 			return count;
