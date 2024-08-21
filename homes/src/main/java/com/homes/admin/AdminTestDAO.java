@@ -1,8 +1,6 @@
 package com.homes.admin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 
 import com.homes.region.RegionDTO;
@@ -848,6 +846,103 @@ public class AdminTestDAO {
 			conn=com.homes.db.HomesDB.getConn();
 			String sql="update room set state=1 where state=0";
 			ps = conn.prepareStatement(sql);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	//reservation
+	/**환불승인 대기중인 예약들을 가져오는 메소드*/
+	public ArrayList<AdminRefundDTO> getRefundStatus() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select "
+					+ "rv.reserve_idx, rm.room_name ,hm.nickname, rd.check_in, rd.check_out ,pm.payment_date, rf.refund_date, rv.price, rf.amount "
+					+ "from reservation_test rv "
+					+ "left outer join room rm on rv.room_idx = rm.room_idx "
+					+ "left outer join homes_member hm on rv.member_idx = hm.idx "
+					+ "left outer join payment pm on rv.reserve_idx = pm.reserve_idx "
+					+ "left outer join refund rf on rv.reserve_idx = rf.reserve_idx "
+					+ "left outer join reservation_detail_test rd on rv.reserve_idx = rd.reserve_idx "
+					+ "where rf.status='환불대기' and pm.status='환불대기중'";
+			ps=conn.prepareStatement(sql);
+
+			rs=ps.executeQuery();
+			ArrayList<AdminRefundDTO> rf= new ArrayList<>();
+			if(rs.next()) {
+				do {
+					String reserve_idx=rs.getString("reserve_idx");
+					String room_name=rs.getString("room_name");
+					String nickname=rs.getString("nickname");
+					String check_in=rs.getString("check_in");
+					String check_out=rs.getString("check_out");
+					java.sql.Date payment_date=rs.getDate("payment_date");
+					java.sql.Date refund_date=rs.getDate("refund_date");
+					int price=rs.getInt("price");
+					int amount=rs.getInt("amount");
+					
+					AdminRefundDTO dto=new AdminRefundDTO(reserve_idx, room_name, nickname, check_in, check_out, payment_date, refund_date, price, amount);
+					rf.add(dto);
+				}while(rs.next());
+				
+			}
+			
+			return rf;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**환불 승인하는 메소드(refund)*/
+	public int refundStatusUpdate(int ridx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update refund set status='환불완료' where reserve_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, ridx);
+			
+			int count=ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**환불 승인하는 메소드(payment)*/
+	public int paymentStatusUpdate(int ridx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="update payment set status='환불완료' where reserve_idx=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, ridx);
 			
 			int count=ps.executeUpdate();
 			return count;

@@ -396,16 +396,20 @@ if(cp%listSize==0)userGroup--;
 <article id="recommend_room">
 <table id="recommend_room_table">
 	<%
-	RoomDTO[] room=rmdao.roomRandom();
-	for(int i=0;i<6;i++){ %>
-		<%if(i%3==0) {%>
-	   		<tr>
-	   	<%} %>
-      		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room[i].getRoom_name() %></p></td>
-   		<%if(i%3==2) {%>
-	   		</tr>
-	   	<%} %>
-	<%} %>
+	if(rmdao.roomCount()>=6){
+		RoomDTO[] room=rmdao.roomRandom();
+		for(int i=0;i<6;i++){ %>
+			<%if(i%3==0) {%>
+		   		<tr>
+		   	<%} %>
+	      		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room[i].getRoom_name() %></p></td>
+	   		<%if(i%3==2) {%>
+		   		</tr>
+		   	<%} %>
+		<%} 
+	} else {
+		//등록된 숙소가 충분하지 않음
+	}%>
 </table>
 </article>
 </section>

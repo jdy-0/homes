@@ -1,3 +1,4 @@
+<%@page import="com.homes.admin.AdminRefundDTO"%>
 <%@page import="com.homes.room.RoomDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -11,7 +12,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
-
 <style>
 .admin{
 	display: flex;
@@ -79,19 +79,10 @@
     font-size: 15px;
     text-align: center;
 }
-.region_img {
-	border: 1px solid #ccc;
-	width: 150px;
-	height: 100px;
-	position: relative;
-	background-size: contain;  
-    background-repeat: no-repeat;  
-    background-position: center;
-}
 </style>
 <script>
-function openrgProfile(param) {
-	location.href='/homes/admin/admin_region_profile.jsp?param='+param;
+function openrfStatus(param) {
+	location.href='/homes/admin/admin_refund_accept_ok.jsp?param='+param;
 }
 </script>
 </head>
@@ -136,45 +127,64 @@ function openrgProfile(param) {
 	    </nav>
 	    
 	</div>
-	
+
 	<div class="content">
-		<h2>지역 관리</h2>
+		<h2>환불 승인 관리</h2>
 		<table>
 			<thead>
 				<tr>
-					<th>지역명</th>
-					<th>이미지</th>
-					<th>이미지 변경</th>
-					<th>클릭수</th>
+					<th>예약번호</th>
+					<th>숙소명</th>
+					<th>예약자</th>
+					<th>체크인</th>
+					<th>체크아웃</th>
+					<th>결제날짜</th>
+					<th>환불요청날짜</th>
+					<th>결제금액</th>
+					<th>환불금액</th>
+					<th>승인</th>
 				</tr>
 			</thead>
 			<tbody>
 			<%
-			ArrayList<Region_DetailDTO> arr=adao.regionDetailTable();
+			ArrayList<AdminRefundDTO> arr=adao.getRefundStatus();
 			if(arr==null||arr.size()==0){
 				%>
 				<tr>
-					<td colspan="4" align="center">
-						등록된 지역이 없습니다
+					<td colspan="10" align="center">
+						환불 대기중인 예약이 없습니다
 					</td>
 				</tr>
 				<%
 			}else{
 				for(int i=0;i<arr.size();i++){
 					%>
-					<tr>
-						<td><%=adao.getParentName(arr.get(i).getRegion_idx()) %></td>
-						<td><img class="region_img" src="<%=arr.get(i).getImg()  %>" onerror="this.src='/homes/img/no_image.jpg'"></td>
-						<td>
-							<input type="button" value="수정" class="rbutton" onclick="openrgProfile(<%=arr.get(i).getRegion_idx() %>);">	
-						</td>		
-						<td><%=arr.get(i).getClick()  %></td>
+					<tr>				
+						<td><%=arr.get(i).getReserve_idx()  %></td>
+						<td><%=arr.get(i).getRoom_name() %></td>
+						<td><%=arr.get(i).getNickname()  %></td>
+						<td><%=arr.get(i).getCheck_in()  %></td>
+						<td><%=arr.get(i).getCheck_out()  %></td>
+						<td><%=arr.get(i).getPayment_date()  %></td>
+						<td><%=arr.get(i).getRefund_date()  %></td>
+						<td><%=arr.get(i).getPrice()  %></td>
+						<td><%=arr.get(i).getAmount()  %></td>
+						<td><input type="button"  value="승인" class="rbutton" onclick="openrfStatus(<%=arr.get(i).getReserve_idx() %>)"></td>
 					</tr>
 					<%
 				}
 			}
 			%>
 			</tbody>
+			<!--
+			<tfoot>
+				<tr>
+					<td colspan="10" style="text-align: right; padding: 3px 3px 0 0; border-top: 3px dotted gray;">
+					<input type="button"  value="일괄승인" class="rbutton" onclick="" style="width: 90px;">
+					</td>
+				</tr>
+			</tfoot>
+			-->
 		</table>
 	</div>
 </fieldset>

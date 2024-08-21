@@ -120,7 +120,12 @@ function openhstState(param) {
 			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
 			    	</ul>
 			    </li>	    
-			    <li><a href="#">예약 관리</a></li>
+			    <li>
+			    	예약 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_refund_accept.jsp">환불 승인</a></li>
+			    	</ul>
+			    </li>
 		    </ul>
 	    </nav>
 	    
@@ -137,18 +142,22 @@ function openhstState(param) {
 					<th>승인</th>
 				</tr>
 			</thead>
-			<tbody>
 			<%
 			ArrayList<RoomDTO> arr=adao.getRoomState();
 			if(arr==null||arr.size()==0){
 				%>
-				<tr>
-					<td colspan="4" align="center">
-						승인 대기중인 숙소가 없습니다
-					</td>
-				</tr>
+				<tbody>
+					<tr>
+						<td colspan="4" align="center">
+							승인 대기중인 숙소가 없습니다
+						</td>
+					</tr>
+				</tbody>
 				<%
 			}else{
+				%>
+				<tbody>
+				<%
 				for(int i=0;i<arr.size();i++){
 					%>
 					<tr>
@@ -159,7 +168,6 @@ function openhstState(param) {
 					</tr>
 					<%
 				}
-			}
 			%>
 			</tbody>
 			<tfoot>
@@ -169,7 +177,9 @@ function openhstState(param) {
 					</td>
 				</tr>
 			</tfoot>
-			
+			<% 
+			}
+			%>
 		</table>
 	</div>
 </fieldset>
