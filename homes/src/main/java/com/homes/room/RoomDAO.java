@@ -1,14 +1,21 @@
 package com.homes.room;
-
+import java.io.*;
 import java.sql.*;
 import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+
+
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+
 import com.homes.region.*;
 
 public class RoomDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-
+	private Statement st;
+	
 	public List<RoomDTO> getAllRooms() {
         List<RoomDTO> roomList = new ArrayList<>();
         try {
@@ -769,7 +776,929 @@ public class RoomDAO {
 				if(conn!=null)conn.close();
 			} catch (Exception e2) {}
 		}
+}	
+	
+	
+	
+	
+	public int CreateRoomTable() {
+			st=null;
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			
+			String sql = "CREATE TABLE ROOM (" +
+                    "ROOM_IDX NUMBER PRIMARY KEY, " +
+                    "HOST_IDX NUMBER NOT NULL, " +
+                    "REGION_IDX NUMBER NOT NULL, " +
+                    "ROOM_NAME VARCHAR2(255), " +
+                    "GOODTHING VARCHAR2(255), " +
+                    "ADDR_DETAIL VARCHAR2(255), " +
+                    "PRICE NUMBER NOT NULL, " +
+                    "image VARCHAR2(255), " +
+                    "state NUMBER DEFAULT 0, " +
+                    "room_min NUMBER DEFAULT 2, " +
+                    "room_max NUMBER NOT NULL" +
+                    ")";
+			
+			st=conn.createStatement();
+       // Statement 생성
+			st.executeUpdate(sql);
+
+       System.out.println("테이블이 성공적으로 생성되었습니다.");
+       	return 1;
+		} catch (Exception e) {
+			return 0;
+			
+		} finally {
+			try {
+				if(st!=null)st.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
 }
+	
+	
+	public int CreateRoom_ImgTable() {
+		st=null;
+	try {
+		conn=com.homes.db.HomesDB.getConn();
+		
+		String sql = "CREATE TABLE ROOM_IMAGE (" +
+	             "ROOM_IMAGE_IDX NUMBER PRIMARY KEY, " +
+	             "ROOM_IDX NUMBER, " +
+	             "PHOTO_URL VARCHAR2(255), " +
+	             "FOREIGN KEY (ROOM_IDX) REFERENCES ROOM(ROOM_IDX)" +
+	             ")"; 
+		
+		st=conn.createStatement();
+   // Statement 생성
+		st.executeUpdate(sql);
+
+ 
+   	return 1;
+	} catch (Exception e) {
+		return 0;
+		
+	} finally {
+		try {
+			if(st!=null)st.close();
+			if(conn!=null)conn.close();
+		} catch (Exception e2) {}
+	}
+}
+	
+	
+	public int CreateSeq() {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			
+			String sql1 = "CREATE SEQUENCE ROOM_IMAGE_IDX " +
+		              "START WITH 1 " +
+		              "INCREMENT BY 1 " +
+		              "CACHE 20";
+			
+			String sql2 = "CREATE SEQUENCE ROOM_SEQ " +
+		              "START WITH 1 " +
+		              "INCREMENT BY 1 " +
+		              "CACHE 20";
+			
+			st=conn.createStatement();
+			st.executeUpdate(sql1);
+		    
+		    // 두 번째 시퀀스 생성
+		    st.executeUpdate(sql2);
+	   // Statement 생성
+		
+	   System.out.println("테이블이 성공적으로 생성되었습니다.");
+	   	return 2;
+		} catch (Exception e) {
+			return 0;
+			
+		} finally {
+			try {
+				if(st!=null)st.close();
+				if(conn!=null)conn.close();
+			} catch (Exception e2) {}
+		}
+	}
+	
+	public int CreateAllRoom(String name) {
+		int count = 0;
+	    if(name.equals("admin")) {
+	    	 try {
+	             conn = com.homes.db.HomesDB.getConn();
+
+	             // SQL INSERT 문 정의
+	             String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, IMAGE, STATE, ROOM_MIN, ROOM_MAX) " +
+	                          "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	             // PreparedStatement 객체 생성
+	             ps = conn.prepareStatement(sql);
+
+	             // 데이터 추가
+	             
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 12);
+	             ps.setString(3, "강릉 프라이빗");
+	             ps.setString(4, "프라이빗하고 조용한 숙소");
+	             ps.setString(5, "해변 마을 111번지");
+	             ps.setInt(6, 170000);
+	             ps.setString(7, "/homes/img/강릉 프라이빗 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+	             
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 12);
+	             //ps.setInt(3, 12);
+	             ps.setString(3, "강릉 오션뷰");
+	             ps.setString(4, "바다가 한눈에 보이는 숙소");
+	             ps.setString(5, "해변 마을 112번지");
+	             ps.setInt(6, 150000);
+	             ps.setString(7, "/homes/img/강릉 오션뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+	             
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 11);
+	             ps.setString(3, "설악산");
+	             ps.setString(4, "설악산의 아름다움을 제공하는 숙소");
+	             ps.setString(5, "산악 도시 222번지");
+	             ps.setInt(6, 130000);
+	             ps.setString(7, "/homes/img/속초 설악산 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 11);
+	             ps.setString(3, "속초 바다");
+	             ps.setString(4, "바다와 가까운 위치의 숙소");
+	             ps.setString(5, "중심 도시 333번지");
+	             ps.setInt(6, 210000);
+	             ps.setString(7, "/homes/img/속초 바다 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 3);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 14);
+	             ps.setString(3, "가평 계곡");
+	             ps.setString(4, "조용한 계곡 근처의 숙소");
+	             ps.setString(5, "가평군 444번지");
+	             ps.setInt(6, 150000);
+	             ps.setString(7, "/homes/img/가평 계곡 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 14);
+	             ps.setString(3, "가평 글램핑");
+	             ps.setString(4, "특별한 캠핑 경험 제공");
+	             ps.setString(5, "해변 마을 555번지");
+	             ps.setInt(6, 180000);
+	             ps.setString(7, "/homes/img/가평 글램핑 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 2);
+	             ps.setString(3, "수원 스타필드");
+	             ps.setString(4, "쇼핑과 식사를 함께 즐길 수 있는 숙소");
+	             ps.setString(5, "수원시 666번지");
+	             ps.setInt(6, 140000);
+	             ps.setString(7, "/homes/img/수원 스타필드 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 2);
+	             ps.setString(3, "수원 행리단길");
+	             ps.setString(4, "행리단길의 맛집과 가까운 숙소");
+	             ps.setString(5, "수원시 777번지");
+	             ps.setInt(6, 120000);
+	             ps.setString(7, "/homes/img/수원 행리단길 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 18);
+	             ps.setString(3, "경주 불국사");
+	             ps.setString(4, "경주 불국사 근처의 숙소");
+	             ps.setString(5, "경주시 888번지");
+	             ps.setInt(6, 200000);
+	             ps.setString(7, "/homes/img/경주 불국사 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 3);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 18);
+	             ps.setString(3, "경주 시골");
+	             ps.setString(4, "조용한 시골 분위기의 숙소");
+	             ps.setString(5, "경주시 999번지");
+	             ps.setInt(6, 160000);
+	             ps.setString(7, "/homes/img/경주 시골 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 3);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 20);
+	             ps.setString(3, "울릉 울릉도");
+	             ps.setString(4, "울릉도의 자연을 즐길 수 있는 숙소");
+	             ps.setString(5, "울릉군 1010번지");
+	             ps.setInt(6, 190000);
+	             ps.setString(7, "/homes/img/울릉 울릉도 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 20);
+	             ps.setString(3, "울릉 죽암");
+	             ps.setString(4, "조용한 죽암 지역의 숙소");
+	             ps.setString(5, "울릉군 1111번지");
+	             ps.setInt(6, 170000);
+	             ps.setString(7, "/homes/img/울릉 죽암 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 26);
+	             ps.setString(3, "해운대 광안대교");
+	             ps.setString(4, "해운대와 광안대교의 멋진 경관을 제공하는 숙소");
+	             ps.setString(5, "해운대구 1212번지");
+	             ps.setInt(6, 200000);
+	             ps.setString(7, "/homes/img/해운대 광안대교 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 26);
+	             ps.setString(3, "해운대 오션뷰");
+	             ps.setString(4, "해운대의 오션뷰를 제공하는 숙소");
+	             ps.setString(5, "해운대구 1313번지");
+	             ps.setInt(6, 210000);
+	             ps.setString(7, "/homes/img/해운대 오션뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 25);
+	             ps.setString(3, "용산 시티뷰");
+	             ps.setString(4, "서울 시내를 조망할 수 있는 숙소");
+	             ps.setString(5, "용산구 1414번지");
+	             ps.setInt(6, 180000);
+	             ps.setString(7, "/homes/img/용산 시티뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 25);
+	             ps.setString(3, "용산 해방촌");
+	             ps.setString(4, "해방촌 지역의 매력을 제공하는 숙소");
+	             ps.setString(5, "용산구 1515번지");
+	             ps.setInt(6, 170000);
+	             ps.setString(7, "/homes/img/용산 해방촌 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 24);
+	             ps.setString(3, "종로 성곽길");
+	             ps.setString(4, "종로의 성곽길 근처의 숙소");
+	             ps.setString(5, "종로구 1616번지");
+	             ps.setInt(6, 190000);
+	             ps.setString(7, "/homes/img/종로 성곽길 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 24);
+	             ps.setString(3, "종로 한옥");
+	             ps.setString(4, "종로의 전통 한옥 숙소");
+	             ps.setString(5, "종로구 1717번지");
+	             ps.setInt(6, 200000);
+	             ps.setString(7, "/homes/img/종로 한옥 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 4);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 15);
+	             ps.setString(3, "중구 아파트");
+	             ps.setString(4, "중구의 편리한 아파트 숙소");
+	             ps.setString(5, "중구 1818번지");
+	             ps.setInt(6, 150000);
+	             ps.setString(7, "/homes/img/중구 아파트 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 3);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 21);
+	             ps.setString(3, "담양 별채");
+	             ps.setString(4, "담양의 별채 숙소");
+	             ps.setString(5, "담양군 1919번지");
+	             ps.setInt(6, 160000);
+	             ps.setString(7, "/homes/img/담양 별채 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 20);
+	             ps.setString(3, "전주 한옥마을");
+	             ps.setString(4, "전주의 전통 한옥 마을 숙소");
+	             ps.setString(5, "전주시 2020번지");
+	             ps.setInt(6, 170000);
+	             ps.setString(7, "/homes/img/전주 한옥마을 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 22);
+	             ps.setString(3, "서귀포 귤밭");
+	             ps.setString(4, "서귀포의 귤밭 근처 숙소");
+	             ps.setString(5, "서귀포시 2121번지");
+	             ps.setInt(6, 180000);
+	             ps.setString(7, "/homes/img/서귀포 귤밭 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 22);
+	             ps.setString(3, "서귀포 독채");
+	             ps.setString(4, "서귀포의 독채 숙소");
+	             ps.setString(5, "서귀포시 2222번지");
+	             ps.setInt(6, 190000);
+	             ps.setString(7, "/homes/img/서귀포 독채 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 23);
+	             ps.setString(3, "제주 오션뷰");
+	             ps.setString(4, "제주의 오션뷰를 제공하는 숙소");
+	             ps.setString(5, "제주시 2323번지");
+	             ps.setInt(6, 200000);
+	             ps.setString(7, "/homes/img/제주 오션뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 16);
+	             ps.setString(3, "단양 일출뷰");
+	             ps.setString(4, "단양의 일출을 볼 수 있는 숙소");
+	             ps.setString(5, "단양군 2424번지");
+	             ps.setInt(6, 210000);
+	             ps.setString(7, "/homes/img/단양 일출뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+
+	             ps.setInt(1, 1);
+	             ps.setInt(2, 17);
+	             ps.setString(3, "서산 호수뷰");
+	             ps.setString(4, "서산의 호수뷰 숙소");
+	             ps.setString(5, "서산시 2525번지");
+	             ps.setInt(6, 160000);
+	             ps.setString(7, "/homes/img/서산 호수뷰 메인.jpg");
+	             ps.setInt(8, 1);
+	             ps.setInt(9, 2);
+	             ps.setInt(10, 2);
+	             ps.addBatch();
+	             
+	             conn.commit();
+	             // 배치 실행
+	             ps.executeBatch();
+	             //count= ps.executeUpdate();
+	             return 2;
+	             
+	             
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        	return 0;
+	    } finally {
+	        try {
+	            if (ps != null) ps.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	   }
+		return count;
+}
+	public int CreateRoomDetailImg() {
+		//int count = 0;
+	try {
+		conn=com.homes.db.HomesDB.getConn();
+		 String sql = "INSERT INTO ROOM_IMAGE (ROOM_IMAGE_IDX, ROOM_IDX, PHOTO_URL) VALUES (ROOM_IMAGE_IDX.NEXTVAL, ?, ?)";
+          
+		ps=conn.prepareStatement(sql);
+		ps.setInt(1, 5); // ROOM_IDX: 4
+        ps.setString(2, "/homes/img/host_img/admin/가평 계곡/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 5); // ROOM_IDX: 4
+        ps.setString(2, "/homes/img/host_img/admin/가평 계곡/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 5); // ROOM_IDX: 4
+        ps.setString(2, "/homes/img/host_img/admin/가평 계곡/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 5); // ROOM_IDX: 4
+        ps.setString(2, "/homes/img/host_img/admin/가평 계곡/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 가평 글램핑 이미지 삽입
+        ps.setInt(1, 6); // ROOM_IDX: 5
+        ps.setString(2, "/homes/img/host_img/admin/가평 글램핑/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 6); // ROOM_IDX: 5
+        ps.setString(2, "/homes/img/host_img/admin/가평 글램핑/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 6); // ROOM_IDX: 5
+        ps.setString(2, "/homes/img/host_img/admin/가평 글램핑/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 6); // ROOM_IDX: 5
+        ps.setString(2, "/homes/img/host_img/admin/가평 글램핑/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 강릉 오션뷰 이미지 삽입
+        ps.setInt(1, 2); // ROOM_IDX: 1
+        ps.setString(2, "/homes/img/host_img/admin/강릉 오션뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 2); // ROOM_IDX: 1
+        ps.setString(2, "/homes/img/host_img/admin/강릉 오션뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 2); // ROOM_IDX: 1
+        ps.setString(2, "/homes/img/host_img/admin/강릉 오션뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 2); // ROOM_IDX: 1
+        ps.setString(2, "/homes/img/host_img/admin/강릉 오션뷰/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 강릉 프라이빗 이미지 삽입
+        ps.setInt(1, 1); // ROOM_IDX: 2
+        ps.setString(2, "/homes/img/host_img/admin/강릉 프라이빗/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 1); // ROOM_IDX: 2
+        ps.setString(2, "/homes/img/host_img/admin/강릉 프라이빗/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 1); // ROOM_IDX: 2
+        ps.setString(2, "/homes/img/host_img/admin/강릉 프라이빗/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 1); // ROOM_IDX: 2
+        ps.setString(2, "/homes/img/host_img/admin/강릉 프라이빗/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 경주 불국사 이미지 삽입
+        ps.setInt(1, 9); // ROOM_IDX: 8
+        ps.setString(2, "/homes/img/host_img/admin/경주 불국사/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 9); // ROOM_IDX: 8
+        ps.setString(2, "/homes/img/host_img/admin/경주 불국사/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 9); // ROOM_IDX: 8
+        ps.setString(2, "/homes/img/host_img/admin/경주 불국사/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 9); // ROOM_IDX: 8
+        ps.setString(2, "/homes/img/host_img/admin/경주 불국사/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 경주 시골 이미지 삽입
+        ps.setInt(1, 10); // ROOM_IDX: 9
+        ps.setString(2, "/homes/img/host_img/admin/경주 시골/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 10); // ROOM_IDX: 9
+        ps.setString(2, "/homes/img/host_img/admin/경주 시골/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 10); // ROOM_IDX: 9
+        ps.setString(2, "/homes/img/host_img/admin/경주 시골/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 10); // ROOM_IDX: 9
+        ps.setString(2, "/homes/img/host_img/admin/경주 시골/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 단양 일출뷰 이미지 삽입
+        ps.setInt(1, 25); // ROOM_IDX: 24
+        ps.setString(2, "/homes/img/host_img/admin/단양 일출뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 25); // ROOM_IDX: 24
+        ps.setString(2, "/homes/img/host_img/admin/단양 일출뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 25); // ROOM_IDX: 24
+        ps.setString(2, "/homes/img/host_img/admin/단양 일출뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 25); // ROOM_IDX: 24
+        ps.setString(2, "/homes/img/host_img/admin/단양 일출뷰/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 담양 별채 이미지 삽입
+        ps.setInt(1, 20); // ROOM_IDX: 19
+        ps.setString(2, "/homes/img/host_img/admin/담양 별채/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 20); // ROOM_IDX: 19
+        ps.setString(2, "/homes/img/host_img/admin/담양 별채/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 20); // ROOM_IDX: 19
+        ps.setString(2, "/homes/img/host_img/admin/담양 별채/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 20); // ROOM_IDX: 19
+        ps.setString(2, "/homes/img/host_img/admin/담양 별채/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 서귀포 귤밭 이미지 삽입
+        ps.setInt(1, 22); // ROOM_IDX: 21
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 귤밭/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 22); // ROOM_IDX: 21
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 귤밭/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 22); // ROOM_IDX: 21
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 귤밭/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 22); // ROOM_IDX: 21
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 귤밭/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 서귀포 독채 이미지 삽입
+        ps.setInt(1, 23); // ROOM_IDX: 22
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 독채/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 23); // ROOM_IDX: 22
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 독채/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 23); // ROOM_IDX: 22
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 독채/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 23); // ROOM_IDX: 22
+        ps.setString(2, "/homes/img/host_img/admin/서귀포 독채/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 서산 호수뷰 이미지 삽입
+        ps.setInt(1, 26); // ROOM_IDX: 25
+        ps.setString(2, "/homes/img/host_img/admin/서산 호수뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 26); // ROOM_IDX: 25
+        ps.setString(2, "/homes/img/host_img/admin/서산 호수뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 26); // ROOM_IDX: 25
+        ps.setString(2, "/homes/img/host_img/admin/서산 호수뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 26); // ROOM_IDX: 25
+        ps.setString(2, "/homes/img/host_img/admin/서산 호수뷰/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 속초 바다 이미지 삽입
+        ps.setInt(1, 4); // ROOM_IDX: 3
+        ps.setString(2, "/homes/img/host_img/admin/속초 바다/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 4); // ROOM_IDX: 3
+        ps.setString(2, "/homes/img/host_img/admin/속초 바다/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 4); // ROOM_IDX: 3
+        ps.setString(2, "/homes/img/host_img/admin/속초 바다/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 4); // ROOM_IDX: 3
+        ps.setString(2, "/homes/img/host_img/admin/속초 바다/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 속초 설악산 이미지 삽입
+        ps.setInt(1, 3); // ROOM_IDX: 16
+        ps.setString(2, "/homes/img/host_img/admin/속초 설악산/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 3); // ROOM_IDX: 16
+        ps.setString(2, "/homes/img/host_img/admin/속초 설악산/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 3); // ROOM_IDX: 16
+        ps.setString(2, "/homes/img/host_img/admin/속초 설악산/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 3); // ROOM_IDX: 16
+        ps.setString(2, "/homes/img/host_img/admin/속초 설악산/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 수원 스타필드 이미지 삽입
+        ps.setInt(1, 7); // ROOM_IDX: 20
+        ps.setString(2, "/homes/img/host_img/admin/수원 스타필드/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 7); // ROOM_IDX: 20
+        ps.setString(2, "/homes/img/host_img/admin/수원 스타필드/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 7); // ROOM_IDX: 20
+        ps.setString(2, "/homes/img/host_img/admin/수원 스타필드/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 7); // ROOM_IDX: 20
+        ps.setString(2, "/homes/img/host_img/admin/수원 스타필드/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 수원 행리단길 이미지 삽입
+        ps.setInt(1, 8); // ROOM_IDX: 18
+        ps.setString(2, "/homes/img/host_img/admin/수원 행리단길/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 8); // ROOM_IDX: 18
+        ps.setString(2, "/homes/img/host_img/admin/수원 행리단길/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 8); // ROOM_IDX: 18
+        ps.setString(2, "/homes/img/host_img/admin/수원 행리단길/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 8); // ROOM_IDX: 18
+        ps.setString(2, "/homes/img/host_img/admin/수원 행리단길/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 용산 시티뷰 이미지 삽입
+        ps.setInt(1, 15); // ROOM_IDX: 23
+        ps.setString(2, "/homes/img/host_img/admin/용산 시티뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 15); // ROOM_IDX: 23
+        ps.setString(2, "/homes/img/host_img/admin/용산 시티뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 15); // ROOM_IDX: 23
+        ps.setString(2, "/homes/img/host_img/admin/용산 시티뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 15); // ROOM_IDX: 23
+        ps.setString(2, "/homes/img/host_img/admin/용산 시티뷰/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 용산 해방촌 이미지 삽입
+        ps.setInt(1, 16); // ROOM_IDX: 17
+        ps.setString(2, "/homes/img/host_img/admin/용산 해방촌/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 16); // ROOM_IDX: 17
+        ps.setString(2, "/homes/img/host_img/admin/용산 해방촌/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 16); // ROOM_IDX: 17
+        ps.setString(2, "/homes/img/host_img/admin/용산 해방촌/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 16); // ROOM_IDX: 17
+        ps.setString(2, "/homes/img/host_img/admin/용산 해방촌/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 울릉 울릉도 이미지 삽입
+        ps.setInt(1, 11); // ROOM_IDX: 26
+        ps.setString(2, "/homes/img/host_img/admin/울릉 울릉도/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 11); // ROOM_IDX: 26
+        ps.setString(2, "/homes/img/host_img/admin/울릉 울릉도/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 11); // ROOM_IDX: 26
+        ps.setString(2, "/homes/img/host_img/admin/울릉 울릉도/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 11); // ROOM_IDX: 26
+        ps.setString(2, "/homes/img/host_img/admin/울릉 울릉도/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 울릉 죽암 이미지 삽입
+        ps.setInt(1, 12); // ROOM_IDX: 27
+        ps.setString(2, "/homes/img/host_img/admin/울릉 죽암/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 12); // ROOM_IDX: 27
+        ps.setString(2, "/homes/img/host_img/admin/울릉 죽암/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 12); // ROOM_IDX: 27
+        ps.setString(2, "/homes/img/host_img/admin/울릉 죽암/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 12); // ROOM_IDX: 27
+        ps.setString(2, "/homes/img/host_img/admin/울릉 죽암/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 전주 한옥마을 이미지 삽입
+        ps.setInt(1, 21); // ROOM_IDX: 28
+        ps.setString(2, "/homes/img/host_img/admin/전주 한옥마을/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 21); // ROOM_IDX: 28
+        ps.setString(2, "/homes/img/host_img/admin/전주 한옥마을/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 21); // ROOM_IDX: 28
+        ps.setString(2, "/homes/img/host_img/admin/전주 한옥마을/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 21); // ROOM_IDX: 28
+        ps.setString(2, "/homes/img/host_img/admin/전주 한옥마을/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 제주도 오션뷰 이미지 삽입
+        ps.setInt(1, 24); // ROOM_IDX: 29
+        ps.setString(2, "/homes/img/host_img/admin/제주도 오션뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 24); // ROOM_IDX: 29
+        ps.setString(2, "/homes/img/host_img/admin/제주도 오션뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 24); // ROOM_IDX: 29
+        ps.setString(2, "/homes/img/host_img/admin/제주도 오션뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 24); // ROOM_IDX: 29
+        ps.setString(2, "/homes/img/host_img/admin/제주도 오션뷰/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 종로 성곽길 이미지 삽입
+        ps.setInt(1, 17); // ROOM_IDX: 30
+        ps.setString(2, "/homes/img/host_img/admin/종로 성곽길/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 17); // ROOM_IDX: 30
+        ps.setString(2, "/homes/img/host_img/admin/종로 성곽길/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 17); // ROOM_IDX: 30
+        ps.setString(2, "/homes/img/host_img/admin/종로 성곽길/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 17); // ROOM_IDX: 30
+        ps.setString(2, "/homes/img/host_img/admin/종로 성곽길/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 종로 한옥 이미지 삽입
+        ps.setInt(1, 18); // ROOM_IDX: 31
+        ps.setString(2, "/homes/img/host_img/admin/종로 한옥/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 18); // ROOM_IDX: 31
+        ps.setString(2, "/homes/img/host_img/admin/종로 한옥/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 18); // ROOM_IDX: 31
+        ps.setString(2, "/homes/img/host_img/admin/종로 한옥/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 18); // ROOM_IDX: 31
+        ps.setString(2, "/homes/img/host_img/admin/종로 한옥/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 중구 아파트 이미지 삽입
+        ps.setInt(1, 19); // ROOM_IDX: 32
+        ps.setString(2, "/homes/img/host_img/admin/중구 아파트/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 19); // ROOM_IDX: 32
+        ps.setString(2, "/homes/img/host_img/admin/중구 아파트/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 19); // ROOM_IDX: 32
+        ps.setString(2, "/homes/img/host_img/admin/중구 아파트/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 19); // ROOM_IDX: 32
+        ps.setString(2, "/homes/img/host_img/admin/중구 아파트/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 해운대 광안대교 이미지 삽입
+        ps.setInt(1, 13); // ROOM_IDX: 33
+        ps.setString(2, "/homes/img/host_img/admin/해운대 광안대교/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 13); // ROOM_IDX: 33
+        ps.setString(2, "/homes/img/host_img/admin/해운대 광안대교/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 13); // ROOM_IDX: 33
+        ps.setString(2, "/homes/img/host_img/admin/해운대 광안대교/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 13); // ROOM_IDX: 33
+        ps.setString(2, "/homes/img/host_img/admin/해운대 광안대교/숙소사진4.jpg");
+        ps.addBatch();
+        
+        // 해운대 오션뷰 미지 삽입
+        ps.setInt(1, 14); // ROOM_IDX: 34
+        ps.setString(2, "/homes/img/host_img/admin/해운대 오션뷰/숙소사진1.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 14); // ROOM_IDX: 34
+        ps.setString(2, "/homes/img/host_img/admin/해운대 오션뷰/숙소사진2.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 14); // ROOM_IDX: 34
+        ps.setString(2, "/homes/img/host_img/admin/해운대 오션뷰/숙소사진3.jpg");
+        ps.addBatch();
+        
+        ps.setInt(1, 14); // ROOM_IDX: 34
+        ps.setString(2, "/homes/img/host_img/admin/해운대 오션뷰/숙소사진4.jpg");
+        
+        ps.addBatch();
+        
+        
+        
+        ps.executeBatch();
+       //count = ps.executeUpdate();
+        conn.commit();
+
+		return 2;
+	} catch (Exception e) {
+		e.printStackTrace();
+		return 0;
+	}finally {
+		try {
+			
+			if(ps!=null)ps.close();
+			if(conn!=null)conn.close();
+		} catch (Exception e2) {}
+	}
+}
+	
 }
 
 
