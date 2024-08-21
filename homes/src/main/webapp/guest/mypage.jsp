@@ -18,18 +18,6 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/myPageLayout.css">
-<!-- <script>
-
-// 이미지 클릭 시 파일 선택 창 열기
-document.getElementById("profileImg").addEventListener("click", function() {
-    document.getElementById("fileInput").click();
-});
-
-// 파일 선택 시 자동으로 폼 전송
-document.getElementById("fileInput").addEventListener("change", function() {
-    document.getElementById("uploadForm").submit();
-});
-</script> -->
 </head>
 <body>
 <%@include file="/header.jsp" %>
@@ -46,7 +34,7 @@ document.getElementById("fileInput").addEventListener("change", function() {
 		String img = gdao.getImgSrc(useridx);
 		%>
 			<div id="img_div">
-			<img src="<%=img %>" alt="profile_img" id="profileImg">
+			<img src="/homes/guest/profileimg/<%=img %>" alt="profile_img" id="profileImg">
 			</div>
 			<form action="profileUpload.jsp" method="post" enctype="multipart/form-data" id="uploadForm">
             	<input type="file" name="profileImg" id="fileInput" accept="image/*">
