@@ -869,7 +869,7 @@ public class RoomDAO {
 		    st.executeUpdate(sql2);
 	   // Statement 생성
 		
-	   System.out.println("테이블이 성공적으로 생성되었습니다.");
+	   
 	   	return 2;
 		} catch (Exception e) {
 			return 0;
@@ -887,18 +887,26 @@ public class RoomDAO {
 	    if(name.equals("admin")) {
 	    	 try {
 	             conn = com.homes.db.HomesDB.getConn();
-
+	             
 	             // SQL INSERT 문 정의
 	             String sql = "INSERT INTO ROOM (ROOM_IDX, HOST_IDX, REGION_IDX, ROOM_NAME, GOODTHING, ADDR_DETAIL, PRICE, IMAGE, STATE, ROOM_MIN, ROOM_MAX) " +
 	                          "VALUES (ROOM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	             
+					/*
+					 * String sql1= "insert into homes_member values"+
+					 * " (999, 'admin', 'admin', 'admin', 'admin', '1995-06-05',"+
+					 * " 'admin@naver.com', '010-0000-0000', sysdate, '/homes/guest/profileimg/default_profile.png', 1)"
+					 * ;
+					 */
 
 	             // PreparedStatement 객체 생성
+	           //  ps = conn.prepareStatement(sql1);
 	             ps = conn.prepareStatement(sql);
 
 	             // 데이터 추가
 	             
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 12);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 11);
 	             ps.setString(3, "강릉 프라이빗");
 	             ps.setString(4, "프라이빗하고 조용한 숙소");
 	             ps.setString(5, "해변 마을 111번지");
@@ -909,8 +917,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 	             
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 12);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 11);
 	             //ps.setInt(3, 12);
 	             ps.setString(3, "강릉 오션뷰");
 	             ps.setString(4, "바다가 한눈에 보이는 숙소");
@@ -922,8 +930,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 	             
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 11);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 10);
 	             ps.setString(3, "설악산");
 	             ps.setString(4, "설악산의 아름다움을 제공하는 숙소");
 	             ps.setString(5, "산악 도시 222번지");
@@ -934,8 +942,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 11);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 10);
 	             ps.setString(3, "속초 바다");
 	             ps.setString(4, "바다와 가까운 위치의 숙소");
 	             ps.setString(5, "중심 도시 333번지");
@@ -946,8 +954,8 @@ public class RoomDAO {
 	             ps.setInt(10, 3);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 14);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 13);
 	             ps.setString(3, "가평 계곡");
 	             ps.setString(4, "조용한 계곡 근처의 숙소");
 	             ps.setString(5, "가평군 444번지");
@@ -958,8 +966,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 14);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 13);
 	             ps.setString(3, "가평 글램핑");
 	             ps.setString(4, "특별한 캠핑 경험 제공");
 	             ps.setString(5, "해변 마을 555번지");
@@ -970,7 +978,7 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
+	             ps.setInt(1, 999);
 	             ps.setInt(2, 2);
 	             ps.setString(3, "수원 스타필드");
 	             ps.setString(4, "쇼핑과 식사를 함께 즐길 수 있는 숙소");
@@ -982,7 +990,7 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
+	             ps.setInt(1, 999);
 	             ps.setInt(2, 2);
 	             ps.setString(3, "수원 행리단길");
 	             ps.setString(4, "행리단길의 맛집과 가까운 숙소");
@@ -994,8 +1002,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 18);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 17);
 	             ps.setString(3, "경주 불국사");
 	             ps.setString(4, "경주 불국사 근처의 숙소");
 	             ps.setString(5, "경주시 888번지");
@@ -1006,8 +1014,8 @@ public class RoomDAO {
 	             ps.setInt(10, 3);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 18);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 17);
 	             ps.setString(3, "경주 시골");
 	             ps.setString(4, "조용한 시골 분위기의 숙소");
 	             ps.setString(5, "경주시 999번지");
@@ -1018,8 +1026,8 @@ public class RoomDAO {
 	             ps.setInt(10, 3);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 20);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 18);
 	             ps.setString(3, "울릉 울릉도");
 	             ps.setString(4, "울릉도의 자연을 즐길 수 있는 숙소");
 	             ps.setString(5, "울릉군 1010번지");
@@ -1030,8 +1038,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 20);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 18);
 	             ps.setString(3, "울릉 죽암");
 	             ps.setString(4, "조용한 죽암 지역의 숙소");
 	             ps.setString(5, "울릉군 1111번지");
@@ -1042,8 +1050,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 26);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 25);
 	             ps.setString(3, "해운대 광안대교");
 	             ps.setString(4, "해운대와 광안대교의 멋진 경관을 제공하는 숙소");
 	             ps.setString(5, "해운대구 1212번지");
@@ -1054,8 +1062,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 26);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 25);
 	             ps.setString(3, "해운대 오션뷰");
 	             ps.setString(4, "해운대의 오션뷰를 제공하는 숙소");
 	             ps.setString(5, "해운대구 1313번지");
@@ -1066,8 +1074,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 25);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 24);
 	             ps.setString(3, "용산 시티뷰");
 	             ps.setString(4, "서울 시내를 조망할 수 있는 숙소");
 	             ps.setString(5, "용산구 1414번지");
@@ -1078,8 +1086,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 25);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 24);
 	             ps.setString(3, "용산 해방촌");
 	             ps.setString(4, "해방촌 지역의 매력을 제공하는 숙소");
 	             ps.setString(5, "용산구 1515번지");
@@ -1090,8 +1098,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 24);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 23);
 	             ps.setString(3, "종로 성곽길");
 	             ps.setString(4, "종로의 성곽길 근처의 숙소");
 	             ps.setString(5, "종로구 1616번지");
@@ -1102,8 +1110,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 24);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 23);
 	             ps.setString(3, "종로 한옥");
 	             ps.setString(4, "종로의 전통 한옥 숙소");
 	             ps.setString(5, "종로구 1717번지");
@@ -1114,8 +1122,8 @@ public class RoomDAO {
 	             ps.setInt(10, 4);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 15);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 14);
 	             ps.setString(3, "중구 아파트");
 	             ps.setString(4, "중구의 편리한 아파트 숙소");
 	             ps.setString(5, "중구 1818번지");
@@ -1126,8 +1134,8 @@ public class RoomDAO {
 	             ps.setInt(10, 3);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 21);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 20);
 	             ps.setString(3, "담양 별채");
 	             ps.setString(4, "담양의 별채 숙소");
 	             ps.setString(5, "담양군 1919번지");
@@ -1138,8 +1146,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 20);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 19);
 	             ps.setString(3, "전주 한옥마을");
 	             ps.setString(4, "전주의 전통 한옥 마을 숙소");
 	             ps.setString(5, "전주시 2020번지");
@@ -1150,8 +1158,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 22);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 21);
 	             ps.setString(3, "서귀포 귤밭");
 	             ps.setString(4, "서귀포의 귤밭 근처 숙소");
 	             ps.setString(5, "서귀포시 2121번지");
@@ -1162,8 +1170,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 22);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 21);
 	             ps.setString(3, "서귀포 독채");
 	             ps.setString(4, "서귀포의 독채 숙소");
 	             ps.setString(5, "서귀포시 2222번지");
@@ -1174,8 +1182,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 23);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 22);
 	             ps.setString(3, "제주 오션뷰");
 	             ps.setString(4, "제주의 오션뷰를 제공하는 숙소");
 	             ps.setString(5, "제주시 2323번지");
@@ -1186,8 +1194,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 16);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 15);
 	             ps.setString(3, "단양 일출뷰");
 	             ps.setString(4, "단양의 일출을 볼 수 있는 숙소");
 	             ps.setString(5, "단양군 2424번지");
@@ -1198,8 +1206,8 @@ public class RoomDAO {
 	             ps.setInt(10, 2);
 	             ps.addBatch();
 
-	             ps.setInt(1, 1);
-	             ps.setInt(2, 17);
+	             ps.setInt(1, 999);
+	             ps.setInt(2, 16);
 	             ps.setString(3, "서산 호수뷰");
 	             ps.setString(4, "서산의 호수뷰 숙소");
 	             ps.setString(5, "서산시 2525번지");
