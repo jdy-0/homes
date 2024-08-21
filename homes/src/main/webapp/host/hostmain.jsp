@@ -120,7 +120,6 @@ if (useridx == null || useridx == 0) {
 <%
 }
 
-
 ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 
 %>
