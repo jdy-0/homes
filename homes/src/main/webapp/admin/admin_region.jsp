@@ -121,7 +121,12 @@ function openrgInsert() {
 			    		<li><a href="/homes/admin/admin_host_accept.jsp">숙소 승인</a></li>
 			    	</ul>
 			    </li>	    
-			    <li><a href="#">예약 관리</a></li>
+			    <li>
+			    	예약 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_refund_accept.jsp">환불 승인</a></li>
+			    	</ul>
+			    </li>
 		    </ul>
 	    </nav>
 	    

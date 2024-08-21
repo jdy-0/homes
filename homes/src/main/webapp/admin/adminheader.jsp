@@ -35,7 +35,7 @@ function openLoginPopup(){
 		</tr>
 		<tr>
 			<td class="logo_yellow">E</td>
-			<td class="logo_icon"><a href="/homes">&#127960;</a></td>
+			<td class="logo_icon"><a href="/homes/admin/admin.jsp">&#127960;</a></td>
 			<td class="logo_yellow">S</td>
 		</tr>
 	</table>
