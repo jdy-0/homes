@@ -59,8 +59,44 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	window.alert('<%=usernickname%>님 로그인되었습니다.');
 	//window.alert('room_arr세션저장');
 	window.location.href='/homes';
+	
 	</script>
 	<%
+	//room더미데이터 생성 로직
+	int CreateRoomTable= rdao.CreateRoomTable();//룸 테이블 생성
+	//int CreateRoomTable=1;
+	if(CreateRoomTable>=1){
+		int CreateRoom_ImgTable = rdao.CreateRoom_ImgTable();//룸 이미지 테이블 생성
+		if(CreateRoom_ImgTable>=1){
+			int CreatSeq= rdao.CreateSeq();//룸 시퀀스, 룸 이미지시퀀스 생성
+			if(CreatSeq>=1){
+				int count = rdao.CreateAllRoom(usernickname); // 룸 insert
+				if(count>=1){
+					int count2 = rdao.CreateRoomDetailImg(); // 룸 이미지 insert
+					if(count2>=1){
+						System.out.println("생성완료");
+					}else{
+						System.out.println("룸 insert 오류");
+					}
+				}else{
+					
+				}
+			}else{
+				System.out.println("시퀀스 생성 오류");
+			}
+		}else{
+			System.out.println("room_img테이블 생성 오류");
+		}
+	}else{
+		System.out.println("room테이블 생성 오류");
+	}
+	
+	
+	/*  int count = rdao.CreateAllRoom(usernickname);
+	System.out.println(count);   */
+	/* 
+	int count2 = rdao.RoomDetailImg();
+	System.out.println(count2); */
 }
 else
 {
