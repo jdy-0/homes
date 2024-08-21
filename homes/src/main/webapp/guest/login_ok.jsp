@@ -63,6 +63,7 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	</script>
 	<%
 	//room더미데이터 생성 로직
+	if(usernickname.equals("admin")){
 	int CreateRoomTable= rdao.CreateRoomTable();//룸 테이블 생성
 	//int CreateRoomTable=1;
 	if(CreateRoomTable>=1){
@@ -90,7 +91,7 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	}else{
 		System.out.println("room테이블 생성 오류");
 	}
-	
+	}
 	
 	/*  int count = rdao.CreateAllRoom(usernickname);
 	System.out.println(count);   */
