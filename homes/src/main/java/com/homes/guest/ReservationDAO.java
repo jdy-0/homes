@@ -15,7 +15,7 @@ public class ReservationDAO {
 		
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = " select reservation_test_idx.nextval from dual ";
+			String sql = " select reservation_idx.nextval from dual ";
 			ps = conn.prepareStatement(sql);
 	        rs = ps.executeQuery();
 
@@ -25,7 +25,7 @@ public class ReservationDAO {
 	        }			
 			
 			
-			sql = " insert into reservation_test values("
+			sql = " insert into reservation values("
 					+ " ?, ?, ?, ?, sysdate, ?) ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, r_idx);
@@ -58,8 +58,8 @@ public class ReservationDAO {
 	public int insertReservationDetail(int r_idx, ReservationDTO rdto) {
 		
 		try {
-			String sql = " insert into reservation_detail_test values("
-					+ " reservation_detail_test_idx.nextval, ?, ?, ?, ?, ?,?) ";
+			String sql = " insert into reservation_detail values("
+					+ " reservation_detail_idx.nextval, ?, ?, ?, ?, ?,?) ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, r_idx);
 			ps.setInt(2, rdto.getMember_idx());
@@ -90,9 +90,9 @@ public class ReservationDAO {
 			conn = com.homes.db.HomesDB.getConn();
 			String sql = " select * "
 					+ "FROM   "
-					+ "    reservation_test r "
+					+ "    reservation r "
 					+ "JOIN   "
-					+ "    reservation_detail_test rd "
+					+ "    reservation_detail rd "
 					+ "ON   "
 					+ "    r.RESERVE_IDX = rd.RESERVE_IDX "
 					+ "JOIN "
@@ -146,7 +146,7 @@ public class ReservationDAO {
 			conn = com.homes.db.HomesDB.getConn();
 	        conn.setAutoCommit(false);  // 트랜잭션 시작
 
-			String sql = " update reservation_test set state = ? where reserve_idx = ? ";
+			String sql = " update reservation set state = ? where reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 	        ps.setString(1, dto.getState());
 			ps.setInt(2, dto.getReserve_idx());
@@ -223,7 +223,7 @@ public class ReservationDAO {
 
         try {
             conn = com.homes.db.HomesDB.getConn(); 
-            String sql = " select * from reservation_test r, reservation_detail_test rd "
+            String sql = " select * from reservation r, reservation_detail rd "
             		+ " WHERE r.reserve_idx = rd.reserve_idx and room_idx = ? and state = '예약대기중' "; 
             ps = conn.prepareStatement(sql);
             ps.setInt(1, room_idx); 

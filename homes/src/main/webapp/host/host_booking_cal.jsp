@@ -203,20 +203,20 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 
 	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
 		
-		<input type="text" 
+		<input type="hidden" 
 			data-type="start" value="<%=resdto.getCheck_in()%>">
-		<input type="text" 
+		<input type="hidden" 
 			data-type="end" value="<%=resdto.getCheck_out()%>">
 			
 		<form action="hostbooking_ok.jsp" name="hostbooking" >
-			<input type="text" name="reserve_idx" value="<%=resdto.getReserve_idx()%>">
-			<input type="text" name="state" value="">
-			<input type="text" name="room_idx" value="<%=resdto.getRoom_idx()%>">
-			<input type="text" name = "check_in"
+			<input type="hidden" name="reserve_idx" value="<%=resdto.getReserve_idx()%>">
+			<input type="hidden" name="state" value="">
+			<input type="hidden" name="room_idx" value="<%=resdto.getRoom_idx()%>">
+			<input type="hidden" name = "check_in"
 				data-type="start" value="<%=resdto.getCheck_in()%>">
-			<input type="text" 
+			<input type="hidden" 
 				data-type="end" name = "check_out" value="<%=resdto.getCheck_out()%>">
-			<input type="text" name="price" value="<%=resdto.getPrice()%>">
+			<input type="hidden" name="price" value="<%=resdto.getPrice()%>">
 		</form>
 		
 		

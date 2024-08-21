@@ -14,7 +14,7 @@ public class refundDAO {
 	public String checkCanRefund(int r_idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = " select state from reservation_test where reserve_idx = ? ";
+			String sql = " select state from reservation where reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, r_idx);
 			rs = ps.executeQuery();
@@ -81,7 +81,7 @@ public class refundDAO {
 	public int updateResStateToCanceled(int reserve_idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = " update reservation_test set state = '예약취소' where reserve_idx = ? ";
+			String sql = " update reservation set state = '예약취소' where reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
 			int count = ps.executeUpdate();
@@ -103,7 +103,7 @@ public class refundDAO {
 	
 	public int updateResStateToCanceled(Connection conn, int reserve_idx) throws SQLException {
 		try {
-			String sql = " update reservation_test set state = '예약취소' where reserve_idx = ? ";
+			String sql = " update reservation set state = '예약취소' where reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
 			int count = ps.executeUpdate();
@@ -131,7 +131,7 @@ public class refundDAO {
 	
 	public int changePriceToAmount(Connection conn, int reserve_idx) throws SQLException{
 		try {
-			String sql = " select * from reservation_test r, reservation_detail_test rd "
+			String sql = " select * from reservation r, reservation_detail rd "
 					+ " where r.reserve_idx  = rd.reserve_idx and r.reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
@@ -190,7 +190,7 @@ public class refundDAO {
 	
 	public int deleteSchedule(Connection conn, int reserve_idx) throws SQLException{
 		try {
-			String sql = " select * from reservation_test r, reservation_detail_test rd "
+			String sql = " select * from reservation r, reservation_detail rd "
 					+ " where r.reserve_idx=rd.reserve_idx and r.reserve_idx = ? ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
