@@ -6,6 +6,8 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
 
+
+
 <%
 
 try {
@@ -75,13 +77,9 @@ try {
     // 기본 정보 로드 및 페이지 렌더링
 
     // 세션에서 로그인 여부를 확인
-    String userid2 = (String) session.getAttribute("userid");
+    String f = (String) session.getAttribute("userid");
 
-    // 로그인하지 않은 경우 로그인 페이지로 리디렉트
-    if (userid2 == null || userid2.isEmpty()) {
-        response.sendRedirect("/homes/guest/login.jsp");
-        return;
-    }
+
 
     String roomIdxParam = request.getParameter("room_idx");
     RoomDTO room = null;
@@ -741,7 +739,16 @@ try {
 
 <script>
 function showReviewModal() {
-    document.getElementById('review-modal').style.display = 'block';
+    <% 
+    // 세션에서 로그인 여부를 확인
+    String userid = (String) session.getAttribute("userid");
+    if (userid == null || userid.isEmpty()) {
+    %>
+        alert("로그인 후 이용해 주세요.");
+        window.location.href = "http://localhost:9090/homes/guest/login.jsp";
+    <% } else { %>
+        document.getElementById('review-modal').style.display = 'block';
+    <% } %>
 }
 
 function closeReviewModal() {
