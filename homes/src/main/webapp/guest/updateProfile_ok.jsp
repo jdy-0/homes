@@ -1,84 +1,64 @@
-<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%request.setCharacterEncoding("utf-8"); %>
-<%@ page import="javax.servlet.http.Part" %>
-<jsp:useBean id="gdao" class="com.homes.guest.GuestDAO" scope="session"></jsp:useBean>
-<%
-int idx = (Integer)session.getAttribute("useridx");
-String nickname = request.getParameter("nickname");
-String email = request.getParameter("email");
-String tel = request.getParameter("tel");
-
-int result = gdao.updateProfile(idx, nickname, email, tel);
-String msg = result>0 ? "수정 완료" : "수정 실패";
-
-// 파일 업로드
-Part filePart = request.getPart("profileImgFile");
-if (filePart != null && filePart.getSize() > 0) {
-    String uploadDir = application.getRealPath("/") + "homes/guest/profileImg";
-    boolean uploadResult = gdao.uploadProfileImage(idx, filePart, uploadDir);
-
-    if (!uploadResult) {
-        msg = "이미지 업로드 실패";
-    }
-}
-%> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="javax.servlet.http.Part" %>
+<%@ page import="com.oreilly.servlet.*"%>
 <%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
 <jsp:useBean id="gdao" class="com.homes.guest.GuestDAO" scope="session"></jsp:useBean>
 
 <%
     request.setCharacterEncoding("utf-8");
 
-    // 세션에서 사용자 ID 가져오기
     int idx = (Integer) session.getAttribute("useridx");
-
-    // 모든 파트 가져오기
-    Collection<Part> parts = request.getParts();
-    String nickname = null;
-    String email = null;
-    String tel = null;
-    Part filePart = null;
-
-    // 파트에서 파라미터와 파일 분리하기
-    for (Part part : parts) {
-        String contentDisposition = part.getHeader("Content-Disposition");
-        if (contentDisposition != null && contentDisposition.contains("filename=")) {
-            filePart = part; // 파일 파트
-        } else {
-            String partName = part.getName();
-            if ("nickname".equals(partName)) {
-                nickname = request.getParameter("nickname");
-            } else if ("email".equals(partName)) {
-                email = request.getParameter("email");
-            } else if ("tel".equals(partName)) {
-                tel = request.getParameter("tel");
-            }
-        }
+    String id = (String) session.getAttribute("userid");
+    
+    // 파일 저장 경로
+    String savePath = request.getRealPath("/")+"guest/profileimg";
+    MultipartRequest mr = new MultipartRequest(request, savePath, 5*1024*1024, "utf-8");
+	
+    String nickname = mr.getParameter("nickname");
+    String email = mr.getParameter("email");
+    String tel = mr.getParameter("tel");
+    
+    //프로필이미지 파일 가져오기
+    File profileImgFile = mr.getFile("profileImgFile");
+    
+    //파일 이름을 사용자 id로 저장하기
+    if(profileImgFile!=null){
+    	String fileEx = "";//확장자명 초기화
+    	String fileName = profileImgFile.getName();
+    	int dotIdx = fileName.lastIndexOf('.');
+    	
+    	if(dotIdx > 0){	//확장자명 가져오기
+    		fileEx = fileName.substring(dotIdx);
+    	}
+    	
+    	String newFileName = id+fileEx;
+    	File newFile = new File(savePath, newFileName);
+    	
+    	//기존 파일 있으면 삭제
+    	if(newFile.exists()){
+    		newFile.delete();
+    	}
+    	//새로운 이름으로 파일 저장
+    	profileImgFile.renameTo(newFile);
+    	
+    	//프로필 정보 업데이트
+    	String imagePath = savePath+"/"+newFileName;
+    	int uploadResult = gdao.updateProfileImagePath(idx, newFileName);
+    	
+    	if(uploadResult<0){
+    		%>
+    		<script>
+    		alert('업로드 실패');
+    		location.href='/homes/guest/myProfile.jsp';
+    		</script>
+    		<%
+    	}    	
     }
-
-    // 디버깅: 파라미터 값 확인
-    System.out.println("nickname=" + nickname);
-    System.out.println("email=" + email);
-    System.out.println("tel=" + tel);
-
-    // 프로필 정보 업데이트
+    
     int result = gdao.updateProfile(idx, nickname, email, tel);
-    String msg = result > 0 ? "수정 완료" : "수정 실패";
-
-    // 파일 업로드 처리
-    if (filePart != null && filePart.getSize() > 0) {
-        String uploadDir = application.getRealPath("/") + "homes/guest/profileImg";
-        boolean uploadResult = gdao.uploadProfileImage(idx, filePart, uploadDir);
-
-        if (!uploadResult) {
-            msg = "이미지 업로드 실패";
-        }
-    }
+	String msg = result>0? "수정완료":"수정실패";
 %>
 <script>
-alert('nickname=<%=nickname%>, email=<%=email%>, tel=<%=tel%>');
 alert('<%=msg%>');
 location.href='/homes/guest/myProfile.jsp';
 </script>

@@ -32,11 +32,11 @@ GuestDTO dto = gdao.getUserProfile(userid);
 	<fieldset class="label_fs">
 		<h3><%=session.getAttribute("usernickname") %>님 계정 정보</h3>
 	</fieldset>
-	<form name="updateProfile" onsubmit="return checkForm();" action="updateProfile_ok.jsp" method="post" enctype="multipart/form-data">
+	<form name="updateProfile" onsubmit="return checkForm()" action="updateProfile_ok.jsp" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="idx" value="<%=dto.getIdx() %>">
 		<div id="img_div">
-			<a href="javascript:changeImg();"><img src="<%=dto.getImg() %>" alt="profile_img" id="profileImg"></a>
-			<input type="file" name="profileImgFile" id="profileImgFile" style="display:none;" onchange="previewImage(event);">
+			<a href="javascript:changeImg();"><img src="/homes/guest/profileimg/<%=dto.getImg() %>" alt="profile_img" id="profileImg"></a>
+			<input type="file" name="profileImgFile" accept="image/*" id="profileImgFile" style="display:none;" onchange="previewImage(event);">
 		</div>
 	<table>
 	<tr>
@@ -137,7 +137,7 @@ function validateNickname() {
         return true;
     }
 }
-//fome의 최종 유효성 검사
+//form의 최종 유효성 검사
 function checkForm(){
 	var valid = true;
 	

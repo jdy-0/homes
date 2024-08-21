@@ -38,10 +38,9 @@ section{
         text-align: center;
 }
 #img_div img{
-	width:250px;
-	height:250px;
-	padding: 20px;
-	margin:0px auto;
+	width: 100%;
+    height: 100%;
+    border-radius: 500px;
 }
 input[type="file"] {display: none;}
 #myPageMain_fs div{
@@ -96,7 +95,7 @@ input[type="file"] {display: none;}
 	border:4px solid black;
 }
 .button{
-	width:100px;
+	/*width:100px;*/
 	padding:10px;
 	font-size:20px;
 	background-color:#dec022;

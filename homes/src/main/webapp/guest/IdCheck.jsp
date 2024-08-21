@@ -58,7 +58,7 @@ legend{
 	<form name="idCheck" onsubmit="return checkId()" action="IdCheck_ok.jsp">
 	<div id="idcheck_frame">
 		<label>아이디</label>
-		<input type="text" name="id" id="userId" oninput="validateId()" style="outline:none;">		
+		<input type="text" name="id" id="userId" oninput="validateId()" style="outline:none;" maxlength="15" required>		
 		<input type="submit" id="button" value="확인">
 	</div>
 	<div id="error-message" style="color: red; margin-top: 5px;"></div>
@@ -93,8 +93,10 @@ function checkId(){
     //오류 메시지가 있으면 submit 안됨
     if (errorMessage !== "") {
         return false;
+    }else{
+    	return true;
     }
-    return true;
+    
 }
 </script>
 </html>

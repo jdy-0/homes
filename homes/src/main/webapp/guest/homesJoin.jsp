@@ -211,7 +211,6 @@ function setBday(){
 }
 function checkValue(){
 	var bda = document.homesJoin.bday.value;
-	window.alert(bda);
 }
 //비밀번호 설정 기준에 맞는지 확인하는 함수 (영어, 숫자, 특수문자(!, @, ^, *)를 포함한 8~15글자)
 function validatePwd(){
