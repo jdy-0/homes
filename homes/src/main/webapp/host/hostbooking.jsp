@@ -55,14 +55,18 @@ if(roomArr==null && roomArr.size()<=0){
 	for(RoomDTO rdto : roomArr){
 
 		ArrayList<ReservationDTO> resArr =  resdao.getReserveLists(rdto.getRoom_idx());
+        boolean hasReservations = (resArr != null && resArr.size() > 0);
+
 %>
 		<div class = "resByRoom" id="resByRoom<%=count++%>">
-			<h2 class = "roomName"><%=rdto.getRoom_name() %></h2> 
+		<!-- 예약 있을 시, 글씨색 변경 -->
+			<h2 class = "roomName" style="<%= hasReservations ? "color: red;" : "" %>"><%=rdto.getRoom_name() %><br>:<br> <%=resArr.size() %>개 </h2> 
 		
 <%					
 		if(resArr!=null && resArr.size()>0){
 			for(ReservationDTO resdto : resArr){
 				%>	
+				
 				<div class="contentWrapper" style="display:none">				
 				
 					<article class="booking">
