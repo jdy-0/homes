@@ -35,10 +35,10 @@ if (rarr == null || rarr.size() == 0) {
 %>
         <div id="div111">
             <article id="main">
+                <h3><%= rarr.get(i).getRoom_name() %></h3>
                 <img src="<%= rarr.get(i).getImage() %>">
             </article>
             <article id="maininfo">
-                <h3><%= rarr.get(i).getRoom_name() %></h3>
                 <!-- PJW part -->
                  <jsp:include page="host_cal.jsp">
                     <jsp:param name="room" value="<%= rarr.get(i).getRoom_idx() %>" />

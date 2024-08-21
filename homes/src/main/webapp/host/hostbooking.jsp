@@ -51,20 +51,26 @@ if(roomArr==null && roomArr.size()<=0){
 <h3>등록된 숙소가 없습니다.</h3>
 <%
 } else {
+	int count = 0;
 	for(RoomDTO rdto : roomArr){
 
 		ArrayList<ReservationDTO> resArr =  resdao.getReserveLists(rdto.getRoom_idx());
 %>
-		<div class = "resByRoom">
-		<h2 class = "roomName"><%=rdto.getRoom_name() %></h2> 
+		<div class = "resByRoom" id="resByRoom<%=count++%>">
+			<h2 class = "roomName"><%=rdto.getRoom_name() %></h2> 
+		
 <%					
 		if(resArr!=null && resArr.size()>0){
-
 			for(ReservationDTO resdto : resArr){
 				%>	
-				<div class="contentWrapper" style="display:none">
+				<div class="contentWrapper" style="display:none">				
+				
 					<article class="booking">
 						<table>
+							<tr>
+								<th>예약번호</th>
+								<td><%=resdto.getReserve_idx() %></td>
+							</tr>
 							<tr>
 								<th>신청자</th>
 								<td><%=resdto.getMember_id() %></td>
@@ -101,13 +107,13 @@ if(roomArr==null && roomArr.size()<=0){
 			        
 			        <jsp:include page="host_booking_cal.jsp"/>
 			        </article>
-			         <article class="buttonart">
-			        </article>
-	    		</div>
+			    </div>
+			    				
 				<%
+
 			}
 %>
-			</div>
+
 <%
 		} else {
 %>		
@@ -117,6 +123,8 @@ if(roomArr==null && roomArr.size()<=0){
 <%
 		}
 		%>
+		 </div>
+		
 		<hr>
 		<%
 
@@ -134,21 +142,25 @@ if(roomArr==null && roomArr.size()<=0){
 </body>
 
 <script>
-
-const roomNames = document.querySelectorAll(".resByRoom > .roomName");
+const roomNames = document.querySelectorAll(".roomName");
 
 roomNames.forEach(function(roomName) {
     roomName.addEventListener("click", function() {
-        const parent = roomName.parentElement;
-        const contentWrapper = parent.querySelector(".contentWrapper"); // 해당 roomName의 부모 안에 있는 첫 번째 contentWrapper를 선택
-
-        if (contentWrapper) {
-            // 현재 display 상태를 확인하고 토글
-            if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
-                contentWrapper.style.display = "block";
-            } else {
-                contentWrapper.style.display = "none";
-            }
+        // 클릭된 roomName의 가장 가까운 resByRoom 요소를 찾습니다.
+        const resbyroom = roomName.closest(".resByRoom");
+        
+        if (resbyroom) {
+            // resByRoom 내의 모든 contentWrapper를 선택합니다.
+            const contentWrappers = resbyroom.querySelectorAll(".contentWrapper");
+            
+            contentWrappers.forEach(function(contentWrapper) {
+                // 현재 display 상태를 확인하고 토글합니다.
+                if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
+                    contentWrapper.style.display = "block";
+                } else {
+                    contentWrapper.style.display = "none";
+                }
+            });
         }
     });
 });
