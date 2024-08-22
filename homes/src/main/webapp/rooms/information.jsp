@@ -80,6 +80,7 @@ try {
     String roomIdxParam = request.getParameter("room_idx");
     RoomDTO room = null;
     double averageRate = 0.0;
+    
 
     if (roomIdxParam != null && !roomIdxParam.isEmpty()) {
         try {
@@ -107,33 +108,6 @@ try {
         return;
     }
 
-    String checkInParam = request.getParameter("check_in");
-    String checkOutParam = request.getParameter("check_out");
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    long numberOfNights = 1; // 기본값 1박
-
-    try {
-        if (checkInParam != null && checkOutParam != null) {
-            Date checkInDate = dateFormat.parse(checkInParam);
-            Date checkOutDate = dateFormat.parse(checkOutParam);
-
-            long diffInMillies = checkOutDate.getTime() - checkInDate.getTime();
-            numberOfNights = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-            if (numberOfNights < 1) {
-                numberOfNights = 1; // 체크아웃이 체크인보다 빠르다면 기본값 1박
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        response.sendRedirect("errorPage.jsp?message=날짜 형식이 올바르지 않습니다.");
-        return;
-    }
-
-    // 총 숙박 비용 계산
-    long totalCost = room != null ? room.getPrice() * numberOfNights : 0;
 
     // 리뷰 페이징 처리
     int pageNum = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
@@ -249,9 +223,15 @@ try {
         </div>
         <div class="right">
             <p class="price">₩<%= room.getPrice() %> / 박</p>
-            <div>
-				<input type="text" name="check_in" value="<%= (request.getParameter("check_in") != null) ? request.getParameter("check_in") : "" %>" readonly="readonly">
-				<input type="text" name="check_out" value="<%= (request.getParameter("check_out") != null) ? request.getParameter("check_out") : "" %>" readonly="readonly">
+            <div>            	
+            	<label id="checkin_kor">체크인</label>
+				<input type="text" name="check_in" 
+				       value="<%= (request.getParameter("check_in") != null && !request.getParameter("check_in").isEmpty() && !request.getParameter("check_in").equals("null")) ? request.getParameter("check_in") : "" %>" 
+				       readonly="readonly">
+				<label id=checkout_kor>체크아웃</label>
+				<input type="text" name="check_out" 
+				       value="<%= (request.getParameter("check_out") != null && !request.getParameter("check_out").isEmpty() && !request.getParameter("check_out").equals("null")) ? request.getParameter("check_out") : "" %>" 
+				       readonly="readonly">
             	<jsp:include page="information_cal.jsp">
             		<jsp:param value="<%=roomIdxParam %>" name="room"/>
             		<jsp:param value="<%=room.getPrice() %>" name="price"/>
@@ -259,15 +239,17 @@ try {
             	
             </div>
 
-			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" value="<%=(request.getParameter("guest_num")!=null) ?request.getParameter("guest_num"):2 %>" required>
-
+			<label for="checkin">인원수</label>
+			<input type="number" name="guest_num" id="select_guest" min="2" step="1"
+			       value="<%= (request.getParameter("guest_num") != null && !request.getParameter("guest_num").isEmpty() && !request.getParameter("guest_num").equals("0")) ? request.getParameter("guest_num") : "2" %>" 
+			       required="required" max="<%= room.getRoom_max() %>">
+			
 
             <div class="reservation-box">
                 <div class="details">
-
-                    <p>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
+                    <p><span>₩<%=room.getPrice() %>&nbsp;X <span id="room_day">1박</span>&nbsp;&nbsp;&nbsp;&nbsp;</span>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
                 </div>
-                <form id="reservationForm" action="reservationConfirmation.jsp" method="get">
+                <form id="reservationForm" action="reservationConfirmation.jsp" method="get" onsubmit="return checkBeforeSubmit()">
                 	
                     <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>" id="hid_room_idx">
                     <input type="hidden" name="price" value="<%= room.getPrice() %>" id="hid_room_price">
@@ -275,7 +257,7 @@ try {
                     <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
                     <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
                     <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
-                    <button type="submit" class="button" onclick="setInputValuesTohidden();">예약하기</button>
+                    <button type="submit" class="button" >예약하기</button>
 
                 </form>
             </div>
@@ -377,7 +359,40 @@ function showReviewModal() {
     <% } %>
 }
 
+function checkLoginToRes() {
+    <% 
+    if (userid == null || userid.isEmpty()) {
+    %>
+        alert("로그인이 필요한 서비스입니다.");
+        window.open("http://localhost:9090/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=500,scrollbars=no,toolbar=no,menubar=no,resizable=no");
+        return false;  // 폼 제출을 막음
+    <% } else { %>
+        return true;   // 폼 제출을 허용
+    <% } %>
+}
 
+function checkBeforeSubmit() {
+    setInputValuesTohidden(); // 이 함수가 항상 실행되도록 먼저 호출합니다.
+    
+    // hidden 필드 값 가져오기
+    var checkIn = document.getElementById("hid_check_in").value;
+    var checkOut = document.getElementById("hid_check_out").value;
+    var guestNum = document.getElementById("hid_guest_num").value;
+
+    // 값이 null 또는 빈 문자열인지 확인
+    if (!checkIn || !checkOut || !guestNum || guestNum.trim() === "0") {
+        // 값이 유효하지 않은 경우
+        alert("체크인, 체크아웃, 인원수를 확인해주세요.");
+        return false; // 폼 제출을 막습니다.
+    }
+    
+    // 추가적으로 로그인 확인 함수 호출
+    if (!checkLoginToRes()) {
+        return false; // 로그인 확인 실패 시 폼 제출을 막습니다.
+    }
+
+    return true; // 모든 검증을 통과한 경우 폼 제출을 허용합니다.
+}
 
 function closeReviewModal() {
     document.getElementById('review-modal').style.display = 'none';

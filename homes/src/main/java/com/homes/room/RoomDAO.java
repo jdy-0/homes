@@ -137,8 +137,11 @@ public class RoomDAO {
                 int price = rs.getInt("price");
                // String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
+                int room_max = rs.getInt("room_max");
 
                 room = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
+                room.setRoom_max(room_max);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

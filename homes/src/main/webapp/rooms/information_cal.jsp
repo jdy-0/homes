@@ -740,6 +740,8 @@ document.addEventListener("DOMContentLoaded", function() {
     		 
     		 if(ch_in.value=='' || ch_out.value==''){
      			document.querySelector('#room_total_price').innerText =0;
+	            document.querySelector('#room_day').innerText = 0+"박";
+
      			return;
      		}
      		
@@ -751,10 +753,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     	        var timeDiff = checkOutDate - checkInDate;
     	        var daysDiff = timeDiff / (1000 * 60 * 60 * 24);
-
+				
     	        if (daysDiff > 0) {
     	            var totalPrice = daysDiff * pricePerNight;
     	            document.querySelector('#room_total_price').innerText = totalPrice;
+    	            document.querySelector('#room_day').innerText = daysDiff+"박";
     	        } else {
     	            document.querySelector('#room_total_price').innerText = `유효하지 않은 날짜 선택`;
     	        }
