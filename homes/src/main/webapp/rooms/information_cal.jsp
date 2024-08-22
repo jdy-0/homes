@@ -333,9 +333,9 @@ document.addEventListener("DOMContentLoaded", function() {
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
-    	const startVal = check_in;
+    	const startVal = check_out;
     	const start = new Date(startVal.value);
-        for(var i =0; i< getMonBetMon(start); i++){
+        for(var i =0; i< getMonBetMon(start)-1; i++){
 	        moveToCheckInDate();
 
 		}
@@ -445,7 +445,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if(loc+2==cals.length){
         	renderCalendar(nextDate);
-
             cals[loc+1].style.display='block';
 
         } else {

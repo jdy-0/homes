@@ -106,25 +106,30 @@ function validateForm() {
 		region=rdao.getRegion();
 				
 		for(int i=0;i<region.size();i++){%>
-	      		<option value="<%=region.get(i).getRegion_idx()%>"><%=region.get(i).getRegion_name()%></option>
-	    <%} %>
+			 <option value="<%= region.get(i).getRegion_idx() %>"
+			                <% if(p_region_idx == region.get(i).getRegion_idx()) { %> selected <% } %>>
+			            <%= region.get(i).getRegion_name() %>
+        	</option>	   
+       <%} %>
 		</select>
 	</div> 
 
 	<div class="date-picker">
 		<div id="date-input">
 			<div class="search_item">
-				<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly" value=<%=check_in%>>
+				<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly" value="<%= (request.getParameter("check_in") != null && !request.getParameter("check_in").isEmpty() && !request.getParameter("check_in").equals("null")) ? request.getParameter("check_in") : "" %>">
 			</div>
 			<div class="search_item">
-				<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly" value=<%=check_out%>>
+				<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly" value="<%= (request.getParameter("check_out") != null && !request.getParameter("check_out").isEmpty() && !request.getParameter("check_out").equals("null")) ? request.getParameter("check_out") : "" %>" >
 			</div>
 		</div>
 
 		<%@ include file="cal.jsp"%>
 		
 		<div id="select_guest_div">
-			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" required>
+			<label for="checkin">인원수</label> <input type="number" name="guest_num" id="select_guest" min="2" step="1"
+			       value="<%= (request.getParameter("guest_num") != null && !request.getParameter("guest_num").isEmpty() && !request.getParameter("guest_num").equals("0")) ? request.getParameter("guest_num") : "" %>" 
+			       required="required">
 		</div>
 		<div class="search_button">
 			<input type="submit" value="검색" class="button">
