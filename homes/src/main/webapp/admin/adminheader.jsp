@@ -43,6 +43,22 @@ function openLoginPopup(){
 		<h1>To the Endless Spaces</h1>
 	</div>
 	<div id="header_top_right">
+		<%
+		
+		if(session.getAttribute("aid")==null || !(session.getAttribute("aid").equals("admin"))){
+			%>
+			<div id="header_top_right_login">
+				<a href="/homes/admin/admin_login.jsp">LOGIN</a>
+			</div>
+			<%
+		}else{
+			%>
+			<div id="header_top_right_logout">
+				<a href="/homes/admin/admin_logout.jsp">LOGOUT</a>
+			</div>
+			<%
+		}
+		%>
 		<div id="header_top_right_p">
 			<p>since 2024</p>
 		</div>

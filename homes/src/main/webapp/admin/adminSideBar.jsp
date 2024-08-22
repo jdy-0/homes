@@ -19,7 +19,12 @@
 			    		<li><a href="/homes/admin/admin_regiondetail_list.jsp">지역 이미지 목록</a></li>
 			    	</ul>
 			    </li>		
-			    <li><a href="#">후기 관리</a></li>
+			    <li>
+			    	후기 관리
+			    	<ul>
+			    		<li><a href="/homes/admin/admin_reportlist.jsp">신고 후기 목록</a></li>
+			    	</ul>
+			    </li>		
 			    <li>
 			    	숙소 관리
 			    	<ul>
