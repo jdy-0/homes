@@ -907,7 +907,7 @@ public class RoomDAO {
 	             ps = conn.prepareStatement(sql);
 
 	             // 데이터 추가
-	             
+	             //1
 	             ps.setInt(1, 999);
 	             ps.setInt(2, 11);
 	             ps.setString(3, "강릉 프라이빗");
@@ -922,7 +922,6 @@ public class RoomDAO {
 	             
 	             ps.setInt(1, 999);
 	             ps.setInt(2, 11);
-	             //ps.setInt(3, 12);
 	             ps.setString(3, "강릉 오션뷰");
 	             ps.setString(4, "바다가 한눈에 보이는 숙소");
 	             ps.setString(5, "해변 마을 112번지");

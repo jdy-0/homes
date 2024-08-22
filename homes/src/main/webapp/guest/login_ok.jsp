@@ -62,8 +62,12 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	
 	</script>
 	<%
-	//room더미데이터 생성 로직
-	if(usernickname.equals("admin")){
+	//room더미데이터 생성 로직 
+	//insert 가 필요하면 admin값을 admin으로 바꾸고 사용하세요,,!!
+	String admin= "";//<<<<<<요녀석
+	
+	
+	if(usernickname.equals(admin)){
 	int CreateRoomTable= rdao.CreateRoomTable();//룸 테이블 생성
 	//int CreateRoomTable=1;
 	if(CreateRoomTable>=1){
@@ -71,11 +75,12 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 		if(CreateRoom_ImgTable>=1){
 			int CreatSeq= rdao.CreateSeq();//룸 시퀀스, 룸 이미지시퀀스 생성
 			if(CreatSeq>=1){
-				int count = rdao.CreateAllRoom(usernickname); // 룸 insert
+				int count = rdao.CreateAllRoom(admin); // 룸 insert
 				if(count>=1){
 					int count2 = rdao.CreateRoomDetailImg(); // 룸 이미지 insert
 					if(count2>=1){
 						System.out.println("생성완료");
+						//admin="";
 					}else{
 						System.out.println("룸 insert 오류");
 					}

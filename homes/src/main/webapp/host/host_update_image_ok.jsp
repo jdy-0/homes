@@ -13,9 +13,7 @@
 	int room_idx=Integer.parseInt(request.getParameter("room_idx"));
 	String room_name="";
 	
-	
 	ArrayList<RoomDTO> arr= (ArrayList<RoomDTO>)session.getAttribute("room_arr");
-	
 	String path=request.getRealPath("/");
 	wf.setHomePath(path);
 	
@@ -23,7 +21,7 @@
 		for(int i=0;i<arr.size();i++){		
 			if(room_idx==arr.get(i).getRoom_idx()){
 			room_name=arr.get(i).getRoom_name();
-			System.out.println(room_name);
+			System.out.println(room_name+"@@@@@@@@@@@@@@");
 		}
 			
 	}
@@ -39,7 +37,7 @@
 	
 	wf.setCrpath(userid);
 	String savepath=wf.getHomePath()+wf.getEverypath()+wf.getCrpath();
-	System.out.println(savepath+"@#@#@#!!@!@!@");
+	//System.out.println(savepath+"@#@#@#!!@!@!@");
 	File f_id_rid= new File(savepath+"/"+room_name);
 	%>
 		<input type="hidden" value="<%=f_id_rid.getPath()%>" name="roomsrc">
