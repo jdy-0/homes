@@ -47,10 +47,12 @@ function openLoginPopup(){
 		
 		if(session.getAttribute("aid")==null || !(session.getAttribute("aid").equals("admin"))){
 			%>
-			<div id="header_top_right_login">
-				<a href="/homes/admin/admin_login.jsp">LOGIN</a>
-			</div>
+			<script>
+			window.alert('로그인 후 이용 가능합니다.');
+			window.open('/homes/admin/admin_login.jsp','adminlogin','width=550,height=350');
+			</script>
 			<%
+			return;
 		}else{
 			%>
 			<div id="header_top_right_logout">
