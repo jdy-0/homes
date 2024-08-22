@@ -165,73 +165,110 @@ try {
 <main class="container">
     <% if (room != null) { %>
         <div class="top">
-            <h1>숙소 정보</h1>
+            <!-- <h1>숙소 정보</h1> -->
             <div class="room-details">
-                <h2><%= room.getRoom_name() %></h2>
-                <p><%= room.getGoodthing() %></p>
-                <p><%= room.getAddr_detail() %></p>
-                <div class="room-images">
-                    <img src="<%= room.getImage() %>" alt="메인 숙소 이미지">
-                    <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
-                    <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 2">
-                    <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 3">
+           		<div id="roomInfo_div">
+                	<div id="room_info">
+                		<h2><%= room.getRoom_name() %></h2>
+                		<p><%= room.getGoodthing() %></p>
+                		<p>|</p>
+                		<p><%= room.getAddr_detail() %></p>
+                		<p>|</p>
+                		<p class="price">₩<%= room.getPrice() %> / 박</p>
+                	</div>
+                	<%
+                	if(session.getAttribute("useridx")!=null){
+                		int user_idx = (Integer)session.getAttribute("useridx");
+                		int room_idx = Integer.parseInt(roomIdxParam);
+                		int like_idx = gdao.like(user_idx, room_idx);
+                		
+                		String blackheart = "&#9825;";
+                		String redheart = "&hearts;";
+                		String heartIcon = (like_idx == 0) ? blackheart : redheart;
+                		String heartColor = (like_idx == 0) ? "black" : "red";
+                		%>
+                		<div id="heart_div">
+                			<a href="javascript:like('<%=like_idx %>','<%=user_idx %>','<%=room_idx %>')" id="like_mark" style="color:<%=heartColor%>"><%=heartIcon %></a>
+                		</div>
+                		<!-- 좋아요 해제 / 삽입 폼 -->
+                		<%-- <form id="likeForm" method="post" style="display:none;">
+   							<input type="hidden" name="action" value="">
+    						<input type="hidden" name="useridx" value="<%= user_idx %>">
+    						<input type="hidden" name="roomidx" value="<%= room_idx %>">
+						</form> --%>
+                		<%
+                	}
+                	%>
                 </div>
+            	<div id="roomImg_div">
+            		<div id="mainImg_div">
+            			<img src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+            		</div>
+            		<div id="subImg_div">
+            			<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
+                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 2">
+                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 3">
+                    	<img src="<%= room.getImage() %>" alt="서브 숙소 이미지 4">
+            		</div>
+            	</div>
             </div>
         </div>
         <div class="left">
             <div class="reviews">
-                <div style="display: flex; align-items: center; background-color: #dec022; padding: 10px; border-radius: 5px; border: 2px solid black;">
-                    <span style="font-size: 18px; font-family: 'SBAggroB', Arial, sans-serif; margin-right: auto;">
-                        (후기) ★ <%= new DecimalFormat("#.0").format(averageRate) %> / 5.0
+                <div>
+                    <span>
+                        평점  <%= new DecimalFormat("#.0").format(averageRate) %> / 5.0  &#9733;
                     </span>
                     <a href="javascript:void(0);" onclick="showReviewModal()">후기 쓰기</a>
                 </div>
             </div>
- <div id="reviews-section">
-    <h3>후기 목록</h3>
-    <div class="review-list">
-        <% if (reviews != null && !reviews.isEmpty()) { %>
-            <% for (ReviewDTO review : reviews) { %>
-<div class="review-item">
-    <p><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
-    <p><strong>별점:</strong> <span id="review-rate-<%= review.getIdx() %>"><%= review.getRate() %></span>점</p>
-    <p id="review-content-<%= review.getIdx() %>"><%= review.getContent() %></p>
-    <% if (userid != null &&  review.getMemberId().equals(userid)) { %>
-        <span class="edit-btn" onclick="editReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">수정</span>
-        <span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">삭제</span>
-    <% } %>
-    <span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
-</div>
-
-
-
-            <% } %>
-        <% } else { %>
-            <p>아직 후기가 없습니다.</p>
-        <% } %>
-    </div>
-</div>
+ 			<div id="reviews-section">
+    			<div class="review-list">
+        		<% if (reviews != null && !reviews.isEmpty()) { %>
+            	<% for (ReviewDTO review : reviews) { %>
+					<div class="review-item">
+   						<p><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
+   						<%int rate = review.getRate(); %>
+    					<p><strong>별점:</strong> <span id="review-rate-<%= review.getIdx() %>" class="star"><%for(int i=1; i<=rate; i++){%>&#9733;<%}%></span></p>
+    					<p id="review-content-<%= review.getIdx() %>"><%= review.getContent() %></p>
+    					<% if (userid != null &&  review.getMemberId().equals(userid)) { %>
+        				<span class="edit-btn" onclick="editReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">수정</span>
+        				<span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">삭제</span>
+    					<% } %>
+    					<span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
+					</div>
+            	<% } %>
+        		<% } else { %>
+           			<p>아직 후기가 없습니다.</p>
+       		<% } %>
+    			</div>
+			</div>
  
-                <div class="pagination">
+	<div class="pagination">
                     <% for (int i = 1; i <= totalPageCount; i++) { %>
                         <a href="information.jsp?room_idx=<%= room.getRoom_idx() %>&page=<%= i %>" class="<%= i == pageNum ? "active" : "" %>">
                             <%= i %>
                         </a>
                     <% } %>
-                </div>
+     </div>
             </div>
-        </div>
+        
         <div class="right">
-            <p class="price">₩<%= room.getPrice() %> / 박</p>
-            <div>            	
-            	<label id="checkin_kor">체크인</label>
-				<input type="text" name="check_in" 
-				       value="<%= (request.getParameter("check_in") != null && !request.getParameter("check_in").isEmpty() && !request.getParameter("check_in").equals("null")) ? request.getParameter("check_in") : "" %>" 
-				       readonly="readonly">
-				<label id=checkout_kor>체크아웃</label>
-				<input type="text" name="check_out" 
-				       value="<%= (request.getParameter("check_out") != null && !request.getParameter("check_out").isEmpty() && !request.getParameter("check_out").equals("null")) ? request.getParameter("check_out") : "" %>" 
-				       readonly="readonly">
+            <div>  
+            	<div style="display:flex; justify-content: flex-end;">  	
+            		<div>     	
+            		<label id="checkin_kor">체크인</label>
+					<input type="text" name="check_in" 
+				       	value="<%= (request.getParameter("check_in") != null && !request.getParameter("check_in").isEmpty() && !request.getParameter("check_in").equals("null")) ? request.getParameter("check_in") : "" %>" 
+				       	readonly="readonly" class="datetextbox">
+				    </div> 
+				    <div style="margin-left:10px;">
+					<label id=checkout_kor>체크아웃</label>
+					<input type="text" name="check_out" 
+				       	value="<%= (request.getParameter("check_out") != null && !request.getParameter("check_out").isEmpty() && !request.getParameter("check_out").equals("null")) ? request.getParameter("check_out") : "" %>" 
+				       	readonly="readonly" class="datetextbox">
+					</div>
+				</div>
             	<jsp:include page="information_cal.jsp">
             		<jsp:param value="<%=roomIdxParam %>" name="room"/>
             		<jsp:param value="<%=room.getPrice() %>" name="price"/>
@@ -247,7 +284,9 @@ try {
 
             <div class="reservation-box">
                 <div class="details">
-                    <p><span>₩<%=room.getPrice() %>&nbsp;X <span id="room_day">1박</span>&nbsp;&nbsp;&nbsp;&nbsp;</span>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
+               
+                    <p><span>₩<%=room.getPrice() %>&nbsp;X <span id="room_day">1박</span></span></p>
+                    <p>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
                 </div>
                 <form id="reservationForm" action="reservationConfirmation.jsp" method="get" onsubmit="return checkBeforeSubmit()">
                 	
@@ -257,7 +296,7 @@ try {
                     <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
                     <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
                     <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
-                    <button type="submit" class="button" >예약하기</button>
+                    <button type="submit" class="bt_reserve" >예약하기</button>
 
                 </form>
             </div>
@@ -461,6 +500,42 @@ function setInputValuesTohidden(){
 	document.querySelector('#hid_check_out').value = ch_out.value;
 	document.querySelector('#hid_guest_num').value = gst_n.value;
 	document.querySelector('#hid_room_total_price').value = room_total_price.innerText;
+}
+
+//좋아요 설정하는 함수
+function like(like_idx, user_idx, room_idx) {
+    var like = document.getElementById("like_mark");
+    var likeColor = like.style.color;
+    
+    var action='';
+    if (likeColor === 'red') {
+        like.style.color = 'black';
+        action = 'unlike';  // 좋아요 해제
+    } else {
+        like.style.color = 'red';
+        action = 'like';    // 좋아요 추가
+    }
+    var likeidx = like_idx;
+    var useridx = user_idx;
+    var roomidx = room_idx;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/homes/guest/updateLike_ok.jsp", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            location.reload();
+        } else {
+        }
+    };
+
+    xhr.send(JSON.stringify({
+        action: action,    // 좋아요 추가 또는 삭제
+        likeidx: likeidx, // 좋아요 삭제 시 필요한 좋아요 idx
+        useridx: useridx,  // 사용자 idx
+        roomidx: roomidx   // 방 idx
+    }));
 }
 </script>
 </body>

@@ -35,12 +35,13 @@ function validatePaymentForm() {
 </head>
 <body>
 <%@ include file="/header.jsp"%>
-    <main class="container">
-        <div class="back-link">
+	<div class="back-link">
             <a href="../rooms/reservationConfirmation.jsp">← 돌아가기</a>
-        </div>
-        <div class="header">결제 정보 입력</div>
+    </div>
+    <main class="container">
+        
         <form action="/homes/reserve/reserve.jsp" method="POST" accept-charset="UTF-8" onsubmit="return validatePaymentForm();">
+            <h2>결제 정보 입력</h2>
             <div class="form-group">
                 <label for="cardNumber">카드 번호:</label>
                 <input type="text" id="cardNumber" name="cardNumber" required>
