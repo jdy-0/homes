@@ -172,6 +172,7 @@ public class RoomDAO {
 					+ "or rg.region_idx=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
+			ps.setInt(2, p_region_idx);
 			rs=ps.executeQuery();
 			int count=0;
 			if(rs.next()) {
