@@ -275,7 +275,7 @@ try {
                     <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
                     <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
                     <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
-                    <button type="submit" class="button" onclick="setInputValuesTohidden()">예약하기</button>
+                    <button type="submit" class="button" onclick="setInputValuesTohidden();">예약하기</button>
 
                 </form>
             </div>
@@ -370,12 +370,14 @@ function showReviewModal() {
     String userid = (String) session.getAttribute("userid");
     if (userid == null || userid.isEmpty()) {
     %>
-        alert("로그인 후 이용해 주세요.");
-        window.location.href = "http://localhost:9090/homes/guest/login.jsp";
+        alert("로그인이 필요한 서비스입니다.");
+        window.open("http://localhost:9090/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=500,scrollbars=no,toolbar=no,menubar=no,resizable=no");
     <% } else { %>
         document.getElementById('review-modal').style.display = 'block';
     <% } %>
 }
+
+
 
 function closeReviewModal() {
     document.getElementById('review-modal').style.display = 'none';
