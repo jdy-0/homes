@@ -279,8 +279,19 @@ function validateForm() {
         alert('체크아웃 날짜는 체크인 날짜 이후여야 합니다.');
         return false; // 폼 제출을 막음
     }
+    
+    var checkIn = document.getElementById('check_in');
+    var checkOut = document.getElementById('check_out');
+	
+   
+    if (!checkIn || !checkOut || checkin==''||checkout=='' ) {
+        alert("체크인, 체크아웃을 입력해주세요.");
+        return false; // 폼 제출을 막습니다.
+    }
+    
     return true; // 폼 제출을 허용
 }
+
 </script>
 <%
 //1.총게시물수
@@ -327,10 +338,10 @@ if(cp%listSize==0)userGroup--;
 	<div class="date-picker">
 		<div id="date-input">
 			<div class="search_item">
-				<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" required="required" readonly="readonly">
+				<label for="checkin">체크인</label> <input type="text" id="check_in" name="check_in" class="date" readonly="readonly">
 			</div>
 			<div class="search_item">
-				<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" required="required" readonly="readonly">
+				<label for="checkout">체크아웃</label> <input type="text" id="check_out" name="check_out" class="date" readonly="readonly">
 			</div>
 		</div>
 
@@ -414,4 +425,5 @@ if(cp%listSize==0)userGroup--;
 </section>
 <%@ include file="footer.jsp"%>
 </body>
+</script>
 </html>
