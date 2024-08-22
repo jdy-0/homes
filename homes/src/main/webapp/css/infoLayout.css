@@ -158,16 +158,21 @@ body {
 	border-radius: 5px;
 	border: 2px solid black;
 }
-.room-images {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+/* .room-images {
+	display: grid;
+    grid-template-columns: repeat(4, 1fr); 4개의 열
+    grid-template-rows: repeat(2, 1fr); 2개의 행
+    gap: 10px; 이미지 사이의 간격
+    height: 100vh; /* 화면 높이에 맞게 조절
+    width: 100%; 전체 폭을 사용
 }
+
 .room-images img {
 	width: 48%;
 	border-radius: 10px;
 	border: 2px solid black;
-}
+} */
+
 .room-details h2 {
 	font-size: 28px;
 	margin: 0;
@@ -181,6 +186,7 @@ body {
 	margin: 10px 0;
 	border-bottom: 2px solid black;
 	padding-bottom: 5px;
+	border :none;
 }
 .room-details .price {
 	font-size: 24px;
@@ -207,6 +213,49 @@ body {
 	background-color: #e2dccc;
 	transition: 0.5s;
 }
+.room-images {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4개의 열 */
+    grid-template-rows: repeat(2, 1fr); /* 2개의 행 */
+    gap: 10px; /* 이미지 사이의 간격 */
+    /*height: 100vh; /* 화면 높이에 맞게 조절 */
+    width: 100%; /* 전체 폭을 사용 */
+    
+}
+
+.room-main {
+    grid-column: span 2; /* 큰 이미지는 2개의 열을 차지 */
+    grid-row: span 2;    /* 큰 이미지는 2개의 행을 차지 */
+    display: flex;
+    flex-direction: column; 
+   /* justify-content: center;
+    align-items: center;*/
+    /* margin: 10 auto; */
+}
+
+.room-main img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 비율을 유지하며 잘라냄 */
+    border-radius: 10px; /* 테두리를 둥글게 만듦 */
+    
+}
+
+.small-image {
+    grid-column: span 1; /* 작은 이미지는 각각 1개의 열을 차지 */
+    grid-row: span 1;    /* 작은 이미지는 각각 1개의 행을 차지 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.small-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* 비율을 유지하며 잘라냄 */
+    border-radius: 10px; /* 테두리를 둥글게 만듦 */
+}
+
 .reservation-box {
 	margin-top: 20px;
 	padding: 20px;
@@ -362,3 +411,4 @@ body {
 .star-rating label:hover ~ label {
     color: #ffc107;
 }
+

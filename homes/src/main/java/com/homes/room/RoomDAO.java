@@ -1707,6 +1707,63 @@ public class RoomDAO {
 			if(conn!=null)conn.close();
 		} catch (Exception e2) {}
 	}
+}public ArrayList<RoomDTO> HomesList2(String Roomidx){
+	try {
+	conn=com.homes.db.HomesDB.getConn();
+	String sql = "SELECT "
+	           + "r.room_idx, "
+	           + "r.host_idx, "
+	           + "r.region_idx, "
+	           + "r.room_name, "
+	           + "r.goodthing, "
+	           + "r.addr_detail, "
+	           + "r.price, "
+	           + "r.image, "
+	           + "r.state, "
+	           + "r1.region_name AS selected_region_name, "
+	           + "r2.region_name AS parent_region_name "
+	           + "FROM ROOM r "
+	           + "JOIN region r1 ON r.region_idx = r1.region_idx "
+	           + "LEFT JOIN region r2 ON r1.parent_idx = r2.region_idx "
+	           + "WHERE r.room_idx = ?";
+
+
+	ps=conn.prepareStatement(sql);
+	ps.setString(1, Roomidx);
+	rs=ps.executeQuery();
+	ArrayList<RoomDTO> arr= new ArrayList<RoomDTO>();
+	
+	while(rs.next()) {
+		int room_idx = rs.getInt("room_idx");
+		int host_idx= rs.getInt("host_idx");
+		int region_idx= rs.getInt("region_idx");
+		String room_name=rs.getString("room_name");
+		String goodthing= rs.getString("goodthing");
+		String addr_detail= rs.getString("addr_detail");
+		int price= rs.getInt("price");
+		String image= rs.getString("image");
+		int state= rs.getInt("state");
+		String selectedRegionName = rs.getString("selected_region_name");
+        String parentRegionName = rs.getString("parent_region_name");
+        if(parentRegionName==null||parentRegionName.isEmpty()) {
+        	parentRegionName="";
+        }
+		RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state,selectedRegionName,parentRegionName);
+		arr.add(dto);
+		//System.out.println(arr.get(0).getRoom_name());
+	}
+	
+	return arr;
+	} catch (Exception e) {
+		e.printStackTrace();	
+		return null;
+	}finally {
+		try {
+			if(rs!=null)rs.close();
+			if(ps!=null)ps.close();
+			if(conn!=null)conn.close();
+		} catch (Exception e2) {}
+	}
 }
 	
 }
