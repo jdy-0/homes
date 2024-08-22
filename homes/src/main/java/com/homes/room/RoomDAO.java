@@ -168,8 +168,8 @@ public class RoomDAO {
 			String sql="select count(*) "
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
-					+ "where rg.lev=2 "
-					+ "and rg.parent_idx=(select region_idx from region where region_idx=? and lev=1)";
+					+ "where rg.parent_idx=(select region_idx from region where region_idx=?) "
+					+ "or rg.region_idx=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
 			rs=ps.executeQuery();

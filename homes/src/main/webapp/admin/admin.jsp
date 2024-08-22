@@ -3,7 +3,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<jsp:useBean id="adao" class="com.homes.admin.AdminTestDAO"></jsp:useBean>    
+<jsp:useBean id="adao" class="com.homes.admin.AdminTestDAO"></jsp:useBean>
+<%
+if(session.getAttribute("aid")==null || !(session.getAttribute("aid").equals("admin"))){
+	%>
+	<script>
+	window.alert('로그인 후 이용 가능합니다.');
+	//location.href='/homes/admin/admin_login.jsp;
+	window.open('/homes/admin/admin_login.jsp','adminlogin','width=550,height=350');
+	</script>
+	<%
+	return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
