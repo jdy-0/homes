@@ -125,7 +125,7 @@ public class AdminTestDAO {
 	public int reserveCount() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select count(*) from reservation_test";
+			String sql="select count(*) from reservation";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			int count=0;
@@ -151,7 +151,7 @@ public class AdminTestDAO {
 	public int reserveCountYet() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select count(*) from reservation_test where state='예약대기중'";
+			String sql="select count(*) from reservation where state='예약대기중'";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			int count=0;
@@ -177,7 +177,7 @@ public class AdminTestDAO {
 	public int reserveCountFinish() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select count(*) from reservation_test where state='예약완료'";
+			String sql="select count(*) from reservation where state='예약완료'";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			int count=0;
@@ -878,12 +878,12 @@ public class AdminTestDAO {
 			conn=com.homes.db.HomesDB.getConn();
 			String sql="select "
 					+ "rv.reserve_idx, rm.room_name ,hm.nickname, rd.check_in, rd.check_out ,pm.payment_date, rf.refund_date, rv.price, rf.amount "
-					+ "from reservation_test rv "
+					+ "from reservation rv "
 					+ "left outer join room rm on rv.room_idx = rm.room_idx "
 					+ "left outer join homes_member hm on rv.member_idx = hm.idx "
 					+ "left outer join payment pm on rv.reserve_idx = pm.reserve_idx "
 					+ "left outer join refund rf on rv.reserve_idx = rf.reserve_idx "
-					+ "left outer join reservation_detail_test rd on rv.reserve_idx = rd.reserve_idx "
+					+ "left outer join reservation_detail rd on rv.reserve_idx = rd.reserve_idx "
 					+ "where rf.status='환불대기' and pm.status='환불대기중'";
 			ps=conn.prepareStatement(sql);
 
