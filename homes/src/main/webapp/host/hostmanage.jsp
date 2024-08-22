@@ -23,6 +23,7 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 <%@ include file="/header.jsp" %>
 <section>
 <%@include file="hostheader.jsp" %>
+<div>
 <%
 		if(arr==null||arr.size()==0){
 			%>
@@ -57,6 +58,7 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 			}
 		}
 	%>
+</div>
 </section>
 </body>
 </html>

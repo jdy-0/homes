@@ -24,6 +24,7 @@ ArrayList<RoomDTO> rarr= roomdao.HomesList(useridx);
 %>
 <section>
 <%@include file="hostheader.jsp" %>
+<div>
 <%
 if (rarr == null || rarr.size() == 0) {
 %>
@@ -53,6 +54,7 @@ if (rarr == null || rarr.size() == 0) {
     }
 }
 %>
+</div>
 </section>
 </body>
 </html>
