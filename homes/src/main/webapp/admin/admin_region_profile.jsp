@@ -173,4 +173,4 @@ window.onload = setInitialBackground;
 </section>
 <%@ include file="../footer.jsp"%>
 </body>
-</html>
+</html>d

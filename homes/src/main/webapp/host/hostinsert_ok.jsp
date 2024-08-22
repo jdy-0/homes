@@ -19,16 +19,14 @@
 	
 	String roompath= mr.getParameter("room_name");
 	roompath.replaceAll(" ", "");
+	String HomePath=request.getRealPath("/");
+	wf.setHomePath(HomePath);
 	System.out.println(roompath+"!@#!@#");
 	String folder = request.getParameter("Folder");
 	File f= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath());
 	String path=f.getPath();
 	File f0= new File(wf.getHomePath()+wf.getHostpath());
 
-	//File f2= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath()+"/"+roompath);
-	
-	//File imgFile= new File(wf.getHomePath()+wf.getImgpath());
-	
 	if(!f0.exists()){
 		f0.mkdir();
 	%>
@@ -38,7 +36,8 @@
 		window.self.close();
 		</script>
 		<%
-		}else{%>
+		}else{
+			%>
 			<script>
 			window.alert("파일생성안됌");
 			</script>
@@ -49,7 +48,6 @@
 			%>
 	<script>
 		window.alert('<%=folder%>파일 생성 완료');
-		
 		window.alert('<%="내가 접속하는 경로 :"+wf.getHomePath()+wf.getEverypath()+wf.getCrpath()%>파일 생성 완료');
 		
 		//window.self.close();

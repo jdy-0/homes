@@ -7,6 +7,7 @@
 <jsp:useBean id="homedto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="homedao" class="com.homes.room.RoomDAO"></jsp:useBean>
 <jsp:useBean id="rdao" class="com.homes.region.RegionDAO"></jsp:useBean>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,6 +83,11 @@ if (useridx == null || useridx == 0) {
 
 ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
 
+if(useridx!=0||useridx!=null){
+	
+	ArrayList<RoomDTO> room_arr=homedao.RoomInfo(useridx);
+	session.setAttribute("room_arr", room_arr);
+}
 %>
 
 
