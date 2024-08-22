@@ -752,7 +752,7 @@ public class GuestDAO {
 	public int[] getCountandPeriod(int idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT (SELECT COUNT(*) FROM RESERVATION_TEST WHERE MEMBER_IDX = ? AND STATE = '이용완료') AS USECOUNT, "
+			String sql = "SELECT (SELECT COUNT(*) FROM RESERVATION WHERE MEMBER_IDX = ? AND STATE = '이용완료') AS USECOUNT, "
 					+ "CEIL(SYSDATE-JOINDATE) AS PERIOD FROM HOMES_MEMBER WHERE IDX=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, idx);
@@ -786,7 +786,7 @@ public class GuestDAO {
 	public int getCountUse(int idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT COUNT(*) FROM RESERVATION_TEST WHERE MEMBER_IDX=? AND STATE='이용완료'";
+			String sql = "SELECT COUNT(*) FROM RESERVATION WHERE MEMBER_IDX=? AND STATE='이용완료'";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, idx);
 			rs = ps.executeQuery();
@@ -814,7 +814,7 @@ public class GuestDAO {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT "
-					+ "FROM ROOM R, RESERVATION_TEST RES, RESERVATION_DETAIL_TEST RES_DE "
+					+ "FROM ROOM R, RESERVATION RES, RESERVATION_DETAIL RES_DE "
 					+ "WHERE RES.ROOM_IDX = R.ROOM_IDX " + "    AND RES.MEMBER_IDX=? "
 					+ "	AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX " + "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
 					+ "	AND RES.STATE = ? "
@@ -874,8 +874,8 @@ public class GuestDAO {
 					+ "    rm.image as room_img, "
 					+ "    rm.price as price, "
 					+ "	   rm.room_name "
-					+ "FROM reservation_test res "
-					+ "JOIN reservation_detail_test rd ON res.reserve_idx = rd.reserve_idx "
+					+ "FROM reservation res "
+					+ "JOIN reservation_detail rd ON res.reserve_idx = rd.reserve_idx "
 					+ "JOIN room rm ON res.room_idx = rm.room_idx "
 					+ "JOIN homes_member hm ON rm.host_idx = hm.idx "
 					+ "WHERE hm.idx = rm.host_idx and res.reserve_idx = ?";
