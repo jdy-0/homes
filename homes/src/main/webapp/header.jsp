@@ -4,7 +4,10 @@
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <script>
 function openLoginPopup(){
-	var option='width=600, height=300, resizable=no, top=200, left=470';
+	/* var width=screen.width ;
+	var height = screen.height;	
+	var option='width=600, height=300, resizable=no, top=200, left=470'; */
+	var option = 'fullscreen=yes, toolbar=0, location=0, menubar=0';
 	window.open('/homes/guest/login_popup.jsp','login',option);
 }
 </script>
@@ -33,7 +36,8 @@ function openLoginPopup(){
 		if(usernickname == null || usernickname == ""){
 			%>
 			<div id="header_top_right_login">
-				<a href="/homes/guest/login.jsp">LOGIN</a>
+				<!-- <a href="/homes/guest/login.jsp">LOGIN</a> -->
+				<a href="javascript:openLoginPopup()">LOGIN</a>
 				<a href="/homes/guest/homesJoin.jsp">JOIN US</a>
 			</div>
 			<%

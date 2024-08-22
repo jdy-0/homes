@@ -32,7 +32,7 @@ if(cks!=null){
 %>
 <body>
 <section>
-<form name="login" action="login_ok.jsp" method="post">
+<form name="login" action="login_pop_ok.jsp" method="post">
 <fieldset>
 	<legend>로그인</legend>
 	<table>
