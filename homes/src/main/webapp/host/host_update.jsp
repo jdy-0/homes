@@ -164,7 +164,6 @@ function FileSelect(event) {
 					<%
 					}
 					%>
-			
 
 				</div>
                 <div>

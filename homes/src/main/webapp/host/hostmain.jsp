@@ -121,7 +121,7 @@ if(useridx!=0||useridx!=null){
 					<ul>
 						<li><label>지역:</label> 
 						
-						<label><%=arr.get(i).getSelectedRegionName()+" "+arr.get(i).getParentRegionName()%></label>
+						<label><%=arr.get(i).getParentRegionName()+" "+arr.get(i).getSelectedRegionName()%></label>
 						<li>
 							<label for="room_goodthing">편의 시설 : </label> 
 							<label><%=arr.get(i).getGoodthing()%></label>
