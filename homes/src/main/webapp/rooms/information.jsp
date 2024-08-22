@@ -5,6 +5,9 @@
 <%@ page import="java.text.SimpleDateFormat, java.util.Date, java.util.concurrent.TimeUnit" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
+<%@page import="java.util.ArrayList"%>
+<jsp:useBean id="rdao" class="com.homes.room.RoomDAO" scope="session"></jsp:useBean>
+
 <%
 try {
 	 request.setCharacterEncoding("UTF-8");
@@ -166,17 +169,54 @@ try {
     <% if (room != null) { %>
         <div class="top">
             <h1>숙소 정보</h1>
-            <div class="room-details">
+          <%--   
                 <h2><%= room.getRoom_name() %></h2>
-                <p><%= room.getGoodthing() %></p>
-                <p><%= room.getAddr_detail() %></p>
-                <div class="room-images">
+                <div class="room-main">
                     <img src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+                    
                     <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 1">
                     <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 2">
                     <img src="<%= room.getImage() %>" alt="서브 숙소 이미지 3">
-                </div>
-            </div>
+                
+                --%>
+            <div class="room-details">
+            	<div class="room-images">
+                	<div class="room-main">
+                    			<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
+                    </div>
+          
+                    <%
+                    ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
+                    
+                    int imgCount = arrImg.size();
+					if(arrImg != null && !arrImg.isEmpty()){
+						for(int i =0;i < imgCount && i < 4;i++){
+							%>
+						<div class="small-image">
+							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
+						</div>
+	
+							<%		
+						}
+						
+					}else{
+						%>
+						<div class="small-image">
+						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
+					</div>
+					<%
+					}
+					%>
+        	</div>
+        	<%
+        	ArrayList<RoomDTO> arrRoom= rdao.HomesList2(roomIdxParam);
+        	%>
+        	<h2>숙소 정보</h2>
+        	
+                <p><%= room.getGoodthing() %></p>
+                <p><%=arrRoom.get(0).getParentRegionName()%>&nbsp;<%=arrRoom.get(0).getSelectedRegionName()%>&nbsp;<%= room.getAddr_detail() %></p>
+        </div>
+        
         </div>
         <div class="left">
             <div class="reviews">
@@ -353,7 +393,7 @@ function showReviewModal() {
     if (userid == null || userid.isEmpty()) {
     %>
         alert("로그인이 필요한 서비스입니다.");
-        window.open("http://localhost:9090/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=500,scrollbars=no,toolbar=no,menubar=no,resizable=no");
+        window.open("http://localhost:9090/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=300,scrollbars=no,toolbar=no,menubar=no,resizable=no");
     <% } else { %>
         document.getElementById('review-modal').style.display = 'block';
     <% } %>
