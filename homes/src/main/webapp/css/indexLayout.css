@@ -73,7 +73,7 @@
 	z-index: 10;
 	/* border: 1px solid black; */
 	border:0px;
-	background-color:cornsilk;
+	background-color:white;
 	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 .prev-month{
@@ -83,7 +83,7 @@
     border-radius: 10px;
     background-color: #cd280e;
     font-weight: bold;
-    color: cornsilk;
+    color: white;
 }
 .prev-month:hover{
 	background-color:cornsilk;
@@ -96,7 +96,7 @@
     border: 0;
     background-color: #cd280e;
     font-weight: bold;
-    color: cornsilk;
+    color: white;
     border-radius: 10px;
 }
 .next-month:hover{
@@ -109,14 +109,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: cornsilk;
+    background-color: white;
     width: -webkit-fill-available;
     border: 1px solid gray;
 }
 .weekdays, .days {
 	display: flex;
 	flex-wrap: wrap;
-	background-color:cornsilk;
+	background-color:white;
 	border-top: 1px solid gray;
 }
 .weekdays span, .days span {

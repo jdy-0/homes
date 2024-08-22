@@ -175,7 +175,7 @@ public class refundDAO {
 	public int insertRefund(Connection conn, int reserve_idx, int amount) throws SQLException{
 		try {
 			String sql = " insert into refund values"
-					+ " (refund_seq.nextval,?,?,sysdate,'환불대기','') ";
+					+ " (refund_seq.nextval,?,?,sysdate,'환불대기') ";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, reserve_idx);
 			ps.setInt(2, amount);

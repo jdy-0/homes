@@ -15,7 +15,7 @@ public class ReservationDAO {
         List<ReservationDTO> reservations = new ArrayList<>();
         try {
             conn = com.homes.db.HomesDB.getConn();  // 데이터베이스 연결
-            String sql = "SELECT * FROM reservation_test WHERE member_idx = ? AND room_idx = ?";
+            String sql = "SELECT * FROM reservation WHERE member_idx = ? AND room_idx = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, member_idx);
             ps.setInt(2, room_idx);
