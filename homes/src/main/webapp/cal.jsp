@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <div class="calendar" id="calendar" style="display: none;">
 	<div class="month">
-		<button class="prev-month">‹</button>
+		<button class="prev-month"  type="button">‹</button>
 		<span class="month-year">초기화</span>
-		<button class="next-month">›</button>
+		<button class="next-month"  type="button">›</button>
 	</div>
 	<div class="side_cal">
 		<!-- 날짜가 여기에 동적으로 추가됩니다 -->
@@ -28,26 +27,83 @@
     let nextDate = new Date();
     var loc = 0;
     
+    
     reset.addEventListener('click', () => {
         side_cal.querySelectorAll('.line').forEach(el => el.setAttribute('class', 'none'));
 		from.value='';
 		to.value='';
 		
     });
+    
+    function setSeletedDateFromParam(){
+    	
+        if(from && from.value && to && to.value ){
+        	var from_id = '#d'+from.value.replaceAll('-','');
+        	var to_id = '#d'+to.value.replaceAll('-','');
+        	
+        	console.log(from_id);
+        	console.log(to_id);
+        	
+        	console.log(document.querySelector(from_id));
+        	console.log(document.querySelector(to_id));
+        	        	
+				chooseDate(0, 0, 0, document.querySelector(from_id));
+				chooseDate(0, 0, 0, document.querySelector(to_id));
+        }
+    }
 	
     function openCalendar() {
         calendar.style.display = 'block';
         if (cals.length < 2) {
             renderCalendar(currentDate);
-			
             dateCheck();
             renderCalendar(nextDate);
+            
+            const startVal = to;
+        	const start = new Date(to.value);
+             for(var i =0; i< getMonBetMon(start)-1; i++){
+    	        moveToCheckInDate();
+
+    		} 
+             setSeletedDateFromParam();
         } else {
         	
-        	if(from.value!=null && from.value!=""){
-        	}
         	
         }
+    }
+    
+    function moveToCheckInDate(){
+    	dateCheck();
+
+		for(var i=0; i<cals.length; i++){
+			
+			cals[i].style.display='none';
+		}
+        if(loc+2==cals.length){
+        	renderCalendar(nextDate);
+
+            cals[loc+1].style.display='block';
+
+        } else {
+            cals[loc+1].style.display='block';
+            cals[loc+2].style.display='block';
+        }
+   
+    	loc++;
+	}
+    
+ 	function getMonBetMon(start){
+    	
+    	const today = new Date();
+
+    	const year = start.getFullYear();
+    	const today_year = today.getFullYear();
+    	
+    	const month = start.getMonth();
+    	const today_month = today.getMonth();
+    	
+    	return (year-today_year)*12 + (month-today_month);
+    	
     }
     
     
@@ -93,15 +149,13 @@
 
     nextMonthBtn.addEventListener('click', () => {
     	dateCheck();
-
     	/* side_cal.innerHTML = '';
     	side_cal.appendChild(cals[loc]);
         renderCalendar(nextDate); */
 		for(var i=0; i<cals.length; i++){
-			
 			cals[i].style.display='none';
 		}
-
+		
         
         if(loc+2==cals.length){
         	renderCalendar(nextDate);
@@ -232,9 +286,12 @@
             
 
 
-            dayElement.addEventListener('click', () => {   	
+            dayElement.addEventListener('click', () => {
 				chooseDate(year, month, day, dayElement);
             });
+            
+            // 체크인 체크아웃 값 있을경우, 해당 체크인 체크아웃에 클래스 부여 + 사이에 클래스 부여            
+            
             monthContainer.appendChild(dayElement);
             
             if(cals.length==1 && day<currentDate.getDate()){
@@ -242,6 +299,8 @@
                 const clone = dayElement.cloneNode(true);
                 dayElement.parentNode.replaceChild(clone, dayElement);
             }
+            
+            
         }
         one_month_cal.appendChild(monthContainer);
     }
@@ -260,9 +319,16 @@
             dayElement.classList.replace('none', 'line');
 
         } */
-        dayElement.classList.replace('none', 'line');
+        if (dayElement.classList.contains('none')) {
+            dayElement.classList.replace('none', 'line');
+        } else {
+            dayElement.classList.add('line');
+        }        
 
-        selectedDates = document.querySelectorAll('.selected');
+
+        // 확인할 때, 클래스가 추가된 직후에 다시 선택
+
+		var selectedDates = document.querySelectorAll('.selected');
 
         if (document.querySelectorAll('.selected').length  == 1) {
         	date_from_to[0] = dayElement;
@@ -292,7 +358,7 @@
                 }
             }); */
             
-         	from.value = ''+year+'-'+(month+1).toString().padStart(2,'0')+'-'+(day.toString().padStart(2,'0'));
+         	from.value = makeIdToDate(dayElement.id);
 
 /*             calendar.style.display = 'none';
  */            
@@ -332,7 +398,7 @@
                     }
                 }
             });
-         	to.value = ''+year+'-'+(month+1).toString().padStart(2,'0')+'-'+(day.toString().padStart(2,'0'));
+         	to.value = makeIdToDate(dayElement.id);
         	
            
 
@@ -354,7 +420,6 @@
 			}); */
  			
             if(selectedDates[0]===firstDate){
-
 
         		if(selectedDates[1]===lastDate){
                 	lastDate.setAttribute('class','none');
