@@ -583,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function chooseDate(year, month, day, dayElement) {
         // 날짜 선택 불가 체크
-        if (dayElement.matches('.disabled') || dayElement.matches('.line') || 
+        if (dayElement.matches('.disabled') || /* dayElement.matches('.line') || */ 
             dayElement.matches('.holi') || dayElement.matches('.holi_line')) {
             return;  // 선택 불가한 날짜인 경우 함수 종료
         }
@@ -635,7 +635,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         		resetCal_Selected();
                                 firstClickedDate = secondClickedDate;
                                 firstClickedDate.classList.replace('none', 'selected');
-                            	alert(firstClickedDate.id);
 
                                 secondClickedDate = null;
                                 document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
@@ -737,7 +736,6 @@ document.addEventListener("DOMContentLoaded", function() {
     		 var ch_in = document.querySelector('input[name="check_in"]');
     		 var ch_out = document.querySelector('input[name="check_out"]');
     		 var guest_num = document.querySelector('input[name="guest_num"]');
-    		 
     		 if(ch_in.value=='' || ch_out.value==''){
      			document.querySelector('#room_total_price').innerText =0;
 	            document.querySelector('#room_day').innerText = 0+"박";
