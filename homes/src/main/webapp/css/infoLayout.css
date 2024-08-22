@@ -7,7 +7,7 @@
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	background-color: white;
+	background-color: floralwhite;
 	padding: 30px;
 	border: 2px solid black;
 	width: 600px;
@@ -26,6 +26,7 @@
 .reason-list label {
 	display: block;
 	margin-bottom: 10px;
+	font-family: 'Pretendard-Regular';
 }
 
 /* 신고하기 및 후기 제출 버튼 스타일 */
@@ -33,10 +34,12 @@
 	width: 100%;
 	padding: 10px 0;
 	font-size: 16px;
-	background-color: #dec022;
-	border: 2px solid black;
+	background-color:#cd280e;
+	border: 0px solid black;
 	cursor: pointer;
 	border-radius: 5px;
+	color:cornsilk;
+	font-family: 'SBAggroB'
 }
 
 #report-modal button[type="submit"]:hover, #review-modal button[type="submit"]:hover {
@@ -47,26 +50,27 @@
 /* 후기 쓰기 버튼 스타일 */
 .reviews a {
 	text-decoration: none;
-	color: black;
-	background-color: #dec022;
-	border: 2px solid black;
+	color:black;
+	background-color: palegoldenrod;
+	border:0;
 	border-radius: 5px;
-	padding: 5px 10px;
+	padding: 10px;
 	font-family: 'SBAggroB', Arial, sans-serif;
 	font-size: 18px;
 }
 .reviews a:hover {
-	background-color: #e2dccc;
-	transition: 0.5s;
+	color:darkgray;
+	opacity:0.5; 
+	transition: 0.3s;
 }
 
 /* 후기 리스트 및 수정/삭제 버튼 스타일 */
 .review-item {
 	padding: 15px;
 	margin-bottom: 15px;
-	background-color: #f0f0f0;
 	border-radius: 5px;
 	border: 2px solid black;
+	background-color: floralwhite;
 }
 
 .review-item p {
@@ -108,18 +112,18 @@
 	text-decoration: none;
 }
 .pagination a.active {
-	background-color: #dec022;
-	color: white;
-	border-color: black;
+    color: black;
+    border: 0px;
 }
 
 /* 기타 스타일 (기존 스타일 유지) */
 body {
-	font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
+	font-family: 'SBAggroB';
 	margin: 20px;
 	background-color: #f8f9fa;
 }
 .container {
+	/* max-width:1200px; */
 	margin: 0 auto;
 	padding: 20px;
 	min-height: 800px;
@@ -134,13 +138,29 @@ body {
 }
 .left {
 	grid-area: left;
+	width:100%;
 }
 .right {
 	grid-area: right;
-	padding: 20px;
+	border:0;
+	width:90%;
+	margin-top:30px;
+	text-align: end;
+	/* padding: 20px;
 	border: 3px solid black;
 	border-radius: 10px;
-	background-color: #fff;
+	background-color: #fff; */
+}
+/* .right div{
+    display: flex;
+    justify-content: flex-end;	
+} */
+.datetextbox{
+    font-size: 20px;
+    padding: 5px;
+    border: 3px solid black;
+    font-family: 'SBAggroB';
+	width: 170px;
 }
 .header {
 	margin-bottom: 20px;
@@ -158,23 +178,69 @@ body {
     grid-template-columns: repeat(4, 1fr); 4개의 열
     grid-template-rows: repeat(2, 1fr); 2개의 행
     gap: 10px; 이미지 사이의 간격
-    height: 100vh; /* 화면 높이에 맞게 조절
+    height: 100vh; 화면 높이에 맞게 조절
     width: 100%; 전체 폭을 사용
+} */
+.room-images{
+	display:grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap:10px;
+	height:100vh;
+	width:100%;
+	justify-items: center;
 }
-
 .room-images img {
 	width: 48%;
 	border-radius: 10px;
 	border: 2px solid black;
-} */
-
+}
+#roomInfo_div{
+	display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+#room_info{
+	display: flex;
+    align-items: baseline;
+    width: 85%;
+    /* justify-content: space-between; */
+}
+#room_info p{
+	margin-left:25px;
+	font-family: 'Pretendard-Regular';
+}
+#heart_div{
+	width:15%;
+	text-align:end;
+}
+#heart_div a{
+	color:black;
+	font-size:60px;
+	text-decoration:none;
+}
+#heart_div a:hover{
+	color:red;
+}
+#roomImg_div{
+	display:flex;
+	/* height:500px; */
+}
+#mainImg_div{
+	width:50%;
+	margin:5px;
+	text-align: center;
+}
+#mainImg_div img{width:90%; height:630px;}
+#subImg_div{width:50%; text-align:center;}
+#subImg_div img{width:45%; height:315px;}
 .room-details h2 {
-	font-size: 28px;
-	margin: 0;
+	font-size: 32px;
+	/* margin: 0; */
 	padding: 10px;
-	background-color: #dec022;
+	/* background-color: #dec022;
 	border: 2px solid black;
-	border-radius: 5px;
+	border-radius: 5px; */
 }
 .room-details p {
 	font-size: 20px;
@@ -187,7 +253,6 @@ body {
 	font-size: 24px;
 	font-weight: bold;
 	margin: 20px 0;
-	border-bottom: 3px solid black;
 	padding-bottom: 5px;
 }
 .room-details .button {
@@ -256,16 +321,30 @@ body {
 	padding: 20px;
 	border: 3px solid black;
 	border-radius: 10px;
-	background-color: #e2dccc;
+	/* background-color: #e2dccc; */
 	font-size: 20px;
+	display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
 }
 .details {
 	margin-top: 10px;
 	font-size: 24px;
 	font-weight: bold;
-	border-bottom: 2px solid black;
 	padding-bottom: 5px;
-	text-align: center;
+	text-align: start;
+}
+.reviews div{
+    display: flex;
+    align-items: center;
+    /* background-color: #cd280e; */
+    padding: 10px;
+    border-radius: 5px;
+}
+.reviews div span{
+	font-size:22px;
+	margin-right: auto;
 }
 .reviews h3 {
 	font-size: 24px;
@@ -322,7 +401,7 @@ body {
 	border-radius: 5px;
 	font-size: 16px;
 	box-sizing: border-box;
-	font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif;
+	font-family: 'Pretendard-Regular';
 	margin-bottom: 10px; /* 입력 필드 간격을 일정하게 유지 */
 }
 
@@ -406,4 +485,29 @@ body {
 .star-rating label:hover ~ label {
     color: #ffc107;
 }
+.date-picker{
+/* 	    position: relative;
+    display: flex;
+    align-items: center; */
+    justify-content: flex-end;
+    margin-top:20px;
+}
 
+.star{
+	color:#ffc107;
+}
+.bt_reserve{
+	width: 120px;
+    background-color: palegoldenrod;
+    border: 0px solid black;
+    font-family: 'SBAggroB';
+    padding: 15px; 
+    font-size: 20px;
+    color: black;
+    border-radius: 5px;
+}
+.bt_reserve:hover{
+	opacity:0.5;
+	color:darkgray;	
+	transition:0.3s;
+}

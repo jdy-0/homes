@@ -237,32 +237,6 @@ public class GuestDAO {
 	        return false;
 	    }
 	}
-//	public boolean uploadProfileImage(int idx, Part filePart, String uploadDir) {
-//        if (filePart == null || filePart.getSize() == 0) {
-//            return false; // 파일이 없으면 업로드하지 않음
-//        }
-//
-//        String fileName = idx + ".jpg"; //파일 이름을 useridx로 저장
-//        String filePath = uploadDir + File.separator + fileName;
-//
-//        // 이미 해당 사용자의 사진 파일이 있을 경우 자동으로 덮어쓰기
-//        try (InputStream inputStream = filePart.getInputStream();
-//             FileOutputStream outputStream = new FileOutputStream(filePath)) {
-//
-//            int read;
-//            byte[] bytes = new byte[1024];
-//            while ((read = inputStream.read(bytes)) != -1) {
-//                outputStream.write(bytes, 0, read);
-//            }
-//
-//            // 데이터베이스에 이미지 경로 업데이트 (경로가 변경되지 않으므로 필요하지 않음)
-//            return true; // 성공적으로 파일을 저장했을 경우 true 반환
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 	
 	//프로필 이미지 경로 업데이트 메소드
     public int updateProfileImagePath(int idx, String imagePath) {
@@ -975,6 +949,31 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	//찜 목록에 있는지 확인 & 찜 목록 번호 가져오기
+	public int like(int member_idx, int room_idx) {
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = "SELECT * FROM HOMES_LIKE WHERE MEMBER_IDX = ? AND ROOM_IDX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, member_idx);
+			ps.setInt(2, room_idx);
+			rs=ps.executeQuery();
+			int like_idx = 0;
+			if(rs.next()) {
+				like_idx = rs.getInt("idx");
+			}
+			return like_idx;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {}
+		}
+	}
 	//해당 숙소가 찜 목록에 있는지 확인
 	public boolean existLike(int member_idx, int room_idx) {
 		try {
@@ -998,14 +997,15 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	
 	//찜 목록에 추가
-	public int addLike(String id, int room_idx) {
+	public int addLike(int member_idx, int room_idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 			String sql = "INSERT INTO HOMES_LIKE VALUES "
-					+ "(HOMES_LIKE_IDX.NEXTVAL, (SELECT IDX FROM HOMES_MEMBER WHERE ID = ?), ?)";
+					+ "(HOMES_LIKE_IDX.NEXTVAL, ?, ?)";
 			ps=conn.prepareStatement(sql);
-			ps.setString(1, id);
+			ps.setInt(1, member_idx);
 			ps.setInt(2, room_idx);
 			
 			int count = ps.executeUpdate();

@@ -1,4 +1,7 @@
 @charset "UTF-8";
+section{
+	font-family: 'SBAggroB';
+}
 .search_item {
     padding: 10px 20px; 
 }
@@ -125,7 +128,7 @@
 	padding: 10px 0;
 }
 .days{
-	background-color:cornsilk;
+	background-color:white;
 }
 .days span {
 	cursor: pointer;
@@ -184,22 +187,7 @@
     padding: 10px;
     font-family: 'SBAggroB';
 }
-.button{
-	width: 80px;
-    background-color: #ca3101;
-    font-family: 'SBAggroB';
-    padding: 10px;
-    font-size: 20px;
-    border-radius: 300px;
-    color: lemonchiffon;
-    border:0;
-}
-.button:hover{
-	background-color:lemonchiffon;
-	color:#ca3101;
-	opacity:0.5;
-	border:3px solid #ca3101;
-}
+
 #recommend_region{
 	/* border-bottom:5px solid black; */
 	height:380px;

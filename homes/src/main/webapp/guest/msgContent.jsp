@@ -94,7 +94,7 @@ MsgDTO msgdto = gdao.getMsgContent(msgidx);
 			}else if("sendMsgList".equals(crarticle)){
 				href="sendMsgList.jsp";
 			}else if("unreadMsgList".equals(crarticle)){
-				href="unreadMSgList.jsp";
+				href="unreadMsgList.jsp";
 			}else{
 				href="msg.jsp";
 			}

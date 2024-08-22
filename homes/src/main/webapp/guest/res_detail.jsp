@@ -78,11 +78,6 @@ HashMap<String, Object> hm = gdao.getReserveInfo(reserve_idx);
 	<div style="width:60%; margin:30px auto; border:5px solid black;">
 		<div style="background-color:#dec022; padding:1px 10px; border-bottom:5px solid black;"><h2>예약 세부정보</h2></div>
 		<div>
-			<p>게스트</p>
-			<p> 명</p>
-		</div>
-		<hr>
-		<div>
 			<p>예약번호</p>
 			<p><%=hm.get("reserve_idx") %></p>
 		</div>

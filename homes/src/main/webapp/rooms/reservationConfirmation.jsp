@@ -6,18 +6,18 @@
 <title>예약 확인 및 결제</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/resConfirm.css">
+<style>
+
+</style>
 </head>
 <body>
 <%@ include file="/header.jsp"%>
     <main class="container">
         <div class="back-link">
             <a href="information.jsp?room_idx=<%=request.getParameter("room_idx")%>">← 뒤로 가기</a>
-        </div>
-        <div class="header">
-            확인 및 결제
-        </div>
-        <div class="info-section">
             <h3>예약 정보</h3>
+        </div>
+        <div class="info-section">            
             <%	String room_idx = request.getParameter("room_idx");
                 String check_in = request.getParameter("check_in");
                 String check_out = request.getParameter("check_out");
@@ -27,25 +27,28 @@
 /*                 int serviceFee = (int)(price * 0.1); // 서비스 수수료 10%
  */             int totalPrice = Integer.parseInt(request.getParameter("total_price")); // 총 합계
             %>
-            <p>날짜: <%= check_in %> ~ <%= check_out %></p>
-            <p>체크인 시간: ~</p>
+            <p>Check In: <%= check_in %></p>
+            <p>Check Out: <%= check_out %></p>
             <p>인원수: <%= guest_num %></p>
         </div>
         <div class="price-section">
             <h3>요금 세부정보</h3>
-            <p>₩<%= price %> / 박<span></span></p>
-<%--             <p>서비스 수수료 <span>₩<%= serviceFee %></span></p>
- --%>            <p><strong>총 합계</strong> <span><strong>₩<%= totalPrice %></strong></span></p>
+            <p><span>₩<%= price %> / 박</span></p>
+            <div>
+            	<p><strong>총 합계</strong></p>
+            	<p><strong>₩<%= totalPrice %></strong></p>
+            </div>
+           	
+        </div>      
+        <div class="request-section">
+            <h3>요청사항</h3>
+            <textarea id="request"></textarea>
         </div>
         <div class="terms-section">
             <label>
                 <input type="checkbox" id="terms-checkbox" name="termsAccepted">
                 <a href="javascript:void(0);" onclick="showModal()">이용약관</a>에 동의합니다.
             </label>
-        </div>
-        <div class="request-section">
-            <h3>요청사항</h3>
-            <textarea id="request"></textarea>
         </div>
         <!-- 결제하기 버튼이 새로운 JSP 페이지로 POST 요청을 보냄 -->
         <form id="payment-form" action="/homes/pay/homesPayment.jsp" method="POST" accept-charset="UTF-8" onsubmit="setRequestTohidden();">
@@ -58,7 +61,7 @@
             <button type="submit" class="payment-button" id="final-payment">결제하기</button>
         </form>
         <div class="note">
-            실제 결제는 호스트의 예약 승인이 후에 이루어집니다.
+            실제 결제는 호스트의 예약 승인 이후에 이루어집니다.
         </div>
     </main>
 
