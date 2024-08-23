@@ -2,27 +2,27 @@
 <%@ page import="java.sql.*, javax.naming.*, javax.sql.*" %>
 
 <%
-    // 인코딩 설정
     request.setCharacterEncoding("UTF-8");
 
-    // 파라미터 값 받아오기
     String reportIdParam = request.getParameter("report_id");
     String commentIdParam = request.getParameter("comment_id");
+    String roomIdxParam = request.getParameter("room_idx");
 
-    boolean success = false; // 처리 성공 여부를 나타내는 변수
+    boolean success = false;
 
-    // 파라미터가 존재하지 않을 경우 예외 처리
-    if (reportIdParam == null || commentIdParam == null) {
+    if (reportIdParam == null || commentIdParam == null || roomIdxParam == null) {
         out.println("<script>alert('잘못된 접근입니다.'); location.href='admin_reportlist.jsp';</script>");
         return;
     }
 
     int reportId = 0;
     int commentId = 0;
+    int roomIdx = 0;
 
     try {
         reportId = Integer.parseInt(reportIdParam);
         commentId = Integer.parseInt(commentIdParam);
+        roomIdx = Integer.parseInt(roomIdxParam);
     } catch (NumberFormatException e) {
         out.println("<script>alert('잘못된 ID 형식입니다.'); location.href='admin_reportlist.jsp';</script>");
         return;
@@ -37,26 +37,28 @@
         DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
         conn = ds.getConnection();
 
-        conn.setAutoCommit(false);  // 트랜잭션 시작
+        conn.setAutoCommit(false);
 
-        // 댓글 삭제
-        String deleteCommentSql = "DELETE FROM reviews WHERE IDX = ?";
-        pstmt = conn.prepareStatement(deleteCommentSql);
+        // 동일한 comment_id 또는 room_idx에 해당하는 모든 리뷰 삭제
+        String deleteCommentsSql = "DELETE FROM reviews WHERE IDX = ? OR Room_idx = ?";
+        pstmt = conn.prepareStatement(deleteCommentsSql);
         pstmt.setInt(1, commentId);
-        int deletedRows = pstmt.executeUpdate();  // 삭제된 행 수 확인
+        pstmt.setInt(2, roomIdx);
+        int deletedRows = pstmt.executeUpdate();
         pstmt.close();
 
         if (deletedRows > 0) {
-            // 신고 내역 삭제
-            String deleteReportSql = "DELETE FROM reports WHERE id = ?";
-            pstmt = conn.prepareStatement(deleteReportSql);
-            pstmt.setInt(1, reportId);
+            // 동일한 comment_id 또는 room_idx에 해당하는 모든 신고 내역 삭제
+            String deleteReportsSql = "DELETE FROM reports WHERE comment_id = ? OR room_idx = ?";
+            pstmt = conn.prepareStatement(deleteReportsSql);
+            pstmt.setInt(1, commentId);
+            pstmt.setInt(2, roomIdx);
             pstmt.executeUpdate();
 
-            conn.commit();  // 트랜잭션 커밋
+            conn.commit();
             success = true;
         } else {
-            conn.rollback();  // 삭제가 안 되었을 경우 롤백
+            conn.rollback();
         }
     } catch (Exception e) {
         if (conn != null) try { conn.rollback(); } catch (SQLException se) { se.printStackTrace(); }
@@ -71,6 +73,6 @@
     if (success) {
         out.println("<script>alert('신고가 성공적으로 처리되었습니다.'); location.href='admin_reportlist.jsp';</script>");
     } else {
-        out.println("<script>alert('처리 중 오류가 발생했습니다. 그러나 신고가 처리된 것처럼 처리됩니다.'); location.href='admin_reportlist.jsp';</script>");
+        out.println("<script>alert('처리 중 오류가 발생했습니다. 신고 처리에 실패했습니다.'); location.href='admin_reportlist.jsp';</script>");
     }
 %>
