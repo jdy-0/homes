@@ -29,15 +29,17 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 GuestDTO dto = gdao.getUserProfile(userid);
 %>
 <article id="myProfile" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님 계정 정보</h3>
-	</fieldset>
 	<form name="updateProfile" onsubmit="return checkForm()" action="updateProfile_ok.jsp" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="idx" value="<%=dto.getIdx() %>">
+	<div>
 		<div id="img_div">
 			<a href="javascript:changeImg();"><img src="/homes/guest/profileimg/<%=dto.getImg() %>" alt="profile_img" id="profileImg"></a>
 			<input type="file" name="profileImgFile" accept="image/*" id="profileImgFile" style="display:none;" onchange="previewImage(event);">
 		</div>
+		<div style="text-align:center;">
+			<input type="submit" value="저장" class="button">
+		</div>
+	</div>
 	<table>
 	<tr>
 		<th>이름</th>
@@ -74,11 +76,6 @@ GuestDTO dto = gdao.getUserProfile(userid);
 	<tr>
 		<th>가입날짜</th>
 		<td><%=dto.getJoindate() %></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<input type="submit" value="변경사항 저장" class="button">
-		</td>
 	</tr>
 	</table>
 	</form>

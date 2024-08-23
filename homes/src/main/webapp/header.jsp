@@ -7,7 +7,7 @@ function openLoginPopup(){
 	/* var width=screen.width ;
 	var height = screen.height;	
 	var option='width=600, height=300, resizable=no, top=200, left=470'; */
-	var option = 'fullscreen=yes, toolbar=0, location=0, menubar=0';
+	var option = 'width=600, height=300, resizable:no, top=200, left=470, toolbar:0, location:0, menubar:0, overflow-y:none, scrollbars=yes';
 	window.open('/homes/guest/login_popup.jsp','login',option);
 }
 </script>

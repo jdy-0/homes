@@ -30,34 +30,33 @@ if(cks!=null){
 	}
 }
 %>
-<body>
+<body id="login_body">
 <section>
 <form name="login" action="login_pop_ok.jsp" method="post">
 <fieldset>
-	<legend>로그인</legend>
 	<table>
 		<tr>
 			<th>아이디</th>
-			<td><input type="text" name="id" value="<%=saveID%>"></td>
-			<td rowspan="2" align="center"><input type="submit" value="Login" class="button"></td>
+			<td><input type="text" name="id" value="<%=saveID%>" class="login_text"></td>
+			<td rowspan="2" align="center"><input type="submit" value="Login" class="login_button"></td>
 		</tr>
 		<tr>
 			<th>비밀번호</th>
-			<td><input type="password" name="pwd"></td>
+			<td><input type="password" name="pwd" class="login_text"></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="center">
-			<input type="checkbox" name="saveID" value="on" <%=saveID.equals("")?"":"checked" %>> ID 기억하기
-			<input type="button" value="닫기" onclick="window.close();">
+			<td colspan="3" align="center">
+			<input type="checkbox" name="saveID" value="on" <%=saveID.equals("")?"":"checked" %> style="width:50px; height:30px;"> ID 기억하기
+			<input type="button" value="닫기" onclick="window.close();" class="login_close_bt">
 			</td>
 		</tr>
 	</table>
 </fieldset>
-</form>
 <div>
 	<label>아직 회원이 아니신가요?</label>
 	<a href="/homes/guest/homesJoin.jsp">[회원가입]</a>
 </div>
+</form>
 </section>
 </body>
 </html>

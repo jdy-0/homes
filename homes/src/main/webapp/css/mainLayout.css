@@ -26,7 +26,50 @@
 body{
 	background-color:cornsilk;
 	width:1400px;
-	margin:30px auto;;
+	margin:30px auto;
+	overflow-x:hidden;
+}
+#login_body{
+	width:600px;
+	height:300px;
+	font-family: 'SBAggroB';
+}
+form[name="login"] fieldset{
+	border:0;
+}
+form[name="login"] table{
+	margin:30px auto;
+	font-family: 'SBAggroB';
+	font-size:25px;
+}
+form[name="login"] div{
+	text-align:center;
+	font-size: 25px;
+}
+.login_button{
+	background-color: #cd280e;
+    padding: 35px 15px;
+    font-size: 20px;
+    color: lemonchiffon;
+    border: 0;
+    font-family: 'SBAggroB';
+    margin:10px;
+}
+.login_close_bt{
+	background-color: #cd280e;
+    padding: 15px;
+    font-size: 20px;
+    color: lemonchiffon;
+    border: 0;
+    font-family: 'SBAggroB';
+    margin:10px;	
+}
+.login_text{
+	padding:10px;
+	font-family: 'SBAggroB';
+	font-size:25px;
+	width:250px;
+	border:3px solid black;
 }
 #header_top{
 	width:1400px;
