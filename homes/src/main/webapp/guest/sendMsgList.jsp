@@ -15,9 +15,6 @@
 <section>
 <%@include file="/guest/msgNav.jsp" %>
 <article class="msgContentArticle">
-<fieldset class="label_fs">
-		<h3>보낸 메세지</h3>
-</fieldset>
 	<%
 	int crpage = 1;
 	int msgSize = 10;
@@ -55,7 +52,7 @@
 			String readState = (sendMsgList.get(i).getRead_state() == 0) ? "안읽음" : "읽음" ;
 			%>
 			<tr>
-				<td align="center"><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=sendMsgList.get(i).getIdx() %>"></td>
+				<td><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=sendMsgList.get(i).getIdx() %>"></td>
 				<td><%=sendMsgList.get(i).getSender_id() %></td>
 				<td><a href="msgContent.jsp?msgidx=<%=sendMsgList.get(i).getIdx()%>&crarticle=sendMsgList&crpage=<%=crpage%>"><%=sendMsgList.get(i).getTitle() %></a></td>
 				<%
@@ -63,7 +60,7 @@
 			    String formattedDate = sdf.format(sendMsgList.get(i).getSend_time());
 				%>
 				<td><%=formattedDate.substring(0, 16) %></td>
-				<td align="center"><%=readState %></td>
+				<td><%=readState %></td>
 			</tr>
 			<%
 		}
@@ -107,8 +104,10 @@
 <%@include file="/footer.jsp" %>
 <script>
 function selectedMenu(){
-	document.getElementById("sendMstList_a").style.backgroundColor='white';
-	document.getElementById("sendMstList_a").style.borderRadius='300px';
+	document.getElementById("sendMstList_a").style.backgroundColor='cornsilk';
+	document.getElementById("sendMstList_a").style.color='#cd280e';
+	document.getElementById("sendMstList_a").style.borderRadius='200px';
+	document.getElementById("sendMstList_a").style.opacity='1';
 }
 window.onload=selectedMenu;
 

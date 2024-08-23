@@ -26,9 +26,9 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <section>
 <%@include file="/guest/msgNav.jsp" %>
 <article id="msgList" class="msgContentArticle">
-	<fieldset class="label_fs">
+<!-- 	<fieldset class="label_fs">
 		<h3>받은 메세지</h3>
-	</fieldset>	
+	</fieldset>	 -->
 	<%
 	int crpage = 1;
 	int msgSize = 10;
@@ -67,15 +67,15 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 			String readState = (msgList.get(i).getRead_state() == 0) ? "안읽음" : "읽음" ;
 			%>
 			<tr>
-				<td align="center"><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=msgList.get(i).getIdx() %>"></td>
+				<td><input type="checkbox" class="checkbox" name="msgCheck" id="ck_<%=i+1%>" data-idx="<%=msgList.get(i).getIdx() %>"></td>
 				<td><%=msgList.get(i).getSender_id() %></td>
 				<td><a href="msgContent.jsp?msgidx=<%=msgList.get(i).getIdx()%>&crarticle=msgList&crpage=<%=crpage%>"><%=msgList.get(i).getTitle() %></a></td>
 				<%
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
 			    String formattedDate = sdf.format(msgList.get(i).getSend_time());
 				%>
-				<td style="font-size:15px;"><%=formattedDate.substring(0, 16) %></td>
-				<td align="center"><%=readState %></td>
+				<td><%=formattedDate.substring(0, 16) %></td>
+				<td><%=readState %></td>
 			</tr>
 			<%
 		}
@@ -119,8 +119,10 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <%@include file="/footer.jsp" %>
 <script>
 function selectedMenu(){
-	document.getElementById("msgList_a").style.backgroundColor='white';
-	document.getElementById("msgList_a").style.borderRadius='300px';
+	document.getElementById("msgList_a").style.backgroundColor='cornsilk';
+	document.getElementById("msgList_a").style.color='#cd280e';
+	document.getElementById("msgList_a").style.borderRadius='200px'; 
+	document.getElementById("msgList_a").style.opacity='1';
 }
 window.onload=selectedMenu;
 
