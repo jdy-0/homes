@@ -81,7 +81,7 @@ if(roomArr==null && roomArr.size()<=0){
 							</tr>
 							<tr>
 								<th>요청 사항</th>
-								<td><%= resdto.getRequest() %></td>
+								<td><%= resdto.getRequest() != null ? resdto.getRequest() : "" %></td>
 							</tr>
 						</table>
 			            

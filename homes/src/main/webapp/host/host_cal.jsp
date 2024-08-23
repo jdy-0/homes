@@ -44,24 +44,37 @@
 	z-index: 10;
 	/* border: 1px solid black; */
 	border: 0px;
-	background-color: #e2dccc;
+	background-color: floralwhite;
 	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .prev-month {
 	font-size: 30px;
 	width: 40px;
-	border: 3px solid black;
-	background-color: #dec022;
+	 border:0;
+	background-color: floralwhite;
 	font-weight: bold;
+	border-radius:20px;
+	
 }
-
+.prev-month:hover{
+	background-color:palegoldenrod;
+	color:dimgray;
+	transition:0.3s;
+}
 .next-month {
 	font-size: 30px;
 	width: 40px;
-	border: 3px solid black;
-	background-color: #dec022;
+	 border:0;
+	background-color: floralwhite;
 	font-weight: bold;
+	border-radius:20px;
+}
+.next-month:hover{
+	/* background-color:beige; */
+	background-color:palegoldenrod;
+	color:dimgray;
+	transition:0.3s;
 }
 
 .month {
@@ -69,14 +82,16 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px;
-	background-color: #e2dccc;
+    background-color: floralwhite;
 	width: -webkit-fill-available;
-	border: 3px solid black;
+    border: 1px solid gray;
 }
 
 .weekdays, .days {
 	display: flex;
 	flex-wrap: wrap;
+	background-color: floralwhite;
+	border-top: 1px solid gray;
 }
 
 .weekdays span, .days span {
@@ -90,16 +105,20 @@
 }
 
 .days span:hover {
-	background-color: #f2f2f2;
+	background-color: palegoldenrod;
+    border-radius: 30px;
 }
 
 .days .selected {
-	background-color: #007bff;
-	color: white;
+    background-color: palegoldenrod;
+    color: black;
+    border-radius:30px;
 }
 
 .line {
-	background-color: blue;
+	background-color: cornsilk;
+	color:dimgray;
+	border-radius:30px;
 }
 
 .side_cal {
@@ -107,31 +126,37 @@
 }
 
 .one_month_cal {
-	display: inline;
-	float: left;
-	border: 4px solid black;
-	width: 300px;
+    display: inline;
+    float: left;
+    border: 1px solid gray;
+    width: 300px;
+    background-color: floralwhite;
+    margin: 0px 9px 0px 0px;
 }
 
 .month-year {
 	text-align: center;
+	font-size:25px;
+	background-color: floralwhite;
 }
 
 .disabled {
-	text-decoration: line-through;
-	background-color: lightgray;
+    text-decoration: line-through;
+    /* background-color: lightgray; */
+    opacity: 0.5;
+    color: gray;
 }
 
 .sunday {
 	color: red;
 }
 
-.month-year {
+/* .month-year {
 	font-size: 25px;
-	/* background-color: lightgray; */
+	 background-color: lightgray; 
 	background-color: #dec022;
 	border-bottom: 3px solid black;
-}
+} */
 
 #select_guest_div {
 	margin-left: 115px;
@@ -173,11 +198,11 @@
 }
 
 .holi {
-	background-color: red;
+	background-color: #cd280e;
 }
 
 .hol_selected {
-	background-color: yellow;
+	background-color: lightpink;
 }
 
 .choosen{
@@ -185,7 +210,8 @@
 }
 
 .holi_line {
-	background-color: orange;
+	background-color: #cd280e;
+	opacity: 0.8;
 }
 </style>
 <%
@@ -223,8 +249,7 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 		%>
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year">초기화</span> <span class="submit">휴무 등록
-				및 수정</span>
+			<span class="month-year">초기화</span> <span class="submit">휴무 등록</span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
