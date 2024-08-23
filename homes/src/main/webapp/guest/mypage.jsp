@@ -24,9 +24,6 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <section>
 <%@include file="myPageNav.jsp" %>
 <article id="myPageMain" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님의 페이지</h3>
-	</fieldset>
 	<div id="myPage_main_div">
 		<fieldset id="myPageMain_fs">
 		<%	
