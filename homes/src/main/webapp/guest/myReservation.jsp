@@ -51,27 +51,7 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 #bt_waiting:hover{
 	opacity:0.5;
 }
-fieldset{
-    background: floralwhite;
-    border: 3px solid #cd280e;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 50%;
-}
-#myReserve a{
-	color: black;
-	text-decoration:none;
-}
-#myResrve table{
-	width: 90%;
-}
-#myReserve table td{
-	width:50%;
-	padding: 20px 10px;
-}
-#myReserve table img{
-	width: 100%;
-}
+
 </style>
 </head>
 <body>
@@ -89,16 +69,16 @@ fieldset{
 	ArrayList<ReservationDTO> plannedRes = gdao.getReserveHistory(useridx, "예약완료");
 	if(plannedRes==null || plannedRes.size()==0){
 		%>
-		<h2>예약 내역이 없습니다.</h2>
+		<h2 class="alert_h">예약 내역이 없습니다.</h2>
 		<%
 	}else{
 		for(int i=0;i<plannedRes.size();i++){
 			%>
 			<a href="res_detail.jsp?reserve_idx=<%=plannedRes.get(i).getReserve_idx() %>"> 
-			<fieldset>
+			<fieldset class="reserveCard">
 				<table>
 					<tr>
-						<td rowspan="3"><img src="<%=plannedRes.get(i).getImage() %>" style="width:150px;"></td>
+						<td rowspan="3"><img src="<%=plannedRes.get(i).getImage() %>"></td>
 						<td><%=plannedRes.get(i).getRoom_name() %></td>
 					</tr>
 					<tr>
@@ -120,13 +100,13 @@ fieldset{
 	ArrayList<ReservationDTO> waitingList = gdao.getReserveHistory(useridx, "예약대기중");
 	if(waitingList==null || waitingList.size()==0){
 		%>
-		<h2 style="text-align:center;">대기 중인 예약 내역이 없습니다.</h2>
+		<h2 class="alert_h">대기 중인 예약 내역이 없습니다.</h2>
 		<%
 	}else{
 		for(int i=0;i<waitingList.size();i++){
 			%>
 			<a href="res_detail.jsp?reserve_idx=<%=waitingList.get(i).getReserve_idx() %>"> 
-			<fieldset>
+			<fieldset class="reserveCard">
 				<table>
 					<tr>
 						<td rowspan="3"><img src="<%=waitingList.get(i).getImage() %>"></td>

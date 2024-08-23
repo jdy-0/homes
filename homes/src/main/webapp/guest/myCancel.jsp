@@ -15,22 +15,23 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myCancel" class="myPageContent_ar">
+	<h2 class="myReserve_h">취소된 예약</h2>
 	<div id="canceled">
 	<%
 	int useridx = (Integer)session.getAttribute("useridx");
 	ArrayList<ReservationDTO> canceledRes = gdao.getReserveHistory(useridx, "예약취소");
 	if(canceledRes==null || canceledRes.size()==0){
 		%>
-		<h2>취소된 예약 내역이 없습니다.</h2>
+		<h2 class="alert_h">취소된 예약 내역이 없습니다.</h2>
 		<%
 	}else{
 		for(int i=0;i<canceledRes.size();i++){
 			%>
 			<a href="res_detail.jsp?reserve_idx=<%=canceledRes.get(i).getReserve_idx() %>"> 
-			<fieldset>
+			<fieldset class="reserveCard">
 				<table>
 					<tr>
-						<td rowspan="3"><img src="<%=canceledRes.get(i).getImage() %>" style="width:150px;"></td>
+						<td rowspan="3"><img src="<%=canceledRes.get(i).getImage() %>"></td>
 						<td><%=canceledRes.get(i).getRoom_name() %></td>
 					</tr>
 					<tr>

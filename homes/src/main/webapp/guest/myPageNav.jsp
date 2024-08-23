@@ -5,7 +5,7 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 	%>
 	<script>
 	window.alert('로그인 후 이용 가능한 서비스입니다.');
-	locatin.href='/homes';
+	location.href='/homes';
 	</script>
 	<%
 	return;

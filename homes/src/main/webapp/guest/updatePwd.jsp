@@ -23,9 +23,6 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="updatePwd_ar" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3>비밀번호 변경</h3>
-	</fieldset>
 	<form name="updatePwd" onsubmit="return checkUpdatePwdForm();" action="resetPwd_ok.jsp">
 	<table id="resetPwdTable">
 		<tr>
