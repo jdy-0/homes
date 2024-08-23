@@ -107,7 +107,7 @@ function openhstState(param) {
 			<thead>
 				<tr>
 					<th>숙소명</th>
-					<th>호스트번호(호스트명 수정예정)</th>
+					<th>호스트명</th>
 					<th>정보확인</th>
 					<th>승인</th>
 				</tr>
@@ -132,7 +132,7 @@ function openhstState(param) {
 					%>
 					<tr>
 						<td><%=arr.get(i).getRoom_name() %></td>
-						<td><%=arr.get(i).getHost_idx()  %></td>
+						<td><%=adao.memberName(arr.get(i).getHost_idx()) %></td>
 						<td><input type="button"  value="확인" class="rbutton" onclick="openhstRoom(<%=arr.get(i).getRoom_idx() %>)"></td>
 						<td><input type="button"  value="승인" class="rbutton" onclick="openhstState(<%=arr.get(i).getRoom_idx() %>)"></td>
 					</tr>

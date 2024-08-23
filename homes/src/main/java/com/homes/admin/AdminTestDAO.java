@@ -1088,4 +1088,30 @@ public class AdminTestDAO {
 			}
 		}
 	}
+	
+	/**회원 idx로 회원 id 가져오기*/
+	public String memberName(int idx) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select id from homes_member where idx="+idx;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			String id="";
+			if(rs.next()) {
+				id = rs.getString("id");
+			}
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 }
