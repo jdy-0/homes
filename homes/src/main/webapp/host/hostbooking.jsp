@@ -44,7 +44,7 @@ if(roomArr==null && roomArr.size()<=0){
 %>
 		<div class = "resByRoom" id="resByRoom<%=count++%>">
 		<!-- 예약 있을 시, 글씨색 변경 -->
-			<h2 class = "roomName" style="<%= hasReservations ? "color: red;" : "" %>"><%=rdto.getRoom_name() %><br>:<br> <%=resArr.size() %>개 </h2> 
+			<h2 class = "roomName" style="<%= hasReservations ? "color: red;" : "" %>"><%=rdto.getRoom_name() %>: <%=resArr.size() %>개 </h2> 
 		
 <%					
 		if(resArr!=null && resArr.size()>0){
