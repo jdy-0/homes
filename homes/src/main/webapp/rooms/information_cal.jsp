@@ -623,6 +623,11 @@ document.addEventListener("DOMContentLoaded", function() {
 			/* setDisabledSpan(dayElement);
              */
         } else if (!secondClickedDate) {
+        	
+        	if(dayElement===firstClickedDate){
+        		return;
+        	}
+        	
             // 두 번째 날짜 선택
             secondClickedDate = dayElement;
 
@@ -630,12 +635,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
             let startDate = new Date(makeIdToDate(firstClickedDate.id));
             let endDate = new Date(makeIdToDate(secondClickedDate.id));
-
+			let checkDateSwap = false;
             // 날짜 교환
             if (startDate > endDate) {
                 [startDate, endDate] = [endDate, startDate];
                 [firstClickedDate, secondClickedDate] = [secondClickedDate, firstClickedDate];
                 document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
+                checkDateSwap = true;
             }
 
             document.querySelector("input[name='check_out']").value = makeIdToDate(secondClickedDate.id);
@@ -657,14 +663,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (rangeStarted && checkDate >= startDate && checkDate <= endDate) {
                         if (day.classList.contains('disabled')) {
                         	
-                        		resetCal_Selected();
-                                firstClickedDate = secondClickedDate;
-                                firstClickedDate.classList.replace('none', 'selected');
+                        		if(checkDateSwap){
+                        			resetCal_Selected();
+                                    firstClickedDate.classList.replace('none', 'selected');
+                                    secondClickedDate = null;
+                                    document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
+                                    document.querySelector("input[name='check_out']").value = "";
+                                    setTotalPrice();
+                        		} else {
+                            		resetCal_Selected();
+                                    firstClickedDate = secondClickedDate;
+                                    firstClickedDate.classList.replace('none', 'selected');
 
-                                secondClickedDate = null;
-                                document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
-                                document.querySelector("input[name='check_out']").value = "";
-                                setTotalPrice();
+                                    secondClickedDate = null;
+                                    document.querySelector("input[name='check_in']").value = makeIdToDate(firstClickedDate.id);
+                                    document.querySelector("input[name='check_out']").value = "";
+                                    setTotalPrice();
+                        		}
+
 
 
                             break;
@@ -686,6 +702,8 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.classList.replace('none', 'selected');
             document.querySelector("input[name='check_in']").value = makeIdToDate(dayElement.id);
             document.querySelector("input[name='check_out']").value = "";
+            setTotalPrice();
+
         }
     }
 	
