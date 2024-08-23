@@ -154,11 +154,13 @@ public class GuestDAO {
 			int idx = rs.getInt("idx");
 			String name = rs.getString("name");
 			String nickname = rs.getString("nickname");
+			int state = rs.getInt("state");
 			ArrayList<Object> user_info = new ArrayList<Object>();
 			user_info.add(0, idx);
 			user_info.add(1, id);
 			user_info.add(2, name);
 			user_info.add(3, nickname);
+			user_info.add(4,state);
 
 			return user_info;
 		} catch (Exception e) {

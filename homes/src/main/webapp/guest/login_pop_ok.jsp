@@ -30,11 +30,13 @@ if(result == gdao.No_Id || result == gdao.No_Pwd){
 	String userid=(String)user_info.get(1);
 	String username=(String)user_info.get(2);
 	String usernickname=(String)user_info.get(3);
+	int userstate=(Integer)user_info.get(4);
 	
 	session.setAttribute("useridx", useridx);
 	session.setAttribute("userid", userid);
 	session.setAttribute("username", username);
 	session.setAttribute("usernickname", usernickname);
+	session.setAttribute("userstate", userstate);
 	
 	if(saveID==null){
 		Cookie ck=new Cookie("saveID", id);
