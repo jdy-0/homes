@@ -44,10 +44,7 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
 					<li>끝 날짜:<%=arr.get(i).getEndday()%></li>
 					<li>결제 상태:<%=arr.get(i).getReason()%></li>
 				</ul>
-						<!-- pjw part -->
-	  <%--  <div class="date-picker">
-			<%@ include file="host_cal.jsp"%>
-		</div> --%>
+
 					
 		</article>
 	</div>

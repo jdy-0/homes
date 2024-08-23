@@ -296,6 +296,33 @@ public class ReservationDAO {
 		}
 		
 	}
+	
+	public ArrayList<ReservationDTO> getResScheduleByRoom(){
+		
+		try {
+			conn = com.homes.db.HomesDB.getConn();
+			String sql = " SELECT * FROM ROOM r "
+					+ " JOIN UNAVAILABLE_SCHEDULE us ON r.room_idx = us.room_idx "
+					+ " join reservation re on re.room_idx = r.room_idx "
+					+ " join reservation_detail rd on re.reserve_idx = rd.reserve_idx  "
+					+ " where host_idx= ? and re.state in('예약완료','이용완료') and reason = '예약됨' ";
+			
+			
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+	}
 
 	
 }
