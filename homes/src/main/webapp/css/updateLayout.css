@@ -46,44 +46,54 @@
     }
 /* styles.css */
 .room-images {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4개의 열 */
-    grid-template-rows: repeat(2, 1fr); /* 2개의 행 */
-    gap: 10px; /* 이미지 사이의 간격 */
+	display:flex;
+    /* display: grid;
+    grid-template-columns: repeat(4, 1fr); 4개의 열
+    grid-template-rows: repeat(2, 1fr); 2개의 행
+    gap: 10px; */ /* 이미지 사이의 간격 */
     /*height: 100vh; /* 화면 높이에 맞게 조절 */
     width: 100%; /* 전체 폭을 사용 */
 }
 
 .room-main {
-    grid-column: span 2; /* 큰 이미지는 2개의 열을 차지 */
-    grid-row: span 2;    /* 큰 이미지는 2개의 행을 차지 */
-    display: flex;
-    flex-direction: column; 
+	width:50%;
+    /* grid-column: span 2; */ /* 큰 이미지는 2개의 열을 차지 */
+    /* grid-row: span 2;   */  /* 큰 이미지는 2개의 행을 차지 */
+    /* display: flex;
+    flex-direction: column;  */
    /* justify-content: center;
     align-items: center;*/
-    margin: 10 auto;
+   /*  margin: 10 auto; */
 }
 
 .room-main img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* 비율을 유지하며 잘라냄 */
-    border-radius: 10px; /* 테두리를 둥글게 만듦 */
+	width:95%;
+    /* max-width: 100%;
+    max-height: 100%; */
+   /*  object-fit: contain; */ /* 비율을 유지하며 잘라냄 */
+    /* border-radius: 10px; */ /* 테두리를 둥글게 만듦 */
 }
-
+.subImgBox{
+	width:50%;
+	display: flex;
+    flex-wrap: wrap;
+}
 .small-image {
-    grid-column: span 1; /* 작은 이미지는 각각 1개의 열을 차지 */
-    grid-row: span 1;    /* 작은 이미지는 각각 1개의 행을 차지 */
-    display: flex;
+	width:50%;
+    /* grid-column: span 1;  *//* 작은 이미지는 각각 1개의 열을 차지 */
+   /*  grid-row: span 1; */    /* 작은 이미지는 각각 1개의 행을 차지 */
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 .small-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* 비율을 유지하며 잘라냄 */
-     border-radius: 10px; /* 테두리를 둥글게 만듦 */
+	width:95%;
+	height:330px;
+    /* max-width: 100%;
+    max-height: 100%; */
+    /* object-fit: cover; */ /* 비율을 유지하며 잘라냄 */
+     /* border-radius: 10px; */ /* 테두리를 둥글게 만듦 */
 }
 
 

@@ -59,6 +59,7 @@
 <title>숙소 정보</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/rating.css"> <!-- 추가된 rating.css 링크 -->
+
 <script>
 
 	
@@ -118,12 +119,12 @@ function FileSelect(event) {
 
 <body>
 <%@ include file="/header.jsp"%> <!-- 헤더에서 유저 정보를 가져올 수 있습니다. -->
-<section style="display: flex;">
+<section>
 <%@ include file="hostheader.jsp" %>
-    <main class="container">
+    <main class="container_hu">
     	
         <div class="top">
-            <h1>숙소 정보 수정</h1>
+            <!-- <h1>숙소 정보 수정</h1> -->
             <div class="room-details">
                 <% if (room != null) { %>
                 
@@ -148,15 +149,16 @@ function FileSelect(event) {
                     ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
                     int imgCount = arrImg.size();
 					if(arrImg != null && !arrImg.isEmpty()){
+						%><div class="subImgBox"><%
 						for(int i =0;i < imgCount && i < 4;i++){
 							%>
-						<div class="small-image">
-							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
-						</div>
+							<div class="small-image">
+								<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
+							</div>
 	
 							<%		
 						}
-						
+						%></div><%
 					}else{
 						%>
 						<div class="small-image">
@@ -167,7 +169,8 @@ function FileSelect(event) {
 					%>
 
 				</div>
-                <div>
+				<div>
+                <div style="display:flex">
                 	<div class="img">
                 	<h2>상세 사진 관리</h2>
                 		<form name="img_detail" action="host_room_image_ok.jsp"  enctype="multipart/form-data"  method="post"
@@ -215,7 +218,8 @@ function FileSelect(event) {
                 	</div>
                 	
                 	
-                </div>
+                	
+               
 				<form name="room_update" action="room_update_ok.jsp">
 				<div class="room-input">
 				
@@ -259,6 +263,7 @@ function FileSelect(event) {
 					
 				</div>
 				</form>
+				</div>
 
 				<h2>후기 관리</h2>
                 <%

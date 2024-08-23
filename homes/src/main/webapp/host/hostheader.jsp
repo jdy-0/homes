@@ -3,29 +3,30 @@
 <!-- <h1><a href="hostmain.jsp">호스트 메인페이지</a></h1> -->
 <style>
 #host_nav{
-	background-color: #dec022;
-    padding: 8px;
+	background-color: #cd280e;
     font-family: 'SBAggroB';
     font-size: 25px;
-    border-right: 5px solid black;
-    width:300px;
+    width:100%;
+    margin:30px auto;
+    border-radius:10px;
 }
 #host_nav ul{
 	list-style:none;
 	display: flex;
-    flex-direction: column;
-    padding: 30px;
+	justify-content:space-around;
+	padding:30px;
 }
-#host_nav ul li{
-	padding-bottom:30px;
-}
+
 #host_nav ul a{
-	color:black;
+	color:cornsilk;
 	text-decoration:none;
-	
+	padding:10px;
 }
 #host_nav ul a:hover{
-	text-decoration:underline;
+	background-color:white;
+	border-radius:5px;
+	opacity:0.5;
+	color:#cd280e;
 }
 </style>
 <nav id="host_nav">
