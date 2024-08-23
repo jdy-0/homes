@@ -24,6 +24,7 @@ public class ReportDAO {
             e.printStackTrace();
         }
     }
+
     public void insertReport(ReportDTO report) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -142,6 +143,7 @@ public class ReportDAO {
             if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     }
+
     // 특정 숙소의 모든 신고를 가져오는 메서드
     public List<ReportDTO> getReportsByRoomIdx(int roomIdx) {
         List<ReportDTO> reports = new ArrayList<>();
@@ -167,6 +169,3 @@ public class ReportDAO {
         return reports;
     }
 }
-
-
-
