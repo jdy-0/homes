@@ -439,16 +439,24 @@ try {
 <script>
 function showReviewModal() {
     <% 
-    // 세션에서 로그인 여부를 확인
+    // 세션에서 로그인 여부와 userstate 값을 확인
     String userid = (String) session.getAttribute("userid");
+    Integer userstate = (Integer) session.getAttribute("userstate"); // userstate 값을 세션에서 가져옴
+    
     if (userid == null || userid.isEmpty()) {
     %>
+
         alert("로그인이 필요한 서비스입니다.");
-        window.open("http://localhost:9090/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=300,scrollbars=no,toolbar=no,menubar=no,resizable=no");
-    <% } else { %>
+        window.open("/homes/guest/login_popup.jsp", "loginPopup", "width=400,height=300,scrollbars=no,toolbar=no,menubar=no,resizable=no");
+    <% } else if (userstate != null && userstate == 0) { %>
+        alert("후기를 작성할 수 있는 권한이 없습니다.");
+    <% } else if (userstate != null && userstate == 1) { %>
         document.getElementById('review-modal').style.display = 'block';
+    <% } else { %>
+        alert("유효하지 않은 상태입니다.");
     <% } %>
 }
+
 
 function checkLoginToRes() {
     <% 
