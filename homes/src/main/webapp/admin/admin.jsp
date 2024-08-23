@@ -34,12 +34,7 @@
 	        <p>총 회원 수: <%=guestcnt %>명</p>
 	        <p>활성 회원 수: <%=guestcntok %>명</p>
 	    </div>
-	    
-	    <div class="card">
-	        <h2>호스트 통계</h2>
-	        <p>총 호스트 수: ?명</p>
-	        <p>활성 호스트 수: ?명</p>
-	    </div>
+
 	    <%
 	    int regioncnt=adao.regionCount();
 	    int regiondtcnt=adao.regionDetailCount();
@@ -83,12 +78,7 @@
 	        <p>이번 달 예약: ?건</p>
 	        -->
 	    </div>
-	    
-	    <div class="card">
-	        <h2>QNA 통계</h2>
-	        <p>총 QNA 수: ?개</p>
-	        <p>활성 QNA 수: ?개</p>
-	    </div>
+
 	</div>
 </fieldset>
 </article>
