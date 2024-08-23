@@ -254,16 +254,19 @@ section{
     text-align: center;
 }
 #search_room_table td{
-	width: 50%;
+    text-align: center;
+    width:30%;
+    height: 360px;
 }
 #search_room_table td img{
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 80%;    
+    margin: 15px;
 }
 #room_card{
 	position: relative; 
-	width: 400px; 
-	height: 400px; 
+	width: 500px; 
+	height: 500px; 
 	display: inline-block;
 }
 #room_heart{

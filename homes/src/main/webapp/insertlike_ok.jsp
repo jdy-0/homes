@@ -13,6 +13,7 @@
 %>
 <script>
 <%--window.alert('<%=msg %>');--%>
-window.location.href='index.jsp'
+	window.location.href='index.jsp';
+
 
 </script>

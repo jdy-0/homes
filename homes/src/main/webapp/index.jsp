@@ -421,7 +421,8 @@ if(cp%listSize==0)userGroup--;
 		   	<%} %>
 	      		<td>
 	      			<div id="room_card">
-	      				<a href="/homes/rooms/information.jsp?room_idx=<%=room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height=200></a>
+	      				<a href="/homes/rooms/information.jsp?room_idx=<%=room[i].getRoom_idx()%>">
+	      				<img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height=200></a>
 	      				<%
 	      				int like_idx = gdao.like(user_idx, room[i].getRoom_idx());
 	      				if(like_idx!=0){ 	      				

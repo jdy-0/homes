@@ -144,6 +144,13 @@ function validateForm() {
 <table id="search_room_table">
 <tbody>
 	<%
+	int user_idx=0;
+	if(!(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")){ 
+		user_idx=(Integer)session.getAttribute("useridx");
+	}
+	
+	String redheart = "&hearts;";
+	String blankheart = "&#9825;";
 	ArrayList<RoomDTO> room=new ArrayList<>();
 	//room=rmdao.getRoom(p_region_idx,cp,listSize);
 	if(!(num.equals("0"))){
@@ -165,7 +172,29 @@ function validateForm() {
 			<%if(i%2==0) {%>
 		   		<tr>
 		   	<%} %>
-	      		<td><a href="rooms/information.jsp?room_idx=<%= room.get(i).getRoom_idx() %>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num%>"><img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room.get(i).getRoom_name() %></p></td>
+	      		<td>
+	      			<div id="room_card">
+		      			<a href="rooms/information.jsp?room_idx=<%= room.get(i).getRoom_idx() %>&check_in=<%=check_in %>&check_out=<%=check_out %>&guest_num=<%=guest_num%>">
+		      			<img src="<%=room.get(i).getImage() %>" onerror="this.src='/homes/img/no_image.jpg'"></a>
+		      			<%
+	      				int like_idx = gdao.like(user_idx, room.get(i).getRoom_idx());
+	      				if(like_idx!=0){ 	      				
+	      				%>
+		      				<div id="room_heart">
+	           					 <a id="room_heartlink" href="#"><%= redheart %></a>
+	       					</div>
+       					<%
+       					} else if (user_idx!=0){
+       					%>
+		      				<div id="room_heart">
+	           					 <a id="room_heartlink" href="#"><%= blankheart %></a>
+	       					</div>
+       					<%	
+       					}
+       					%>
+		      		</div>
+		      			<p><%=room.get(i).getRoom_name() %></p>
+	      		</td>
 	   		<%if(i%2==1 || i==room.size()-1) {%>
 		   		</tr>
 		   	<%} %>
