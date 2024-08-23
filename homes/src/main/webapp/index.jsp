@@ -406,13 +406,41 @@ if(cp%listSize==0)userGroup--;
 </fieldset>
 <table id="recommend_room_table">
 	<%
+	int user_idx=0;
+	if(!(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")){ 
+		user_idx=(Integer)session.getAttribute("useridx");
+	}
+	
+	String redheart = "&hearts;";
+	String blankheart = "&#9825;";
 	if(rmdao.roomCount()>=6){
 		RoomDTO[] room=rmdao.roomRandom();
 		for(int i=0;i<6;i++){ %>
 			<%if(i%3==0) {%>
 		   		<tr>
 		   	<%} %>
-	      		<td><a href="/homes/rooms/information.jsp?room_idx=<%= room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height="200"></a><p><%=room[i].getRoom_name() %></p></td>
+	      		<td>
+	      			<div id="room_card">
+	      				<a href="/homes/rooms/information.jsp?roomidx=<%=room[i].getRoom_idx()%>"><img src="<%=room[i].getImage() %>" onerror="this.src='/homes/img/no_image.jpg'" width=200, height=200></a>
+	      				<%
+	      				int like_idx = gdao.like(user_idx, room[i].getRoom_idx());
+	      				if(like_idx!=0){ 	      				
+	      				%>
+		      				<div id="room_heart">
+	           					 <a id="room_heartlink" href="/homes/deletelike_ok.jsp?likeidx=<%=like_idx %>"><%= redheart %></a>
+	       					</div>
+       					<%
+       					} else if (user_idx!=0){
+       					%>
+		      				<div id="room_heart">
+	           					 <a id="room_heartlink" href="/homes/insertlike_ok.jsp?roomidx=<%=room[i].getRoom_idx() %>"><%= blankheart %></a>
+	       					</div>
+       					<%	
+       					}
+       					%>
+	      			</div>
+	      			<p><%=room[i].getRoom_name() %></p>
+	      		</td>
 	   		<%if(i%3==2) {%>
 		   		</tr>
 		   	<%} %>
@@ -425,5 +453,4 @@ if(cp%listSize==0)userGroup--;
 </section>
 <%@ include file="footer.jsp"%>
 </body>
-</script>
 </html>

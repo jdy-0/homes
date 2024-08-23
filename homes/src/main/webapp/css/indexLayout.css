@@ -258,5 +258,21 @@ section{
 }
 #search_room_table td img{
     width: 80%;
-    height: 500px;
+    height: 80%;
+}
+#room_card{
+	position: relative; 
+	width: 400px; 
+	height: 400px; 
+	display: inline-block;
+}
+#room_heart{
+	position: absolute; 
+	top: 30px; 
+	right: 40px; 
+	font-size: 24px;
+}
+#room_heartlink{
+	text-decoration: none; 
+	color: red;
 }
