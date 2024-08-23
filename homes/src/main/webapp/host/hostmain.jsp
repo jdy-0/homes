@@ -46,8 +46,7 @@
         .column:nth-child(3) {
             background-color: lightsteelblue;
             
-        }
-        #roomselect {
+        }123123123
             text-align: left;
         }
         #roomselect h2{
