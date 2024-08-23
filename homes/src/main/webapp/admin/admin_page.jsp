@@ -16,7 +16,7 @@
     }
     header, footer {
         text-align: center;
-        background-color: #dec022;
+        background-color: #cd280e;
         padding: 10px;
         border: 2px solid black;
         border-radius: 5px;
