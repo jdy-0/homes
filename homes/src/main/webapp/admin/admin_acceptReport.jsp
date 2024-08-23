@@ -48,11 +48,14 @@
         pstmt.close();
 
         if (deletedRows > 0) {
+
             // 동일한 comment_id 또는 room_idx에 해당하는 모든 신고 내역 삭제
             String deleteReportsSql = "DELETE FROM reports WHERE comment_id = ? OR room_idx = ?";
             pstmt = conn.prepareStatement(deleteReportsSql);
             pstmt.setInt(1, commentId);
             pstmt.setInt(2, roomIdx);
+
+
             pstmt.executeUpdate();
 
             conn.commit();
