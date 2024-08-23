@@ -42,7 +42,7 @@ ArrayList<RoomDTO> arr= homedao.RoomSchedule(roomidx);
  				<ul>
 					<li>시작날짜:<%=arr.get(i).getStartday()%></li>
 					<li>끝 날짜:<%=arr.get(i).getEndday()%></li>
-					<li>결제 상태:<%=arr.get(i).getReason()%></li>
+					<li>종류:<%=arr.get(i).getReason()%></li>
 				</ul>
 
 					
