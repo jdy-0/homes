@@ -32,8 +32,6 @@ Enumeration<String> paramNames = mr.getFileNames();
 while (paramNames.hasMoreElements()) {
     String paramName = paramNames.nextElement();
    
-	
-   
      File file = mr.getFile(paramName);
 	
     // 파일을 처리합니다.
@@ -45,7 +43,7 @@ while (paramNames.hasMoreElements()) {
     } else {
     	%>
 		<script>
-			window.alert('가져올 파일 null');
+			//window.alert('가져올 파일 null');
 		</script>
 		<%
     }

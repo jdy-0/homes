@@ -131,6 +131,7 @@ try {
         }
     }
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,6 +139,22 @@ try {
 <title>숙소 정보</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/infoLayout.css">
+
+
+<script>
+function openModal() {
+    document.getElementById("imgModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("imgModal").style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == document.getElementById('imgModal')) {
+        closeModal();
+    }
+}
+</script>
 </head>
 <body>
 <%@ include file="/header.jsp"%>
@@ -168,47 +185,7 @@ try {
 <main class="container">
     <% if (room != null) { %>
         <div class="top">
-<%-- <<<<<<< HEAD
-            <h1>숙소 정보</h1>
-            <div class="room-details">
-            	<div class="room-images">
-                	<div class="room-main">
-                    			<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
-                    </div>
-          
-                    <%
-                    ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
-                    
-                    int imgCount = arrImg.size();
-					if(arrImg != null && !arrImg.isEmpty()){
-						for(int i =0;i < imgCount && i < 4;i++){
-							%>
-						<div class="small-image">
-							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 <%=i%>">
-						</div>
-	
-							<%		
-						}
-						
-					}else{
-						%>
-						<div class="small-image">
-						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
-					</div>
-					<%
-					}
-					%>
-        	</div>
-        	<%
-        	ArrayList<RoomDTO> arrRoom= rdao.HomesList2(roomIdxParam);
-        	%>
-        	<h2>숙소 정보</h2>
-        	
-                <p><%= room.getGoodthing() %></p>
-                <p><%=arrRoom.get(0).getParentRegionName()%>&nbsp;<%=arrRoom.get(0).getSelectedRegionName()%>&nbsp;<%= room.getAddr_detail() %></p>
-        </div>
-        
-======= --%>
+
             <div class="room-details">
            		<div id="roomInfo_div">
                 	<div id="room_info">
@@ -251,6 +228,28 @@ try {
 							%>						
 							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 <%=i%>">	
 							<%		
+							if(i==3){
+								%>
+								<div class="image-container">
+							    <button class="overlay-button" onclick="openModal()">&#x1F4F7;</button>
+							</div>
+							<!-- 모달 -->
+							<div id="imgModal" class="modal">
+							  <div class="modal-img">
+							    <%
+							    for(int j=0;j<arrImg.size();j++){
+							    %>
+							    	<img src="<%= arrImg.get(j) %>" alt="서브 숙소 이미지 <%=i%>">
+							    <%	
+							    }
+							    %>
+							    
+							  </div> 
+							</div>
+							<%
+							
+							}
+							
 						}						
 					}else{
 						%>

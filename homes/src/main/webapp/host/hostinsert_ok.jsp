@@ -21,7 +21,7 @@
 	roompath.replaceAll(" ", "");
 	String HomePath=request.getRealPath("/");
 	wf.setHomePath(HomePath);
-	System.out.println(roompath+"!@#!@#");
+	//System.out.println(roompath+"!@#!@#");
 	String folder = request.getParameter("Folder");
 	File f= new File(wf.getHomePath()+wf.getEverypath()+wf.getCrpath());
 	String path=f.getPath();
@@ -31,15 +31,15 @@
 		f0.mkdir();
 	%>
 	<script>
-		window.alert('<%=folder%>에 host_img파일 생성 완료');
-		window.alert('<%="내가 접속하는 경로 :"+f0.getPath()%>파일 생성 완료');
+		<%-- window.alert('<%=folder%>에 host_img파일 생성 완료');
+		window.alert('<%="내가 접속하는 경로 :"+f0.getPath()%>파일 생성 완료'); --%>
 		window.self.close();
 		</script>
 		<%
 		}else{
 			%>
 			<script>
-			window.alert("파일생성안됌");
+			/* window.alert("파일생성안됌"); */
 			</script>
 			<%
 		}
@@ -47,16 +47,16 @@
 				f.mkdir();
 			%>
 	<script>
-		window.alert('<%=folder%>파일 생성 완료');
+		<%-- window.alert('<%=folder%>파일 생성 완료');
 		window.alert('<%="내가 접속하는 경로 :"+wf.getHomePath()+wf.getEverypath()+wf.getCrpath()%>파일 생성 완료');
-		
+		 --%>
 		//window.self.close();
 	</script>
 <%
 }else{
 %>
 <script>
-window.alert("파일생성안됌");
+/* window.alert("파일생성안됌"); */
 </script>
 
 <%
@@ -111,13 +111,13 @@ window.alert("파일생성안됌");
 		%>
 		 
 		<script>
-		window.alert('파일 이름 변경 완료');
+		/* window.alert('파일 이름 변경 완료'); */
 		</script>
 		<%
 	}else{
 		%>
 		<script>
-		window.alert('파일 이름 변경 실패');
+		/* window.alert('파일 이름 변경 실패'); */
 		</script>
 		<%
 	}
@@ -125,10 +125,10 @@ window.alert("파일생성안됌");
 	
 
 <script>
-window.alert("<%=msg%>");
+	window.alert("<%=msg%>");
 </script>
 <script>
-	window.alert('<%=savepath%>파일 올리기 성공!');
+	<%-- window.alert('<%=savepath%>파일 올리기 성공!'); --%>
 	window.location.href='/homes/host/hostinsert.jsp';
 </script>
 

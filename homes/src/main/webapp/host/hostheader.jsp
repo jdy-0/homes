@@ -36,6 +36,6 @@
 		<li><a href="/homes/host/host_roomSchedule.jsp">휴무 관리</a></li>
 		<li><a href="/homes/host/hostmanage.jsp">숙소 이용 현황</a></li>
 		<li><a href="/homes/host/hostinsert.jsp">숙소 등록 요청</a></li>		
-		<li><a href="#">매출 관리</a></li>
+		<!-- <li><a href="#">매출 관리</a></li> -->
 	</ul>
 </nav>

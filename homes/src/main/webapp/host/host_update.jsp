@@ -15,6 +15,7 @@
 	String room_path=(String)request.getParameter("roomsrc");
 	
 	String path=request.getRealPath("/");
+	
 	wf.setHomePath(path);
 	
 	
@@ -184,10 +185,10 @@ function FileSelect(event) {
                 		
                 		File files[]=f.listFiles();
                 		if(files==null||files.length==0){
-                			System.out.println(f.getPath());
+                			/* System.out.println(f.getPath()); */
                 			%>
                 			<script>
-                			window.alert('<%=f.getPath()%>');
+                			<%-- window.alert('<%=f.getPath()%>'); --%>
                 			</script>
                 			
                 			<label>사진이 없습니다.</label>

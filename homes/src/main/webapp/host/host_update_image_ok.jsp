@@ -21,7 +21,7 @@
 		for(int i=0;i<arr.size();i++){		
 			if(room_idx==arr.get(i).getRoom_idx()){
 			room_name=arr.get(i).getRoom_name();
-			System.out.println(room_name+"@@@@@@@@@@@@@@");
+			
 		}
 			
 	}
@@ -37,16 +37,17 @@
 	
 	wf.setCrpath(userid);
 	String savepath=wf.getHomePath()+wf.getEverypath()+wf.getCrpath();
-	//System.out.println(savepath+"@#@#@#!!@!@!@");
+	
 	File f_id_rid= new File(savepath+"/"+room_name);
 	%>
 		<input type="hidden" value="<%=f_id_rid.getPath()%>" name="roomsrc">
 	<%
 	if(!f_id_rid.exists()){
 		f_id_rid.mkdir();
+	}
 		%>
 		
-		<script>
+		<%-- <script>
 			window.alert('<%=f_id_rid.getPath()%>에 숙소파일 생성 완료');
 			window.self.close();
 		</script>
@@ -60,13 +61,12 @@
 		
 		<%
 	}
-%>
+%> --%>
 
 
 
 
 <script>
-
 window.location.href = '/homes/host/host_update.jsp?room_idx=<%=room_idx%>'; 
 </script>
 
