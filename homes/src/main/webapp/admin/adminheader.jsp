@@ -44,8 +44,16 @@ function openLoginPopup(){
 	</div>
 	<div id="header_top_right">
 		<%
-		
-		if(session.getAttribute("aid")==null || !(session.getAttribute("aid").equals("admin"))){
+		boolean login=false;
+		Cookie cks[]=request.getCookies();
+		if(cks!=null){
+			for(int i=0;i<cks.length;i++){
+				if(cks[i].getName().equals("login")){
+					login=true;
+				}
+			}
+		}
+		if(!login/*session.getAttribute("aid")==null || !(session.getAttribute("aid").equals("admin"))*/){
 			%>
 			<script>
 			window.alert('로그인 후 이용 가능합니다.');
