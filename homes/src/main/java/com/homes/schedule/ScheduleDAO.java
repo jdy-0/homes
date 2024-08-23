@@ -14,7 +14,7 @@ public class ScheduleDAO {
 	public ArrayList<RoomDTO> getScheduleByRoomidx(int roomidx){
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql ="SELECT * FROM ROOM r JOIN UNAVAILABLE_SCHEDULE us ON r.room_idx = us.room_idx where r.room_idx = ? ";
+			String sql ="SELECT * FROM ROOM r JOIN UNAVAILABLE_SCHEDULE us ON r.room_idx = us.room_idx where r.room_idx = ? order by start_day";
 			
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, roomidx);
