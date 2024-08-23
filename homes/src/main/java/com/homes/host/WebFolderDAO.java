@@ -39,7 +39,7 @@ public class WebFolderDAO {
 		}
 
 		public WebFolderDAO() {
-			System.out.println("webFolder객체 생성됌!");
+			//System.out.println("webFolder객체 생성됌!");
 			totalSize=1024*1024*10;
 			usedSize=0;
 			freeSize = totalSize;
@@ -116,7 +116,7 @@ public class WebFolderDAO {
 		public void userFolderExists() {
 			
 			File f=new File(homePath+everypath+userid);
-			System.out.println(homePath+everypath+userid);
+			//System.out.println(homePath+everypath+userid);
 			if(!f.exists()) {
 				f.mkdir(); //폴더 생성
 			}

@@ -131,6 +131,7 @@ try {
         }
     }
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,6 +139,99 @@ try {
 <title>숙소 정보</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/infoLayout.css">
+
+<style>
+	.image-container {
+    position: relative;
+    display: inline-block;
+    font-size: 25px;
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlay-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-120%, -120%);
+    padding: 10px 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 100px;
+    font-size: 40px;
+  	display: grid; /* Grid 레이아웃 사용 */
+    place-items: center; 
+}
+
+.overlay-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-img{
+    background-color: cornsilk;
+    padding: 20px;
+    padding-right: 10px; /* 오른쪽 여백 */
+    border: 1px solid #888;
+    width: 80%;
+    /* height: 100%; */
+    max-width: 1200px;
+    /* max-height: 500px; */
+    position: absolute; /* 절대 위치 지정 */
+    top: 50%; /* 화면의 중간으로 이동 */
+    left: 50%; /* 화면의 중간으로 이동 */
+    transform: translate(-50%, -50%); /* 모달의 중앙을 화면의 중앙으로 이동 */
+    margin-top: 200px; /* 위쪽에 여백 추가 */
+   /*  margin-bottom: 200px; */
+}
+
+ .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+	
+</style>
+<script>
+function openModal() {
+    document.getElementById("imgModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("imgModal").style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == document.getElementById('imgModal')) {
+        closeModal();
+    }
+}
+</script>
 </head>
 <body>
 <%@ include file="/header.jsp"%>
@@ -168,47 +262,7 @@ try {
 <main class="container">
     <% if (room != null) { %>
         <div class="top">
-<%-- <<<<<<< HEAD
-            <h1>숙소 정보</h1>
-            <div class="room-details">
-            	<div class="room-images">
-                	<div class="room-main">
-                    			<img id="selectedImage" src="<%= room.getImage() %>" alt="메인 숙소 이미지">
-                    </div>
-          
-                    <%
-                    ArrayList<String> arrImg= rdao.RoomDetailImg(roomIdxParam);
-                    
-                    int imgCount = arrImg.size();
-					if(arrImg != null && !arrImg.isEmpty()){
-						for(int i =0;i < imgCount && i < 4;i++){
-							%>
-						<div class="small-image">
-							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 <%=i%>">
-						</div>
-	
-							<%		
-						}
-						
-					}else{
-						%>
-						<div class="small-image">
-						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
-					</div>
-					<%
-					}
-					%>
-        	</div>
-        	<%
-        	ArrayList<RoomDTO> arrRoom= rdao.HomesList2(roomIdxParam);
-        	%>
-        	<h2>숙소 정보</h2>
-        	
-                <p><%= room.getGoodthing() %></p>
-                <p><%=arrRoom.get(0).getParentRegionName()%>&nbsp;<%=arrRoom.get(0).getSelectedRegionName()%>&nbsp;<%= room.getAddr_detail() %></p>
-        </div>
-        
-======= --%>
+
             <div class="room-details">
            		<div id="roomInfo_div">
                 	<div id="room_info">
@@ -251,6 +305,28 @@ try {
 							%>						
 							<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 <%=i%>">	
 							<%		
+							if(i==3){
+								%>
+								<div class="image-container">
+							    <button class="overlay-button" onclick="openModal()">&#x1F4F7;</button>
+							</div>
+							<!-- 모달 -->
+							<div id="imgModal" class="modal">
+							  <div class="modal-img">
+							    <%
+							    for(int j=0;j<arrImg.size();j++){
+							    %>
+							    	<img src="<%= arrImg.get(j) %>" alt="서브 숙소 이미지 <%=i%>">
+							    <%	
+							    }
+							    %>
+							    
+							  </div> 
+							</div>
+							<%
+							
+							}
+							
 						}						
 					}else{
 						%>

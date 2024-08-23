@@ -79,7 +79,7 @@
                 const selectedRegionId = locationSelect.value;
                 
                 locationDetailSelect.innerHTML = '<option value="">상세 지역을 선택하세요</option>';
-
+                locationDetailSelect.required = true;
                 if (regionDetails[selectedRegionId]) {
                     regionDetails[selectedRegionId].forEach(detail => {
                         const option = document.createElement('option');
@@ -92,7 +92,11 @@
 
             document.getElementById('select_location').addEventListener('change', updateLocationDetails);
         });
-    
+        
+        //인원 최소 최대값 수정
+
+               
+       
     </script>
     
 </head>
@@ -127,7 +131,7 @@ wf.setCrpath(crpath);
 		<h3>숙소 등록</h3>
 </fieldset>	
 
-<form name="fminsertroom" style="display: flex;" action="hostinsert_ok.jsp" method="post" enctype="multipart/form-data">
+<form name="fminsertroom" style="display: flex;" action="hostinsert_ok.jsp" method="post" enctype="multipart/form-data" onsubmit="return validateMinMax();" >
 	<fieldset id="insert_mainImg_fs">
 		<div>
 			<h2>대표 이미지</h2>
@@ -165,7 +169,7 @@ wf.setCrpath(crpath);
 	   					
 					</select>
 					
-					<select id="select_location_detail" name="select_location_detail" class="select_things">
+					<select id="select_location_detail" name="select_location_detail" class="select_things" required>
 						
 						<option>상세 지역</option>
 						
@@ -177,7 +181,7 @@ wf.setCrpath(crpath);
 				<td><input type="text" name="addr_detail" class="text" required placeholder="주소 입력"></td>
 			</tr>
 			<tr>
-				<th>편의시설</th>
+				<th>장점</th>
 				<td>
 					<input type="text" name="goodthing" class="text" required placeholder="세부사항 입력">
 					<!-- 여기 편의시설 테이블 만들어지면 DB에서 가져와서 체크박스로 목록 만들어서 선택하게 하는 게 좋을 것 같음 -->
@@ -185,7 +189,7 @@ wf.setCrpath(crpath);
 			</tr>
 			<tr>
 				<th>가격</th>
-				<td><input type="text" name="price" class="text" required placeholder="가격 입력"></td>
+				<td><input type="number" name="price" class="text" required placeholder="가격 입력"></td>
 			</tr>
 			<!-- <tr>
 				<th>지도</th>
@@ -203,6 +207,27 @@ wf.setCrpath(crpath);
 </article>
 </section>
 </body>
+<script type="text/javascript">
 
+function validateMinMax() {
+    const minInput = document.getElementById('room_min');
+    const maxInput = document.getElementById('room_max');
+	
+    const minValue = parseInt(minInput.value, 10);
+    const maxValue = parseInt(maxInput.value, 10);
+
+    if (minValue > maxValue) {
+    	alert('최소인원은 최대인원보다 작아야 합니다.')
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function validateForm() {
+	 
+	    return validateMinMax();
+	}
+</script>
 </html>
 		

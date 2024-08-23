@@ -15,8 +15,7 @@ public class WebFolderDAO {
 	private String crpath;
 	
 	public WebFolderDAO() {
-		System.out.println("webFolder 객체 생성됨!");
-		System.out.println("webFolder객체 생성됨");
+		
 		totalSize=1024*1024*10;
 		usedSize=0;
 		freeSize=0;
