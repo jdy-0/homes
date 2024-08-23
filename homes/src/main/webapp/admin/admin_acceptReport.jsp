@@ -6,23 +6,20 @@
 
     String reportIdParam = request.getParameter("report_id");
     String commentIdParam = request.getParameter("comment_id");
-    String roomIdxParam = request.getParameter("room_idx");
 
     boolean success = false;
 
-    if (reportIdParam == null || commentIdParam == null || roomIdxParam == null) {
+    if (reportIdParam == null || commentIdParam == null) {
         out.println("<script>alert('잘못된 접근입니다.'); location.href='admin_reportlist.jsp';</script>");
         return;
     }
 
     int reportId = 0;
     int commentId = 0;
-    int roomIdx = 0;
 
     try {
         reportId = Integer.parseInt(reportIdParam);
         commentId = Integer.parseInt(commentIdParam);
-        roomIdx = Integer.parseInt(roomIdxParam);
     } catch (NumberFormatException e) {
         out.println("<script>alert('잘못된 ID 형식입니다.'); location.href='admin_reportlist.jsp';</script>");
         return;
@@ -39,20 +36,19 @@
 
         conn.setAutoCommit(false);
 
-        // 동일한 comment_id 또는 room_idx에 해당하는 모든 리뷰 삭제
-        String deleteCommentsSql = "DELETE FROM reviews WHERE IDX = ? OR Room_idx = ?";
+        // 동일한 comment_id에 해당하는 모든 리뷰 삭제
+        String deleteCommentsSql = "DELETE FROM reviews WHERE IDX = ?";
         pstmt = conn.prepareStatement(deleteCommentsSql);
         pstmt.setInt(1, commentId);
-        pstmt.setInt(2, roomIdx);
         int deletedRows = pstmt.executeUpdate();
         pstmt.close();
 
         if (deletedRows > 0) {
-            // 동일한 comment_id 또는 room_idx에 해당하는 모든 신고 내역 삭제
-            String deleteReportsSql = "DELETE FROM reports WHERE comment_id = ? OR room_idx = ?";
+
+            // 동일한 comment_id에 해당하는 모든 신고 내역 삭제
+            String deleteReportsSql = "DELETE FROM reports WHERE comment_id = ?";
             pstmt = conn.prepareStatement(deleteReportsSql);
             pstmt.setInt(1, commentId);
-            pstmt.setInt(2, roomIdx);
             pstmt.executeUpdate();
 
             conn.commit();

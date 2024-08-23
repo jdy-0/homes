@@ -63,14 +63,14 @@ if(state.equals("승인거절")){
 if(count>0){
 %>
 <script>
-	alert("성공");
+	alert("예약을 승인하셨습니다.");
 	location.href="hostbooking.jsp";
 </script>
 <%
 } else {
 %>
 	<script>
-	alert("실패");
+	alert("시스템상의 오류로 예약승인에 실패하셨습니다.");
 	location.href="hostbooking.jsp";
 	</script>
 <%

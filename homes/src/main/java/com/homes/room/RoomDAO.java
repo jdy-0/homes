@@ -485,7 +485,7 @@ public class RoomDAO {
             }
 			RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state,selectedRegionName,parentRegionName);
 			arr.add(dto);
-			//System.out.println(arr.get(0).getRoom_name());
+			//// System.out.println(arr.get(0).getRoom_name());
 		}
 		return arr;
 		} catch (Exception e) {
@@ -518,7 +518,7 @@ public class RoomDAO {
 				String reason= rs.getString("reason");
 				RoomDTO dto = new RoomDTO(room_name,image,startday, endday, reason);
 				arr.add(dto);
-				System.out.println(arr.get(0));
+//				// System.out.println(arr.get(0));
 			}
 			return arr;
 			} catch (Exception e) {
@@ -808,7 +808,7 @@ public class RoomDAO {
        // Statement 생성
 			st.executeUpdate(sql);
 
-       System.out.println("테이블이 성공적으로 생성되었습니다.");
+       // // System.out.println("테이블이 성공적으로 생성되었습니다.");
        	return 1;
 		} catch (Exception e) {
 			return 0;
@@ -1751,7 +1751,7 @@ public class RoomDAO {
         }
 		RoomDTO dto =new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price,image,state,selectedRegionName,parentRegionName);
 		arr.add(dto);
-		//System.out.println(arr.get(0).getRoom_name());
+		//// System.out.println(arr.get(0).getRoom_name());
 	}
 	
 	return arr;

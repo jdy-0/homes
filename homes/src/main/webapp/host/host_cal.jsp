@@ -301,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function() {
     		hol_sel_date.push(new Date(makeIdToDate(hol.id)));
     		
     	});
-		alert('길이'+hol_sel_date.length);
     	var s_date = hol_sel_date[0];
     	var e_date = hol_sel_date[0];
     	

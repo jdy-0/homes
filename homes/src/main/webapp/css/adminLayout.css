@@ -14,7 +14,7 @@ section{
     font-family: 'SBAggroB';
 }
 .title{
-	background-color:#dec022;
+	background-color:#cd280e;
 	color:black;
 	border-bottom:5px solid black;
 	margin:0px;
@@ -85,7 +85,7 @@ section{
 	border-bottom: 3px double black;
 }
 .content table th{
-	background-color: #dec022;
+	background-color: #cd280e;
 }
 
 .content table td{
@@ -93,7 +93,7 @@ section{
 }
 .rbutton {
     width: 70px;
-    background-color: #dec022;
+    background-color: #cd280e;
     border: 3px solid black;
     font-family: 'SBAggroB';
     padding: 10px;
@@ -111,4 +111,7 @@ section{
 }
 .fs_adminContent{
 	width:100%;
+}
+table{
+	border-spacing: 0;
 }
