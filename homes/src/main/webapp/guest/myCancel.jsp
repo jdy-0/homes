@@ -15,9 +15,6 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myCancel" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님의 취소된 내역</h3>
-	</fieldset>
 	<div id="canceled">
 	<%
 	int useridx = (Integer)session.getAttribute("useridx");

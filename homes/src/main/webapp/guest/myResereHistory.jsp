@@ -16,9 +16,6 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myReserveHistory" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님 예약 내역</h3>
-	</fieldset>
 	<div id="lastReserve">
 	<%
 	int useridx = (Integer)session.getAttribute("useridx");

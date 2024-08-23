@@ -55,9 +55,6 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myReserveHistory" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님이 찜한 HOMES</h3>
-	</fieldset>
 	<%
 	ArrayList<LikeDTO> mylikes = gdao.getMyLike(userid);
 	if(mylikes == null || mylikes.size()==0){

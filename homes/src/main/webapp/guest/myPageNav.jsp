@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%
+if(session.getAttribute("useridx")==null || session.getAttribute("useridx")==""){
+	%>
+	<script>
+	window.alert('로그인 후 이용 가능한 서비스입니다.');
+	locatin.href='/homes';
+	</script>
+	<%
+	return;
+}
+%>
 <article id="myPageNav">
 	<nav>
 		<ul id="ul_menu">

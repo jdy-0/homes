@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%
+if(session.getAttribute("useridx")==null || session.getAttribute("useridx")==""){
+	%>
+	<script>
+	window.alert('로그인 후 이용 가능한 서비스입니다.');
+	locatin.href='/homes';
+	</script>
+	<%
+	return;
+}
+%>
 <jsp:useBean id="refdao" class="com.homes.refund.refundDAO"></jsp:useBean>
 <!DOCTYPE html>
 <html>

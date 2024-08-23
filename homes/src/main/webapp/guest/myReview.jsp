@@ -14,9 +14,6 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myPageMain" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님이 쓴 리뷰</h3>
-	</fieldset>
 	<div>
 		<%
 		ArrayList<HashMap<String, Object>> myReview = gdao.getMyReview(userid);

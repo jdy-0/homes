@@ -28,7 +28,12 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 		<fieldset id="myPageMain_fs">
 		<%	
 		int useridx=(Integer)session.getAttribute("useridx");
-		String img = gdao.getImgSrc(useridx);
+		String img = "";
+		if(gdao.getImgSrc(useridx).equals("default_profile.svg")){
+			img = "default_profile.svg";
+		}else{
+			img = gdao.getImgSrc(useridx);
+		}
 		%>
 			<div id="img_div">
 			<img src="/homes/guest/profileimg/<%=img %>" alt="profile_img" id="profileImg">

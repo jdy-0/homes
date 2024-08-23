@@ -12,7 +12,7 @@
     font-weight: normal;
     font-style: normal;
 }
-body{background-color:#e2dccc;}
+body{background-color:cornsilk;}
 fieldset{
 	width:480px;
 	font-family: 'SBAggroB';
@@ -40,15 +40,16 @@ legend{
 	padding:5px;
 }
 #button{
-	border:3px solid black;
-	background-color:#dec022;
+	border:0;
+	background-color:#cd280e;
 	font-family: 'SBAggroB';
 	font-size:23px;
 	padding:10px;
+	color:cornsilk;
 }
 #button:hover{
-	background-color:#e2dccc;
-	transition:0.5s;
+	opacity:0.5;
+	transition:0.3s;
 }
 </style>
 </head>

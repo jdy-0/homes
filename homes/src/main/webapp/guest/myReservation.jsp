@@ -21,18 +21,67 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/myPageLayout.css">
+<style>
+#bt_complete{
+	background-color:cornsilk;
+	color:#cd280e;
+	padding:10px;
+	border-radius:10px;
+	border:2px solid #cd280e;
+	width:150px;
+	opacity:0.7;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	margin:10px;
+}
+#bt_complete:hover{
+	opacity:0.5;
+}
+#bt_waiting{
+	background-color:#cd280e;
+	color:cornsilk;
+	padding:10px;
+	border-radius:10px;
+	border:2px solid #cd280e;
+	width:150px;
+	font-family: 'SBAggroB';
+	font-size:20px;
+	margin:10px;
+}
+#bt_waiting:hover{
+	opacity:0.5;
+}
+fieldset{
+    background: floralwhite;
+    border: 3px solid #cd280e;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 50%;
+}
+#myReserve a{
+	color: black;
+	text-decoration:none;
+}
+#myResrve table{
+	width: 90%;
+}
+#myReserve table td{
+	width:50%;
+	padding: 20px 10px;
+}
+#myReserve table img{
+	width: 100%;
+}
+</style>
 </head>
 <body>
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myReserve" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님 예약 내역</h3>
-	</fieldset>
 	<div style="text-align:center;">
-		<input type="button" value="예약완료" class="button" id="bt_complete" onclick="showDiv('planned');">
-		<input type="button" value="예약대기" class="button" style="background-color:gray; color:white; opacity:0.5;"id="bt_waiting" onclick="showDiv('waiting');">
+		<input type="button" value="예약완료" id="bt_complete" onclick="showDiv('planned');">
+		<input type="button" value="예약대기" id="bt_waiting" onclick="showDiv('waiting');">
 	</div>
 	<div id="planned">
 	<%
@@ -80,7 +129,7 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 			<fieldset>
 				<table>
 					<tr>
-						<td rowspan="3"><img src="<%=waitingList.get(i).getImage() %>" style="width:150px;"></td>
+						<td rowspan="3"><img src="<%=waitingList.get(i).getImage() %>"></td>
 						<td><%=waitingList.get(i).getRoom_name() %></td>
 					</tr>
 					<tr>
@@ -103,23 +152,29 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 <script>
 function showDiv(divId){
 	if('waiting' == divId){
+		//대기버튼 눌렀을 때
 		document.getElementById('waiting').style.display="block";
 		document.getElementById('planned').style.display="none";
-		document.getElementById('bt_complete').style.backgroundColor="gray";
-		document.getElementById('bt_complete').style.color="lightgray";
-		document.getElementById('bt_complete').style.opacity="0.5";
-		document.getElementById('bt_waiting').style.backgroundColor="#dec022";
-		document.getElementById('bt_waiting').style.color="black";
-		document.getElementById('bt_waiting').style.opacity="1";
+		//완료버튼이 진해짐
+		document.getElementById('bt_complete').style.backgroundColor="#cd280e";
+		document.getElementById('bt_complete').style.color="cornsilk";
+		document.getElementById('bt_complete').style.opacity="1";
+		//대기버튼이 연해짐
+		document.getElementById('bt_waiting').style.backgroundColor="cornsilk";
+		document.getElementById('bt_waiting').style.color="#cd280e";
+		document.getElementById('bt_waiting').style.opacity="0.7";
 	}else{
+		//완료버튼 눌렀을 때
 		document.getElementById('waiting').style.display="none";
 		document.getElementById('planned').style.display="block";
-		document.getElementById('bt_complete').style.backgroundColor="#dec022";
-		document.getElementById('bt_complete').style.color="black";
-		document.getElementById('bt_complete').style.opacity="1";
-		document.getElementById('bt_waiting').style.backgroundColor="gray";
-		document.getElementById('bt_waiting').style.color="lightgray";
-		document.getElementById('bt_waiting').style.opacity="0.5";
+		//완료버튼이 연해짐
+		document.getElementById('bt_complete').style.backgroundColor="cornsilk";
+		document.getElementById('bt_complete').style.color="#cd280e";
+		document.getElementById('bt_complete').style.opacity="0.7";
+		//대기버튼이 진해짐
+		document.getElementById('bt_waiting').style.backgroundColor="#cd280e";
+		document.getElementById('bt_waiting').style.color="cornsilk";
+		document.getElementById('bt_waiting').style.opacity="1";
 	}
 	/* var articles = ['waiting', 'planned'];
 	
