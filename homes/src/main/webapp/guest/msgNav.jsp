@@ -13,9 +13,9 @@ if(session.getAttribute("useridx")==null){
 %>
 <%@ page import="com.homes.guest.*" %>
 <article id="msgNav">
-	<fieldset class="label_fs" style="text-align:center;">
+<!-- 	<fieldset class="label_fs" style="text-align:center;">
 		<h3>Message</h3>
-	</fieldset>
+	</fieldset> -->
 	<nav>
 		<ul id="ul_msgMenu">
 			<li ><a href="/homes/guest/writeMsg.jsp" id="writeMsg_a">메세지 보내기</a></li>

@@ -9,53 +9,16 @@
 <link rel="stylesheet" type="text/css" href="/homes/css/msgLayout.css">
 </head>
 <style>
-#writeMsg_table{
-	width:700px;
-	border:4px solid black;
-	margin:30px auto;
-	border-spacing:0px;
-	font-family: 'SBAggroB';
-}
-#writeMsg_table th{
-	width:150px;
-	background-color:#dec022;
-	border-right:3px solid black;
-	border-bottom:3px solid black;
-	font-size:20px;
-	color:black;
-	padding:5px;
-}
-#writeMsg_table td{
-	border-bottom:3px solid black;
-	font-size:20px;
-	padding:5px;
-}
-.textfield{
-	border:2px solid black;
-	outline:none;
-	padding:4px;
-	font-family: 'SBAggroB';
-	font-size:20px;
-	width:800px;
-}
-textarea{
-	border:2px solid black; 
-	/* border:0; */
-	/* background-color:#e2dccc; */
-	font-family: 'SBAggroB';
-	font-size:20px;
-	outline:none;
-	width:970px;
-}
+
 </style>
 <body>
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/msgNav.jsp" %>
 <article class="msgContentArticle">
-<fieldset class="label_fs">
+<!-- <fieldset class="label_fs">
 	<h3>메세지 보내기</h3>
-</fieldset>
+</fieldset> -->
 <form name="writeMsg" action="writeMsg_ok.jsp">
 	<input type="hidden" name="sender_id" value="<%=userid%>">
 	<table id="writeMsg_table"> 
@@ -89,5 +52,14 @@ textarea{
 </article>
 </section>
 <%@include file="/footer.jsp" %>
+<script>
+function selectedMenu(){
+	document.getElementById("writeMsg_a").style.backgroundColor='cornsilk';
+	document.getElementById("writeMsg_a").style.color='#cd280e';
+	document.getElementById("writeMsg_a").style.borderRadius='200px'; 
+	document.getElementById("writeMsg_a").style.opacity='1';
+}
+window.onload=selectedMenu;
+</script>
 </body>
 </html>
