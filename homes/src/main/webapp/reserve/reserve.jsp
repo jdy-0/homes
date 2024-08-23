@@ -29,7 +29,7 @@ resdto.setCheck_out(check_out);
 resdto.setRequest(request.getParameter("request"));
 
 int count = resdao.insertReservation(resdto);
-String msg = count>0?"성공":"실패";
+String msg = count>0?"예약에 성공하셨습니다.":"시스템 문제로 예약에 실패하셨습니다.";
 
 %>
 <script>
