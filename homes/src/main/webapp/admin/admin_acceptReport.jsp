@@ -48,7 +48,7 @@
 
         if (deletedRows > 0) {
             // 신고 내역 삭제
-            String deleteReportSql = "DELETE FROM reports WHERE id = ?";
+            String deleteReportSql = "DELETE FROM reports WHERE idx = ?";
             pstmt = conn.prepareStatement(deleteReportSql);
             pstmt.setInt(1, reportId);
             pstmt.executeUpdate();

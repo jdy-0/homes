@@ -30,7 +30,7 @@ public class ReportDAO {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO reports (id, comment_id, room_idx, report_reason, report_date) VALUES (report_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
+            String sql = "INSERT INTO reports (idx, comment_id, room_idx, report_reason, report_date) VALUES (report_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, report.getCommentId());
             pstmt.setInt(2, report.getRoomIdx());
@@ -53,13 +53,13 @@ public class ReportDAO {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT id, comment_id, room_idx, report_reason, TO_CHAR(report_date, 'YYYY-MM-DD HH24:MI:SS') as report_date FROM reports";
+            String sql = "SELECT idx, comment_id, room_idx, report_reason, TO_CHAR(report_date, 'YYYY-MM-DD HH24:MI:SS') as report_date FROM reports";
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 ReportDTO report = new ReportDTO();
-                report.setId(rs.getInt("id"));
+                report.setId(rs.getInt("idx"));
                 report.setCommentId(rs.getInt("comment_id"));
                 report.setRoomIdx(rs.getInt("room_idx"));
                 report.setReportReason(rs.getString("report_reason"));
@@ -101,7 +101,7 @@ public class ReportDAO {
             }
 
             // 신고 내역 삭제
-            String deleteReportSql = "DELETE FROM reports WHERE id = ?";
+            String deleteReportSql = "DELETE FROM reports WHERE idx = ?";
             pstmt = conn.prepareStatement(deleteReportSql);
             pstmt.setInt(1, reportId);  // reportId 값 바인딩
             pstmt.executeUpdate();
@@ -128,7 +128,7 @@ public class ReportDAO {
             conn = dataSource.getConnection();
 
             // 신고 내역 삭제
-            String deleteReportSql = "DELETE FROM reports WHERE id = ?";
+            String deleteReportSql = "DELETE FROM reports WHERE idx = ?";
             pstmt = conn.prepareStatement(deleteReportSql);
             pstmt.setInt(1, reportId);  // reportId 값 바인딩
             pstmt.executeUpdate();
@@ -155,7 +155,7 @@ public class ReportDAO {
 
             while (rs.next()) {
                 ReportDTO report = new ReportDTO();
-                report.setId(rs.getInt("id"));
+                report.setId(rs.getInt("idx"));
                 report.setRoomIdx(rs.getInt("room_idx"));
                 report.setCommentId(rs.getInt("comment_id"));
                 report.setReportReason(rs.getString("report_reason"));
