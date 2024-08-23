@@ -42,7 +42,7 @@
 							<p><a href="/homes/rooms/information.jsp?room_idx=<%=room_idx%>"><%=myReview.get(i).get("room_name") %></a></p>
 							<p><%for(int j=1; j<=rate; j++){%>&#127775;<%} %></p>
 							</div>
-							<p><%=content.substring(0, 15) %>...<a href="javascript:openFullReview('full_<%=i%>');">[전체보기]</a></p>
+							<p><%=content.length()>15?content.substring(0, 15):content+"..." %><a href="javascript:openFullReview('full_<%=i%>');">[전체보기]</a></p>
 						</div>
 					</div>
 					<div style="display:none;" id="full_<%=i%>">
