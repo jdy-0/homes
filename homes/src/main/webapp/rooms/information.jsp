@@ -5,9 +5,13 @@
 <%@ page import="java.text.SimpleDateFormat, java.util.Date, java.util.concurrent.TimeUnit" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
-<%@page import="java.util.ArrayList"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.*" %>
 <jsp:useBean id="rdao" class="com.homes.room.RoomDAO" scope="session"></jsp:useBean>
-
+<%
+    // 세션에서 로그인한 사용자 ID를 가져옵니다.
+    String currentUserId = (String) session.getAttribute("userid");
+%>
 <%
 try {
 	 request.setCharacterEncoding("UTF-8");
@@ -353,17 +357,27 @@ window.onclick = function(event) {
     			<div class="review-list">
         		<% if (reviews != null && !reviews.isEmpty()) { %>
             	<% for (ReviewDTO review : reviews) { %>
-					<div class="review-item">
-   						<p><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
-   						<%int rate = review.getRate(); %>
-    					<p><strong>별점:</strong> <span id="review-rate-<%= review.getIdx() %>" class="star"><%for(int i=1; i<=rate; i++){%>&#9733;<%}%></span></p>
-    					<p id="review-content-<%= review.getIdx() %>"><%= review.getContent() %></p>
-    					<% if (userid != null &&  review.getMemberId().equals(userid)) { %>
-        				<span class="edit-btn" onclick="editReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">수정</span>
-        				<span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">삭제</span>
-    					<% } %>
-    					<span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
-					</div>
+<div class="review-item">
+    <p id="review-user-<%= review.getIdx() %>"><strong>아이디:</strong> <%= review.getMemberId() != null ? review.getMemberId() : "Unknown" %></p>
+    <% int rate = review.getRate(); %>
+    <p><strong>별점:</strong> 
+        <span id="review-rate-<%= review.getIdx() %>" class="star" data-rate="<%= rate %>">
+            <% for(int i=1; i<=rate; i++){ %>&#9733;<% } %>
+        </span>
+    </p>
+    <p id="review-content-<%= review.getIdx() %>"><%= review.getContent() %></p>
+    
+    <% if (userid != null && review.getMemberId().equals(userid)) { %>
+        <span class="edit-btn" onclick="editReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">수정</span>
+        <span class="delete-btn" onclick="deleteReview(<%= review.getIdx() %>, <%= review.getRoomIdx() %>)">삭제</span>
+    <% } %>
+    
+    <% if (!review.getMemberId().equals(currentUserId)) { %>
+        <!-- 로그인한 사용자가 본인의 댓글이 아닌 경우에만 신고 버튼을 표시 -->
+        <span class="report-btn" onclick="showReportModal(<%= review.getIdx() %>)">신고</span>
+    <% } %>
+</div>
+
             	<% } %>
         		<% } else { %>
            			<p>아직 후기가 없습니다.</p>
@@ -573,6 +587,14 @@ function closeReviewModal() {
 }
 
 function showReportModal(commentId) {
+    const currentUserId = "<%= currentUserId %>"; // 서버에서 로그인한 사용자 ID를 가져옴
+    const commentUserId = document.getElementById('review-user-' + commentId).innerText; // 댓글 작성자 ID 가져오기
+
+    if (currentUserId === commentUserId) {
+        alert("본인의 댓글은 신고할 수 없습니다.");
+        return;
+    }
+
     document.getElementById('report-modal').style.display = 'block';
     document.getElementById('comment-id').value = commentId;
 }
@@ -597,17 +619,29 @@ function submitReport() {
 }
 
 function editReview(reviewId, roomIdx) {
-    // 리뷰 수정 모달을 띄웁니다.
-    const reviewContent = document.getElementById('review-content-' + reviewId).innerText;
-    const reviewRate = document.getElementById('review-rate-' + reviewId).innerText; // 기존 별점 가져오기
-    
+    // 리뷰 수정 모달을 표시합니다.
     document.getElementById('edit-review-modal').style.display = 'block';
+    
+    // 기존 리뷰 내용과 별점 가져오기
+    const reviewContent = document.getElementById('review-content-' + reviewId).innerText;
+    const reviewRate = document.getElementById('review-rate-' + reviewId).getAttribute('data-rate'); // 별점 가져오기
+
+    // 모달에 리뷰 내용 설정
+    document.getElementById('edit-review-text').value = reviewContent;
+
+    // 모든 별점 라디오 버튼을 가져와서 반복
+    const stars = document.getElementsByName('rate');
+    stars.forEach(star => {
+        if (star.value === reviewRate) {
+            star.checked = true;  // 해당하는 별점을 체크
+        } else {
+            star.checked = false; // 다른 별점은 체크 해제
+        }
+    });
+
+    // 숨겨진 필드에 리뷰 ID와 방 ID 설정
     document.getElementById('edit-review-id').value = reviewId;
     document.getElementById('edit-room-idx').value = roomIdx;
-    document.getElementById('edit-review-text').value = reviewContent;
-    
-    // 기존 별점 설정
-    document.querySelector(`input[name="rate"][value="${reviewRate}"]`).checked = true;
 }
 
 // 모달을 닫는 함수
