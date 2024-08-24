@@ -20,7 +20,7 @@ public class ScheduleDAO {
 			ps.setInt(1, roomidx);
 			rs=ps.executeQuery();
 			ArrayList<RoomDTO> arr= new ArrayList<RoomDTO>();
-			
+			System.out.println();
 			while(rs.next()) {
 				String room_name = rs.getString("room_name");
 				String image= rs.getString("image");
