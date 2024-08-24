@@ -68,13 +68,14 @@ if(roomArr==null && roomArr.size()<=0){
 } else {
 	%>
 	<div style="text-align:center;">
-		<input type="button" value="예약 보기" id="bt_complete" onclick="showDiv('contentWrapper');">
+		<input type="button" value="예약 보기" id="bt_complete" onclick="showDiv('resByRoom');">
 		<input type="button" value="휴무 보기" id="bt_waiting" onclick="showDiv('waiting');">
 	</div>
 	<%
 	int count = 0;
 	
 	for(RoomDTO rdto : roomArr){
+		
 		ArrayList<ReservationDTO> resArr =  resdao.getReserveLists(rdto.getRoom_idx());
         boolean hasReservations = (resArr != null && resArr.size() > 0);
 
@@ -88,7 +89,7 @@ if(roomArr==null && roomArr.size()<=0){
 			for(ReservationDTO resdto : resArr){
 				%>	
 				
-				<div class="contentWrapper" style="display:none">				
+				<div class="resByRoom" style="display:none">				
 					<article class="booking">
 						<table class="bookingTable">
 							<tr>
@@ -139,7 +140,7 @@ if(roomArr==null && roomArr.size()<=0){
 <%
 		} else {
 %>		
-		<div class="contentWrapper" style="display:none">
+		<div class="resByRoom" style="display:none">
 			<h2>없음</h2>
 		</div>
 <%
@@ -153,45 +154,57 @@ if(roomArr==null && roomArr.size()<=0){
 }
 %>	
 <%
-		if(arr==null||arr.size()==0){
-			%>
-				<h3>등록된 숙소가 없습니다.</h3>
-			<%
-		}else{
-			int a = arr.size();
-			for(int i=0;i<arr.size();i++){
-				ArrayList<RoomDTO> scarr = scdao.getScheduleByRoomidx(arr.get(i).getRoom_idx());
-				if(scarr!=null&& scarr.size()!=0){
-					
-				
-				%>
-				<div class = "resByRoom" id="resByRoom<%=i%>">
-				<h2 class = "roomName"><%=arr.get(i).getRoom_name() %>: <%=scarr.size() %>건 </h2> 
-<%
-				for(int j=0; j<scarr.size(); j++){
-					
-				
+if (arr == null || arr.size() == 0) {
 %>
-				<div class="contentWrapper" style="display:none">				
-						<article id= "main">
-							<img src ="<%=scarr.get(j).getImage()%>">
-						</article>
-						<article id="maininfo">
-							<h3><%=scarr.get(j).getRoom_name() %></h3>
-				 				<ul>
-									<li>시작날짜:<%=scarr.get(j).getStartday()%></li>
-									<li>끝 날짜:<%=scarr.get(j).getEndday()%></li>
-									<li>종류:<%=scarr.get(j).getReason()%></li>
-								</ul>	
-						</article>
-					</div>
-				<%} %>
-				</div>
-				<%
-			}
-		}
-	}
-	%>
+    <div class="manageByRoom" id="manageByRoom0" style="display:none">
+        <h2>등록된 숙소가 없습니다.</h2>
+    </div>
+<%
+} else {
+    for (int i = 0; i < arr.size(); i++) {
+        ArrayList<RoomDTO> scarr = scdao.getScheduleByRoomidx(arr.get(i).getRoom_idx());
+        if (scarr != null && scarr.size() != 0) {
+%>
+            <div class="manageByRoom" id="manageByRoom<%=i%>" style="display:none">
+                <h2 class="roomName"><%= arr.get(i).getRoom_name() %>: <%= scarr.size() %>건</h2>
+<%
+            for (int j = 0; j < scarr.size(); j++) {
+%>
+                <div class="manage" style="display: flex;" >
+               
+                    <article id="main">
+                        <img src="<%= scarr.get(j).getImage() %>">
+                    </article>
+                    
+                    <article class="booking">
+                        <table class="bookingTable">
+                            <tr>
+                                <th>시작 날짜:</th>
+                                <td><%= scarr.get(j).getStartday() %></td>
+                            </tr>
+                            <tr>
+                                <th>신청자</th>
+                                <td>끝 날짜: <%= scarr.get(j).getEndday() %></td>
+                            </tr>
+                            <tr>
+                                <th>총 인원</th>
+                                <td>종류: <%= scarr.get(j).getReason() %></td>
+                            </tr>
+                        </table>
+                    </article>
+                    
+                </div>
+                
+<%
+            } 
+%>
+           </div>
+<%
+        }
+    } 
+} 
+%>
+
 </section>
 </body>
 
@@ -200,19 +213,27 @@ const roomNames = document.querySelectorAll(".roomName");
 
 roomNames.forEach(function(roomName) {
     roomName.addEventListener("click", function() {
-        // 클릭된 roomName의 가장 가까운 resByRoom 요소를 찾습니다.
         const resbyroom = roomName.closest(".resByRoom");
-        
+        const manageByRoom = roomName.closest(".manageByRoom");
+
         if (resbyroom) {
-            // resByRoom 내의 모든 contentWrapper를 선택합니다.
-            const contentWrappers = resbyroom.querySelectorAll(".contentWrapper");
-            
-            contentWrappers.forEach(function(contentWrapper) {
-                // 현재 display 상태를 확인하고 토글합니다.
-                if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
-                    contentWrapper.style.display = "flex";
+            const resByRooms = resbyroom.querySelectorAll(".resByRoom");
+            resByRooms.forEach(function(resByRoom) {
+                if (resByRoom.style.display === "none" || resByRoom.style.display === "") {
+                    resByRoom.style.display = "flex";
                 } else {
-                    contentWrapper.style.display = "none";
+                    resByRoom.style.display = "none";
+                }
+            });
+        }
+
+        if (manageByRoom) {
+            const manageSections = manageByRoom.querySelectorAll(".manage");
+            manageSections.forEach(function(manage) {
+                if (manage.style.display === "none" || manage.style.display === "") {
+                    manage.style.display = "flex";
+                } else {
+                    manage.style.display = "none";
                 }
             });
         }
@@ -220,31 +241,44 @@ roomNames.forEach(function(roomName) {
 });
 
 function showDiv(divId){
-	if('waiting' == divId){
-		//대기버튼 눌렀을 때
-		document.getElementById('booking').style.display="block";
-		document.getElementById('planned').style.display="none";
-		//완료버튼이 진해짐
-		document.getElementById('bt_complete').style.backgroundColor="#cd280e";
-		document.getElementById('bt_complete').style.color="cornsilk";
-		document.getElementById('bt_complete').style.opacity="1";
-		//대기버튼이 연해짐
-		document.getElementById('bt_waiting').style.backgroundColor="cornsilk";
-		document.getElementById('bt_waiting').style.color="#cd280e";
-		document.getElementById('bt_waiting').style.opacity="0.7";
-	}else{
-		//완료버튼 눌렀을 때
-		document.getElementById('waiting').style.display="none";
-		document.getElementById('planned').style.display="block";
-		//완료버튼이 연해짐
-		document.getElementById('bt_complete').style.backgroundColor="cornsilk";
-		document.getElementById('bt_complete').style.color="#cd280e";
-		document.getElementById('bt_complete').style.opacity="0.7";
-		//대기버튼이 진해짐
-		document.getElementById('bt_waiting').style.backgroundColor="#cd280e";
-		document.getElementById('bt_waiting').style.color="cornsilk";
-		document.getElementById('bt_waiting').style.opacity="1";
-	}
+    if ('waiting' === divId) {
+        // 대기 버튼 눌렀을 때
+        document.querySelectorAll('.resByRoom').forEach(function(div) {
+            div.style.display = "none";
+        });
+        document.querySelectorAll('.manageByRoom').forEach(function(div) {
+            div.style.display = "block";
+        });
+
+        // 완료 버튼이 연해짐
+        document.getElementById('bt_complete').style.backgroundColor = "cornsilk";
+        document.getElementById('bt_complete').style.color = "#cd280e";
+        document.getElementById('bt_complete').style.opacity = "0.7";
+        
+        // 대기 버튼이 진해짐
+        document.getElementById('bt_waiting').style.backgroundColor = "#cd280e";
+        document.getElementById('bt_waiting').style.color = "cornsilk";
+        document.getElementById('bt_waiting').style.opacity = "1";
+    } else {
+        // 완료 버튼 눌렀을 때
+        document.querySelectorAll('.resByRoom').forEach(function(div) {
+            div.style.display = "block";
+        });
+        document.querySelectorAll('.manageByRoom').forEach(function(div) {
+            div.style.display = "none";
+        });
+
+        // 완료 버튼이 진해짐
+        document.getElementById('bt_complete').style.backgroundColor = "#cd280e";
+        document.getElementById('bt_complete').style.color = "cornsilk";
+        document.getElementById('bt_complete').style.opacity = "1";
+        
+        // 대기 버튼이 연해짐
+        document.getElementById('bt_waiting').style.backgroundColor = "cornsilk";
+        document.getElementById('bt_waiting').style.color = "#cd280e";
+        document.getElementById('bt_waiting').style.opacity = "0.7";
+    }
+}
 
 </script>
 </html>

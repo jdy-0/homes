@@ -85,7 +85,7 @@ roomNames.forEach(function(roomName) {
             contentWrappers.forEach(function(contentWrapper) {
                 // 현재 display 상태를 확인하고 토글합니다.
                 if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
-                    contentWrapper.style.display = "flex";
+                    contentWrapper.style.display = "block";
                 } else {
                     contentWrapper.style.display = "none";
                 }
