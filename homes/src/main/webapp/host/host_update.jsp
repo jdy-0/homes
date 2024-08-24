@@ -123,14 +123,118 @@ function FileSelect(event) {
 <%@ include file="hostheader.jsp" %>
     <main class="container_hu">
     	
-        <div class="top">
+        
+				<div>
+                <div style="display:flex; margin:30px 0px; justify-content:space-between;">
+                	
+                	<form name="room_update" action="room_update_ok.jsp" style="width:48%;">
+						<div class="room-input">
+					
+						<!-- 숙소 이름 -->
+						<h2>숙소 정보</h2>
+						<div>
+							<label>이름:</label>
+							<input type="text" id="room_name" name="room_name" value="<%=room.getRoom_name()%>" 
+								placeholder="숙소 이름을 입력하세요" class="roomUpdate_text" title="숙소의 이름을 입력하세요" required>
+						</div>
+						<!-- 숙소 편의시설 -->
+						<div>
+							<label for="goodthing">간단 소개</label>
+							<input type="text"
+								id="goodthing" name="goodthing" value="<%=room.getGoodthing()%>"
+								placeholder="숙소를 간단하게 소개해주세요" class="roomUpdate_text" title="숙소를 간단하게 소개해주세요">
+						</div>
+						<!-- 숙소 지역 -->
+						<div>
+							<label for="addr_detail">상세주소</label>
+							<input type="text"
+								id="addr_detail" name="addr_detail"
+								value="<%=room.getAddr_detail()%>" class="roomUpdate_text" placeholder="상세주소를 입력해주세요"
+								title="상세주소를 입력해주세요">
+						</div>
+						<!-- 숙소 가격 -->
+						<div>
+							<label for="price">1박 가격</label>
+							<input type="text" id="price"
+								name="price" value="<%=room.getPrice()%>"
+								placeholder="숙소 가격을 입력하세요" class="roomUpdate_text" title="숙소 1박당 가격을 입력하세요">
+						</div>
+						<!-- 인원수 -->
+						<div>
+							<label>인원수</label>
+							<div>
+								<label for="room_min">최소</label>
+								<input type="number" id="room_min" name="room_min" min="2" value="<%=room.getRoom_min()%>" placeholder="최소 인원수"
+									 class="roomUpdate_text" title="최소 인원수를 입력하세요" required> 
+									~ 
+								<label for="foom_max">최대</label>
+								<input type="number" id="room_max" name="room_max" min="2" value="<%=room.getRoom_max()%>" placeholder="최대 인원수"
+									 class="roomUpdate_text" title="최대 인원수를 입력하세요" required>
+							</div>
+						</div>
+							<div style="text-align:center;">
+								<input type="hidden" value="<%=roomIdxParam %>"name="room_idx">
+								<input type="submit" value="수정완료" class="bt_delete">
+							</div>
+						</div>
+					</form>
+                	<div style="width:48%;">
+	                	<div class="img">
+	                	<h2>상세 사진 관리</h2>
+	                		<form name="img_detail" action="host_room_image_ok.jsp"  enctype="multipart/form-data"  method="post"
+	                		>
+	                			<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
+	                			<input type="hidden" name="room_path" value="<%= room_path_sql  %>">
+	                			<input type="file" accept="image/*" name="images_file">
+	                			<input type="submit" value="등록" class="bt_delete" style="font-size:17px;">
+	                		</form>
+	                	
+	                	</div>
+	                	<div>
+	                		<%
+	                		String userpath= id;
+	                		
+	                		File files[]=f.listFiles();
+	                		if(files==null||files.length==0){
+	                			/* System.out.println(f.getPath()); */
+	                			%>
+	                			<script>
+	                			<%-- window.alert('<%=f.getPath()%>'); --%>
+	                			</script>
+	                			
+	                			<label>사진이 없습니다.</label>
+	                			
+	                			<%
+	                		}else{
+	                			for(int i=0;i<files.length;i++){
+	                				%>
+	                				<form name="host_delete_imgfm" action="host_delete_file.jsp">
+	                					<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
+										<input type="hidden" value="<%=id %>" name= "user_name">
+										<input type="hidden" value="<%= room.getRoom_name() %>" name= "room_name">
+										<input type="hidden" value="<%= room_path_sql  %>"  name="room_path">
+	                					<input type="text" value="<%=files[i].getName()%>" class="roomUpdate_text" readonly>
+	                 					<input type="submit" value="삭제" class="bt_delete"> 
+	                 				</form>
+	                				<%
+	                			}
+	                		}
+	                		%>
+	                	</div>
+                	</div>
+                	
+                	
+               
+				
+				</div>
+				<div class="top">
             <!-- <h1>숙소 정보 수정</h1> -->
             <div class="room-details">
                 <% if (room != null) { %>
                 
                  <div class="room-images">
                 	<div class="room-main">
-                		<fieldset>
+                		<fieldset id="fs_mainImg">
                 		<legend>대표 이미지</legend>
                 		<form name="room-mainimg" action="host_room_mainimg_ok.jsp" enctype="multipart/form-data"  method="post">
                 			
@@ -139,7 +243,7 @@ function FileSelect(event) {
                     			<input type ="hidden" value=<%=room.getImage() %> name="room_path">
                     			<input type ="hidden" value=<%=room.getRoom_name() %> name="room_name">
                     			<input type="file" id="fileUpdate" accept="image/*" name="images_file" onchange="FileSelect(event)" >
-                    			<input type="submit" name="room-mainimg" value="등록">
+                    			<input type="submit" name="room-mainimg" value="등록" class="bt_delete">
                     	</form>
                     	</fieldset>
                     </div>
@@ -163,119 +267,30 @@ function FileSelect(event) {
 						%>
 						<div class="small-image">
 						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
-					</div>
+						</div>
 					<%
 					}
 					%>
 
 				</div>
-				<div>
-                <div style="display:flex">
-                	<div class="img">
-                	<h2>상세 사진 관리</h2>
-                		<form name="img_detail" action="host_room_image_ok.jsp"  enctype="multipart/form-data"  method="post"
-                		>
-                			<input type="hidden" name="room_idx" value="<%= roomIdxParam %>">
-                			<input type="hidden" name="room_path" value="<%= room_path_sql  %>">
-                			<input type="file" accept="image/*" name="images_file">
-                			<input type="submit" value="등록하기">
-                		</form>
-                	
-                	</div>
-                	<div>
-                		<%
-                		String userpath= id;
-                		
-                		File files[]=f.listFiles();
-                		if(files==null||files.length==0){
-                			/* System.out.println(f.getPath()); */
-                			%>
-                			<script>
-                			<%-- window.alert('<%=f.getPath()%>'); --%>
-                			</script>
-                			
-                			<label>사진이 없습니다.</label>
-                			
-                			<%
-                		}else{
-                			for(int i=0;i<files.length;i++){
-                				%>
-                				<form name="host_delete_imgfm" action="host_delete_file.jsp">
-                					<a>
-                					<label><%=files[i].getName()%>
-                						<input type="submit" value="삭제">
-										<input type="hidden" value="<%= files[i].getName() %>" name="img_name">
-										<input type="hidden" value="<%=id %>" name= "user_name">
-										<input type="hidden" value="<%= room.getRoom_name() %>" name= "room_name">
-										<input type="hidden" value="<%= room_path_sql  %>"  name="room_path">
-									</label>
-                 					</a>
-                 				</form>
-                				<%
-                			}
-                		}
-                		%>
-                	</div>
-                	
-                	
-                	
-               
-				<form name="room_update" action="room_update_ok.jsp">
-				<div class="room-input">
-				
-					<!-- 숙소 이름 -->
-					<h2>숙소 이름: <input type="text"
-						id="room_name" name="room_name" value="<%=room.getRoom_name()%>"
-						placeholder="숙소 이름을 입력하세요" title="숙소의 이름을 입력하세요" required>
-					</h2>
-					
-					<!-- 숙소 편의시설 -->
-					<label for="goodthing"> 숙소 편의시설: <input type="text"
-						id="goodthing" name="goodthing" value="<%=room.getGoodthing()%>"
-						placeholder="편의시설을 입력하세요" title="숙소의 편의시설을 입력하세요">
-					</label>
-
-					<!-- 숙소 지역 -->
-					<label for="addr_detail"> 숙소 지역: <input type="text"
-						id="addr_detail" name="addr_detail"
-						value="<%=room.getAddr_detail()%>" placeholder="숙소 지역을 입력하세요"
-						title="숙소의 상세 지역을 입력하세요">
-					</label>
-
-					<!-- 숙소 가격 -->
-					<label for="price"> 숙소 가격: <input type="text" id="price"
-						name="price" value="<%=room.getPrice()%>"
-						placeholder="숙소 가격을 입력하세요" title="숙소 1박당 가격을 입력하세요"> / 박
-					</label>
-
-					<!-- 인원수 -->
-					<label for="room_min"> 인원수: <input type="number"
-						id="room_min" name="room_min" min="2"
-						value="<%=room.getRoom_min()%>" placeholder="최소 인원수"
-						title="최소 인원수를 입력하세요" required> ~ <input type="number"
-						id="room_max" name="room_max" min="2"
-						value="<%=room.getRoom_max()%>" placeholder="최대 인원수"
-						title="최대 인원수를 입력하세요" required> 명
-					</label>
-					
-					<input type="hidden" value="<%=roomIdxParam %>"name="room_idx">
-					<input type="submit" class="button" value="숙소 정보 수정">
-					
-				</div>
-				</form>
-				</div>
-
+			</div>
+		</div>
+		
+				<div style="width:100%;">
 				<h2>후기 관리</h2>
                 <%
                 ArrayList<RoomDTO> arr= rdao.Review_select(idx);
                 if(arr==null||arr.size()==0){
                 	%><label>등록된 후기가 없습니다.</label><%
                 }else{
+                	%>
+                	<div id="reviewbox">
+                	<% 
                 	for(int i=0;i<arr.size();i++){
 					%>
 					
-					<div>
-						<div class="reviews">
+					
+					<div class="reviews">
 							<p>작성자 :<label><%=arr.get(i).getMember_id() %></label></p>
 							<p>별점 :<%=arr.get(i).getRate() %></p>
 							<p>내용 :<label><%=arr.get(i).getContent() %></label></p>
@@ -290,6 +305,7 @@ function FileSelect(event) {
 					</div> -->
 						<%
 						}
+                	%></div><%
                 }
                 %>
                 
