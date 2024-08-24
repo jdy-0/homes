@@ -29,7 +29,7 @@
 			%>
 			<a href="res_detail.jsp?reserve_idx=<%=canceledRes.get(i).getReserve_idx() %>"> 
 			<fieldset class="reserveCard">
-				<table>
+				<%-- <table>
 					<tr>
 						<td rowspan="3"><img src="<%=canceledRes.get(i).getImage() %>"></td>
 						<td><%=canceledRes.get(i).getRoom_name() %></td>
@@ -39,6 +39,28 @@
 					</tr>
 					<tr>
 						<td><%=canceledRes.get(i).getState() %></td>
+					</tr>
+				</table> --%>
+				<table>
+					<tr>
+						<td rowspan="5" style="width:50%;"><img src="<%=canceledRes.get(i).getImage() %>"></td>
+						<td colspan="2"><%=canceledRes.get(i).getRoom_name() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약일 | </td>
+						<td style="text-align:start;"><%=canceledRes.get(i).getReserve_date() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크인 | </td>
+						<td style="text-align:start;"><%=canceledRes.get(i).getCheck_in() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크아웃 | </td>
+						<td style="text-align:start;"><%=canceledRes.get(i).getCheck_out() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약상태 | </td>
+						<td style="text-align:start;"><%=canceledRes.get(i).getState() %></td>
 					</tr>
 				</table>
 			</fieldset>

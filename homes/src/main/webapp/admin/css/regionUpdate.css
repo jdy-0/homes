@@ -5,10 +5,15 @@
     font-weight: normal;
     font-style: normal;
 }
-body{background-color:#e2dccc;}
+@font-face {
+    font-family: 'goorm-sans-bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+body{background-color:floralwhite; font-family: 'goorm-sans-bold';}
 fieldset{
    width:480px;
-   font-family: 'SBAggroB';
    margin:100px auto;
    border:0;
 }
@@ -19,7 +24,6 @@ legend{
    margin:20px auto;
    display:block;
    justify-content: space-between;
-   font-family: 'SBAggroB';
    font-size:25px;
    align-items: center;
 }
@@ -27,16 +31,18 @@ legend{
    width:300px;
    outline:none;
    border:3px solid black;
-   font-family: 'SBAggroB';
    font-size:23px;
    padding:5px;
 }
 #button{
-   border:3px solid black;
+   border:0;
+   border-radius:5px;
    background-color:#cd280e;
-   font-family: 'SBAggroB';
+   font-family: 'goorm-sans-bold';
    font-size:23px;
-   padding:10px;
+   padding:10px 20px;
+   color:lemonchiffon;
+   margin:0 auto;
 }
 #button:hover{
    background-color:#e2dccc;
@@ -47,5 +53,5 @@ legend{
     width: 300px;
     padding: 10px;
     font-size: 20px;
-    font-family: 'SBAggroB';
+    font-family: 'goorm-sans-bold';
 }

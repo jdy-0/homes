@@ -12,74 +12,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="../css/adminLayout.css">
-<!-- <style>
-.admin{
-	display: flex;
-    align-items: stretch;
-    padding: 0;
-    margin: 0;
-    border-bottom: 5px solid black;
-    width: 100%;
-    height: auto;
-    font-family: 'SBAggroB';
-}
-.title{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-}
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-}
-.content {
-    flex-grow: 1;
-    padding: 20px;
-}
-.card {
-    background-color: #f4f4f4;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-</style>
-<style>
-.content h2{
-	text-align: center;
-}
-.content table {
-	width: 550px;
-	margin: 0px auto;
-	border-top: 3px double black;
-	border-bottom: 3px double black;
-}
-.content table th{
-	background-color: #dec022;
-}
-
-.content table td{
-	text-align: center;
-}
-.rbutton {
-    width: 70px;
-    background-color: #dec022;
-    border: 3px solid black;
-    font-family: 'SBAggroB';
-    padding: 10px;
-    font-size: 15px;
-    text-align: center;
-}
-</style> -->
 <script>
 function openrgUpdate(param) {
 	window.open('/homes/admin/admin_region_update.jsp?param='+param,'adminrgUpdate','width=550,height=350');
@@ -127,8 +59,8 @@ function openrgInsert() {
 					%>
 					<tr>
 						<td><%=arr.get(i).getRegion_name() %></td>
-						<td><%=adao.getParentName(arr.get(i).getParent_idx())  %></td>
-						<td><input type="button"  value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
+						<td style="text-align:center;"><%=adao.getParentName(arr.get(i).getParent_idx())  %></td>
+						<td style="text-align:center;"><input type="button"  value="수정" class="rbutton" onclick="openrgUpdate(<%=arr.get(i).getRegion_idx() %>);"></td>
 					</tr>
 					<%
 				}
@@ -137,9 +69,7 @@ function openrgInsert() {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="2">
-					</td>
-					<td><input type="button" value="추가"  class="rbutton" onclick="openrgInsert();" ></td>
+					<td colspan="3" align="right"><input type="button" value="지역 추가"  class="rbutton" style="width:95%;"onclick="openrgInsert();" ></td>
 				</tr>
 			</tfoot>
 			

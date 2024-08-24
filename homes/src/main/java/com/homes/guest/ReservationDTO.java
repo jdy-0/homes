@@ -19,7 +19,7 @@ public class ReservationDTO {
 		
 	}
 	
-	public ReservationDTO(int reserve_idx, String image, String room_name, String state, Date check_in, Date check_out) {
+	public ReservationDTO(int reserve_idx, String image, String room_name, String state, Date check_in, Date check_out, Date reserve_date) {
 		super();
 		this.reserve_idx = reserve_idx;
 		this.image = image;
@@ -27,6 +27,7 @@ public class ReservationDTO {
 		this.state = state;
 		this.check_in = check_in;
 		this.check_out = check_out;
+		this.reserve_date = reserve_date;
 	}
 	
 	

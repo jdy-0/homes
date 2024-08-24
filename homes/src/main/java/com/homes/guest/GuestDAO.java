@@ -698,7 +698,7 @@ public class GuestDAO {
 		}
 	}
 
-	// 총 이용회수와 가입 기간 구하기
+	// 총 이용횟수와 가입 기간 구하기
 	public int[] getCountandPeriod(int idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
@@ -733,42 +733,16 @@ public class GuestDAO {
 		}
 	}
 
-	public int getCountUse(int idx) {
-		try {
-			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT COUNT(*) FROM RESERVATION WHERE MEMBER_IDX=? AND STATE='이용완료'";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, idx);
-			rs = ps.executeQuery();
-			rs.next();
-			int count = rs.getInt(1);
-			return count;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-			}
-		}
-	}
-
 	// 예약 내역 확인
 	public ArrayList<ReservationDTO> getReserveHistory(int member_idx, String state) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT "
+			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT, res.reserve_date "
 					+ "FROM ROOM R, RESERVATION RES, RESERVATION_DETAIL RES_DE "
 					+ "WHERE RES.ROOM_IDX = R.ROOM_IDX " + "    AND RES.MEMBER_IDX=? "
 					+ "	AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX " + "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
 					+ "	AND RES.STATE = ? "
-					+ "ORDER BY res_de.check_in DESC";
+					+ "ORDER BY res.reserve_idx DESC";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_idx);
 			ps.setString(2, state);
@@ -781,8 +755,10 @@ public class GuestDAO {
 				//String state = rs.getString("state");
 				java.sql.Date check_in = rs.getDate("check_in");
 				java.sql.Date check_out = rs.getDate("check_out");
+				java.sql.Date reserve_date = rs.getDate("reserve_date");
+				/* java.sql.Date reserve_date = rs.getDate(("reserve_date"); */
 
-				ReservationDTO dto = new ReservationDTO(reserve_idx, image, room_name, state, check_in, check_out);
+				ReservationDTO dto = new ReservationDTO(reserve_idx, image, room_name, state, check_in, check_out, reserve_date);
 				arr.add(dto);
 			}
 			return arr;

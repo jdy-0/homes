@@ -11,10 +11,10 @@ ObjectMapper mapper = new ObjectMapper();
 
 Map<String, List<Integer>> data = mapper.readValue(json, new TypeReference<Map<String, List<Integer>>>() {});
 List<Integer> setReadIdxs = data.get("setReadidx");
-
+String userid=(String)session.getAttribute("userid");
 if(setReadIdxs!=null){
 	for(int msg_idx : setReadIdxs){
-		gdao.setMsgRead(msg_idx);
+		gdao.setMsgRead(msg_idx, userid);
 	}
 }
 %>

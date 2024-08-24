@@ -6,23 +6,33 @@
 }
 #insert_mainImg_fs{
 	border:0; 
-	border-right:3px dashed black; 
 	padding:20px;
+	width:45%;
 }
 
 #insert_mainImg_fs img{
 	margin:10px auto;
+	width:95%;
 }
 #insert_room_fs{
 	border:0; 
 	padding:20px;
+	width:45%;
 }
 #insert_room_fs table{
-	margin:15px auto;
-	width:500px;
-	font-size:20px;
+    padding: 10px;
+    color: black;
+    font-size: 20px;
+    text-align: end;
+    padding-right: 20px;
+	border:0;
 }
-#insert_room_fs table th{width:100px;}
+#insert_room_fs table th{
+	width:100px; 
+	background-color:floralwhite;
+	color:black;
+	padding-right:25px;
+}
 #insert_room_fs table select{
 	border:3px solid black;
 	font-family: 'SBAggroB';

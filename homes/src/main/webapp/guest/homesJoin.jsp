@@ -8,6 +8,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="texxt/css" href="/homes/css/mainLayout.css">
 <style>
+header{display:none;}
+footer{display:none;}
+section{font-family: 'goorm-sans-bold';}
 #fs_join{
 	margin: 30px auto;
 	width:800px;
@@ -15,39 +18,37 @@
 }
 #fs_join legend{
 	text-align: center;
-	font-family: 'SBAggroB';
 	font-size:30px;
 }
 #fs_join table{
 	margin: 30px auto;
-	border-spacing:0px;
-	border:5px solid black;
-	border-bottom:0px;
-	width:800px;
+    border-spacing: 0px;
+    /* border: 5px solid black; */
+    border-bottom: 0px;
+    width: 800px;
 }
 #fs_join table th{
-	width:100px;
-	background-color:#dec022;
-	border-right:5px solid black;
-	border-bottom:5px solid black;
-	font-family: 'SBAggroB';
-	font-size:25px;
-	color:black;
-	padding:10px;
+    width: 22%;
+    /* background-color: #dec022; */
+    /* border-right: 5px solid black; */
+    /* border-bottom: 5px solid black; */
+    font-size: 25px;
+    color: black;
+    padding: 10px;
+    text-align: end;
 }
 #fs_join table td{
-	border-bottom:5px solid black;
-	font-family: 'SBAggroB';
-	font-size:25px;
-	padding:10px;
+    font-size: 25px;
+    padding: 10px;
 }
 #fs_join table select{
-	width: 120px;
-    font-size: 25px;
-    font-family: 'SBAggroB';
+    border: 3px solid palegoldenrod;
     outline: none;
-    border: 3px solid black;
-    padding: 5px;
+    padding: 7px;
+    font-size: 25px;
+    width: 120px;
+    border-radius: 5px;
+    font-family: 'goorm-sans-bold';
 }
 #fs_join table td div{
 	display: flex;
@@ -58,32 +59,45 @@
 	margin:30px auto;
 }
 .btstyle{
-	background-color:#dec022;
-	font-family: 'SBAggroB';
+	background-color:palegoldenrod;
 	font-size:20px;
-	padding:8px;
-	border:4px solid black;
+	padding:8px 12px;
+	border:0px solid #cd280e;
+	/* color:#cd280e; */
+	border-radius:5px;
+	boxshadow:0px 0px black;
+	font-family: 'goorm-sans-bold';
 }
 .btstyle:hover{
-	background-color: #e2dccc;
-    transition: 0.5s;
+	opacity:0.5;
 }
 .textfield_solo{
-	border:3px solid black;
-	outline:none;
-	padding:5px;
-	font-family: 'Ownglyph_meetme-Rg';
-	font-size:25px;
-	width:400px;
+    border: 3px solid palegoldenrod;
+    outline: none;
+    padding: 7px;
+    font-size: 25px;
+    width: 400px;
+    border-radius: 5px;
 }
 .textfield_with{
-	border:3px solid black;
-	outline:none;
-	padding:5px 10px;
-	font-family: 'Ownglyph_meetme-Rg';
-	font-size:25px;
+    border: 3px solid palegoldenrod;
+    outline: none;
+    padding: 7px;
+    font-size: 25px;
+    border-radius: 5px;
 	width:120px;
 }
+.join_bt{
+	background-color:palegoldenrod;
+	font-size:20px;
+	padding:8px 30px;
+	border:0px solid #cd280e;
+	/* color:#cd280e; */
+	border-radius:5px;
+	boxshadow:0px 0px black;
+	font-family: 'goorm-sans-bold';
+}
+.join_bt:hover{opacity:0.5;}
 </style>
 </head>
 <script>
@@ -105,7 +119,7 @@
 			<th>ID</th>
 			<td>
 				<div>
-				<input type="text" name="id" id="id" class="textfield_solo" readonly/>
+				<input type="text" name="id" id="id" class="textfield_solo" placeholder="ID 중복 확인 먼저 진행해주세요" readonly/>
 				<input type="button" value="ID 중복 확인" onclick="openIdCheck();" class="btstyle">
 				</div>
 				<div id="error-message-id" style="color:red; margin-top:5px; font-size:15px;"></div>
@@ -137,7 +151,7 @@
 		</tr>
 		<tr>
 			<th>닉네임</th>
-			<td><input type="text" name="nickname" id="nickname" class="textfield_solo" required="required" maxlength="15"></td>
+			<td><input type="text" name="nickname" id="nickname" class="textfield_solo" required="required" maxlength="15" placeholder="최대 15자까지 입력 가능합니다."></td>
 			<div id="error-message-nickname" style="color:red; margin-top:5px; font-size:15px"></div>
 		</tr>
 		<tr>
@@ -182,8 +196,7 @@
 		
 	</table>
 	<div align="center">
-		<input type="reset" value="다시작성" class="btstyle">
-		<input type="submit" value="가입" class="btstyle" onclick="setBday(); checkValue();">
+		<input type="submit" value="가입하기" class="join_bt" onclick="setBday(); checkValue();">
 	</div>
 	</form>
 	</fieldset>

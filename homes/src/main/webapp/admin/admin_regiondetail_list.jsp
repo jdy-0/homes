@@ -28,7 +28,7 @@ function openrgProfile(param) {
 </article>
 <article class="adminContent">
 <%@include file="adminSideBar.jsp" %>
-<fieldset>
+<fieldset class="fs_adminContent">
 	<div class="content">
 		<h2>지역 관리</h2>
 		<table>
@@ -56,11 +56,11 @@ function openrgProfile(param) {
 					%>
 					<tr>
 						<td><%=adao.getParentName(arr.get(i).getRegion_idx()) %></td>
-						<td><img class="region_img" src="<%=arr.get(i).getImg()  %>" onerror="this.src='/homes/img/no_image.jpg'"></td>
-						<td>
+						<td style="text-align:center;"><img class="region_img" src="<%=arr.get(i).getImg()  %>" onerror="this.src='/homes/img/no_image.jpg'"></td>
+						<td style="text-align:center;">
 							<input type="button" value="수정" class="rbutton" onclick="openrgProfile(<%=arr.get(i).getRegion_idx() %>);">	
 						</td>		
-						<td><%=arr.get(i).getClick()  %></td>
+						<td style="text-align:center;"><%=arr.get(i).getClick()  %></td>
 					</tr>
 					<%
 				}

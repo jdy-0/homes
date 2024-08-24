@@ -14,20 +14,23 @@ section{
     font-family: 'SBAggroB';
 }
 .title{
-	background-color:#cd280e;
+	background-color:powderblue;
 	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
+	margin:0px 0px 30px 0px;
 	font-family: 'SBAggroB';
+	border-radius:10px;
+	border:0px;
+	color:#cd280e;
 }
 .sidebar {
     width: 20%;
-    background-color: #333;
-    color: white;
+    background-color:#cd280e;
+    color: lemonchiffon;
     padding: 20px;
+    border-radius:10px;
 }
 .sidebar a {
-    color: white;
+    color: lemonchiffon;
     text-decoration: none;
     display: block;
     margin: 10px 0;
@@ -37,68 +40,97 @@ section{
     padding: 20px;
 }
 .card {
-    background-color: #f4f4f4;
+	background-color: ghostwhite;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
+    border: 2px solid #ce280e;
 }
 .adminContent{
 	display:flex;
 }
 /*신고내역*/
 #reportList{
-	width:100%;
+    width: 70%;
+    border: 0;
+    margin: 10px auto;
 }
 #reportListTable {
 	width: 100%;
-	border-collapse: collapse;
-	border: 1px solid black;
+    border-spacing: 0;
+    border: 1px solid #ce280e;
+    border-radius: 5px;
 }
-#reportListTable th, td {
-	border: 1px solid black;
-	padding: 10px;
-	text-align: left;
-}
-
 #reportListTable th{
-	background-color: #f2f2f2;
+	background: #ce280e;
+    color: lemonchiffon;
+    text-align: center;
+    padding:10px;
+}
+#reportListTable td {
+	padding: 10px;
 }
 #report-modal {
 	display: none;
-	position: fixed;
-	z-index: 1000;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid black;
-	width: 400px;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: floralwhite;
+    padding: 20px;
+    width: 400px;
+    border: 2px solid #cd280e;
+    border-radius: 5px;
 }
 .content h2{
 	text-align: center;
 }
 .content table {
-	width: 550px;
-	margin: 0px auto;
-	border-top: 3px double black;
-	border-bottom: 3px double black;
+	width: 95%;
+    margin: 0px auto;
+    border: 3px solid #cd280e;
+    border-radius: 5px;
+}
+.content table thead{
+	background-color: #cd280e;
+	padding:10px;
+	color:lemonchiffon;	
 }
 .content table th{
-	background-color: #cd280e;
+	font-size:25px;
+	padding:10px;
 }
-
+/* .content table th{
+	background-color: #cd280e;
+	padding:10px;
+	color:lemonchiffon;
+} */
 .content table td{
+	text-align:left;
+}
+.content table td:first-child{
+	text-align: center;
+}
+.content table td:nth-child(5){
+	text-align: center;
+}
+.content table td:nth-child(6){
 	text-align: center;
 }
 .rbutton {
-    width: 70px;
+	width: 70px;
     background-color: #cd280e;
-    border: 3px solid black;
     font-family: 'SBAggroB';
     padding: 10px;
     font-size: 15px;
     text-align: center;
+    border: 0;
+    border-radius: 5px;
+    color: lemonchiffon;
+}
+.rbutton:hover{
+	opacity:0.5;
 }
 .region_img {
 	border: 1px solid #ccc;
@@ -110,8 +142,27 @@ section{
     background-position: center;
 }
 .fs_adminContent{
-	width:100%;
+    width: 75%;
+    border: 0;
+    margin-left: 30px;
+}
+.fs_adminContent table{
+	width: 95%;
+    border-radius: 5px;
+}
+.fs_adminContent table th{
+	padding:10px;
+	background-color:#cd280e;
+	color:lemonchiffon;
+	font-size:20px;
 }
 table{
 	border-spacing: 0;
+}
+#refund_list{
+	width:97%;
+}
+#refund_list td{
+	padding:10px;
+	text-align:center;
 }

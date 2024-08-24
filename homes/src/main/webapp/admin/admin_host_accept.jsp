@@ -12,74 +12,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/adminLayout.css">
-<!-- <style>
-.admin{
-	display: flex;
-    align-items: stretch;
-    padding: 0;
-    margin: 0;
-    border-bottom: 5px solid black;
-    width: 100%;
-    height: auto;
-    font-family: 'SBAggroB';
-}
-.title{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-}
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-}
-.content {
-    flex-grow: 1;
-    padding: 20px;
-}
-.card {
-    background-color: #f4f4f4;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-</style>
-<style>
-.content h2{
-	text-align: center;
-}
-.content table {
-	width: 550px;
-	margin: 0px auto;
-	border-top: 3px double black;
-	border-bottom: 3px double black;
-}
-.content table th{
-	background-color: #dec022;
-}
-
-.content table td{
-	text-align: center;
-}
-.rbutton {
-    width: 70px;
-    background-color: #dec022;
-    border: 3px solid black;
-    font-family: 'SBAggroB';
-    padding: 10px;
-    font-size: 15px;
-    text-align: center;
-}
-</style> -->
 <script>
 function openhstRoom(param) {
 	location.href='/homes/admin/admin_host_acceptroom.jsp?param='+param;
@@ -142,7 +74,7 @@ function openhstState(param) {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4" style="text-align: right; padding: 3px 3px 0 0; border-top: 3px dotted gray;">
+					<td colspan="4" style="text-align: right; padding: 3px 3px 0 0;">
 					<input type="button"  value="일괄승인" class="rbutton" onclick="openhstState(0)" style="width: 90px;">
 					</td>
 				</tr>

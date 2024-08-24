@@ -49,8 +49,10 @@
 	    	%>
 		</select>   
    </div>
+   <div style="text-align:center; margin:20px;">
    		<input type="hidden" name="regionIdx" value="<%=rg.getRegion_idx() %>">
-      <input type="submit" id="button" value="수정">
+      	<input type="submit" id="button" value="수정">
+   </div>
    </div>
    </form>
 </fieldset>

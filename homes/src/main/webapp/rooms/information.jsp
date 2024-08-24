@@ -416,30 +416,33 @@ window.onclick = function(event) {
             	</jsp:include>
             	
             </div>
-
-			<label for="checkin">인원수</label>
-			<input type="number" name="guest_num" id="select_guest" min="2" step="1"
-			       value="<%= (request.getParameter("guest_num") != null && !request.getParameter("guest_num").isEmpty() && !request.getParameter("guest_num").equals("0")) ? request.getParameter("guest_num") : "2" %>" 
-			       required="required" max="<%= room.getRoom_max() %>">
-			
-
-            <div class="reservation-box">
-                <div class="details">
-               
-                    <p><span>₩<%=room.getPrice() %>&nbsp;X <span id="room_day">1박</span></span></p>
-                    <p>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
-                </div>
-                <form id="reservationForm" action="reservationConfirmation.jsp" method="get" onsubmit="return checkBeforeSubmit()">
-                	
-                    <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>" id="hid_room_idx">
-                    <input type="hidden" name="price" value="<%= room.getPrice() %>" id="hid_room_price">
-                    <input type="hidden" name="total_price" value="0" id="hid_room_total_price">
-                    <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
-                    <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
-                    <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
-                    <button type="submit" class="bt_reserve" >예약하기</button>
-
-                </form>
+            
+			<div style="display: flex; flex-direction: column; align-items: flex-end;">
+				<div>
+					<label for="checkin">인원수</label>
+					<input type="number" name="guest_num" id="select_guest" min="2" step="1"
+					       value="<%= (request.getParameter("guest_num") != null && !request.getParameter("guest_num").isEmpty() && !request.getParameter("guest_num").equals("0")) ? request.getParameter("guest_num") : "2" %>" 
+					       required="required" max="<%= room.getRoom_max() %>">
+				</div>
+	
+	            <div class="reservation-box">
+	                <div class="details">
+	               
+	                    <p><span>₩<%=room.getPrice() %>&nbsp;X <span id="room_day">1박</span></span></p>
+	                    <p>총 합계: ₩<span id="room_total_price"><%= room.getPrice() %></span></p>
+	           		</div>
+	                <form id="reservationForm" action="reservationConfirmation.jsp" method="get" onsubmit="return checkBeforeSubmit()">
+	                	
+	                    <input type="hidden" name="room_idx" value="<%= room.getRoom_idx() %>" id="hid_room_idx">
+	                    <input type="hidden" name="price" value="<%= room.getPrice() %>" id="hid_room_price">
+	                    <input type="hidden" name="total_price" value="0" id="hid_room_total_price">
+	                    <input type="hidden" name="check_in" value="<%= request.getParameter("check_in") %>" id="hid_check_in">
+	                    <input type="hidden" name="check_out" value="<%= request.getParameter("check_out") %>" id="hid_check_out">
+	                    <input type="hidden" name="guest_num" value="<%= request.getParameter("guest_num") %>" id="hid_guest_num">
+	                    <button type="submit" class="bt_reserve" >예약하기</button>
+	
+	                </form>
+	            </div>
             </div>
 
         </div>

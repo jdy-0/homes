@@ -32,6 +32,28 @@
 			<fieldset class="reserveCard">
 				<table>
 					<tr>
+						<td rowspan="5" style="width:50%;"><img src="<%=lastReserve.get(i).getImage() %>"></td>
+						<td colspan="2"><%=lastReserve.get(i).getRoom_name() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약일 | </td>
+						<td style="text-align:start;"><%=lastReserve.get(i).getReserve_date() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크인 | </td>
+						<td style="text-align:start;"><%=lastReserve.get(i).getCheck_in() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크아웃 | </td>
+						<td style="text-align:start;"><%=lastReserve.get(i).getCheck_out() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약상태 | </td>
+						<td style="text-align:start;"><%=lastReserve.get(i).getState() %></td>
+					</tr>
+				</table>
+<%-- 				<table>
+					<tr>
 						<td rowspan="3"><img src="<%=lastReserve.get(i).getImage() %>"></td>
 						<td><%=lastReserve.get(i).getRoom_name() %></td>
 					</tr>
@@ -41,7 +63,7 @@
 					<tr>
 						<td><%=lastReserve.get(i).getState() %></td>
 					</tr>
-				</table>
+				</table> --%>
 			</fieldset>
 			</a>	
 			<%

@@ -26,7 +26,7 @@
 .reason-list label {
 	display: block;
 	margin-bottom: 10px;
-	font-family: 'Pretendard-Regular';
+	font-family: 'goorm-sans-bold';
 }
 
 /* 신고하기 및 후기 제출 버튼 스타일 */
@@ -49,14 +49,15 @@
 
 /* 후기 쓰기 버튼 스타일 */
 .reviews a {
-	text-decoration: none;
-	color:black;
-	background-color: palegoldenrod;
-	border:0;
-	border-radius: 5px;
-	padding: 10px;
-	font-family: 'SBAggroB', Arial, sans-serif;
-	font-size: 18px;
+    text-decoration: none;
+    color: black;
+    background-color: #cd280e;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'SBAggroB', Arial, sans-serif;
+    font-size: 18px;
+    color: lemonchiffon;
 }
 .reviews a:hover {
 	color:darkgray;
@@ -208,7 +209,7 @@ body {
 }
 #room_info p{
 	margin-left:25px;
-	font-family: 'Pretendard-Regular';
+	font-family: 'goorm-sans-bold';
 }
 #heart_div{
 	width:15%;
@@ -243,6 +244,7 @@ body {
 	border-radius: 5px; */
 }
 .room-details p {
+	
 	font-size: 20px;
 	margin: 10px 0;
 	border-bottom: 2px solid black;
@@ -401,7 +403,7 @@ body {
 	border-radius: 5px;
 	font-size: 16px;
 	box-sizing: border-box;
-	font-family: 'Pretendard-Regular';
+	font-family: 'goorm-sans-bold';
 	margin-bottom: 10px; /* 입력 필드 간격을 일정하게 유지 */
 }
 
@@ -497,13 +499,13 @@ body {
 	color:#ffc107;
 }
 .bt_reserve{
-	width: 120px;
-    background-color: palegoldenrod;
+    width: 120px;
+    background-color: #cd2803;
     border: 0px solid black;
     font-family: 'SBAggroB';
-    padding: 15px; 
+    padding: 15px;
     font-size: 20px;
-    color: black;
+    color: lemonchiffon;
     border-radius: 5px;
 }
 .bt_reserve:hover{

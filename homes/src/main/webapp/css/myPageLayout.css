@@ -170,10 +170,14 @@ form{
 .reserveCard table{
 	width: 90%;
 }
-.reserveCard table td{
-	width:50%;
+.reserveCard table td:first-child{
+	/* width:50%; */
 	padding: 20px 10px;
 	text-align:start;
+}
+
+.reserveCard table td:last-child{
+	width:30%;
 }
 .reserveCard table img{
 	width: 100%;

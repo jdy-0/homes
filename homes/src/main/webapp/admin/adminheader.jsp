@@ -18,7 +18,13 @@
 <%@ page import="com.homes.room.RoomDTO" %>
 <jsp:useBean id="rmdto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="rmdao" class="com.homes.room.RoomDAO"></jsp:useBean>
-<!-- <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css"> -->
+<link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
+<style>
+td{
+	text-align:center;
+	border:0;
+}
+</style>
 <script>
 function openLoginPopup(){
 	var option='width=600, height=300, resizable=no, top=200, left=470';
@@ -29,14 +35,14 @@ function openLoginPopup(){
 <div id="header_top">
 	<table>
 		<tr>
-			<td class="logo_black">H</td>
-			<td class="logo_yellow">O</td>
-			<td class="logo_black">M</td>
+			<td class="logo_black" style="text-align:center;">H</td>
+			<td class="logo_yellow" style="text-align:center;">O</td>
+			<td class="logo_black" style="text-align:center;">M</td>
 		</tr>
 		<tr>
-			<td class="logo_yellow">E</td>
-			<td class="logo_icon"><a href="/homes/admin/admin.jsp">&#127960;</a></td>
-			<td class="logo_yellow">S</td>
+			<td class="logo_yellow" style="text-align:center;">E</td>
+			<td class="logo_icon" style="text-align:center;"><a href="/homes/admin/admin.jsp">&#127960;</a></td>
+			<td class="logo_yellow" style="text-align:center;">S</td>
 		</tr>
 	</table>
 	<div id="header_top_center">
@@ -63,8 +69,8 @@ function openLoginPopup(){
 			return;
 		}else{
 			%>
-			<div id="header_top_right_logout">
-				<a href="/homes/admin/admin_logout.jsp">LOGOUT</a>
+			<div id="header_top_right_logout" style="height: 100px; display: flex; align-items: flex-end;">
+				<a href="/homes/admin/admin_logout.jsp" style="color:lemonchiffon;">LOGOUT</a>
 			</div>
 			<%
 		}
@@ -73,5 +79,5 @@ function openLoginPopup(){
 			<p>since 2024</p>
 		</div>
 	</div>
-</div>
+</div> 
 </header>

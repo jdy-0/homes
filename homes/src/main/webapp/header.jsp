@@ -44,56 +44,42 @@ function openLoginPopup(){
 		}else{
 			%>
 			<div id="header_top_right_profile">
-				<a href="/homes/guest/mypage.jsp"><%=usernickname %>님<br>Profile</a>
 				<%
 				int totalUnreadMsg = gdao.countUnreadMsg(userid);
 				boolean unread = gdao.checkNonReadMsg(userid);
-				String msgicon = unread ? "&#128233;"+" ("+totalUnreadMsg+")" : "&#9993;";
+				String msgColor = unread ? "powderblue" : "cornsilk";
+				String msgicon = unread ? "&#128486;":"";
 				%>
-				<a href="/homes/guest/msg.jsp"><%=msgicon %></a>							
-			</div>
+				<table style="width:100%;">
+				<tr>
+					<td style="width:60%; text-align:start;"><a href="/homes/guest/mypage.jsp"><%=usernickname %>님<br>My Page</a></td>
+					<td style="width:30%; display:flex; justify-content:space-evenly; align-items: baseline; text-align:start;">
+						<a href="/homes/guest/msg.jsp" style="color:<%=msgColor%>; font-size:80px;">&#128490;</a>
+						<p style="color:">(<%=totalUnreadMsg %>)</p>
+					</td>
+				</tr>
+				</table>
+				<%-- <a href="/homes/guest/mypage.jsp"><%=usernickname %>님<br>My Page</a>
+				
+				<a href="/homes/guest/msg.jsp"><%=msgicon %></a>	 --%>						
+			</div><!-- 
 			<div id="header_top_right_logout">
 				<a href="/homes/guest/logout.jsp">LOGOUT</a>
-			</div>
+			</div> -->
 			<%
 		}
 		%>
 		
 		<div id="header_top_right_p">
+		<%
+		if(userid!=null && userid!=""){
+			%>
+			<a href="/homes/guest/logout.jsp">LOGOUT</a>
+			<%
+		}
+		%>
 			<p>since 2024</p>
 		</div>
 	</div>
 </div>
-<%-- <div id="header_bottom">
-	<div>
-	<table id="table_barcode">
-		<tr>
-			<%
-			for(int i=1;i<=30;i++){
-			%>
-			<th> </th>
-			<td> </td>
-			<%
-			}
-			%>
-		</tr>
-	</table>
-	</div>
-	<div>
-	<table id="table_fullname">
-		<tr>
-			<th id="th_h">H</th>
-			<td id="td_h">Homes</td>
-			<th id="th_o">O</th>
-			<td id="td_o">Opened</td>
-			<th id="th_m">M</th>
-			<td id="td_m">Mesmerizing</td>
-			<th id="th_e">E</th>
-			<td id="td_e">Endless</td>
-			<th id="th_s">S</th>
-			<td id="td_s">Spaces</td>
-		</tr>
-	</table>
-	</div>
-</div> --%>
 </header>

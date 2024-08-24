@@ -78,14 +78,24 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 			<fieldset class="reserveCard">
 				<table>
 					<tr>
-						<td rowspan="3"><img src="<%=plannedRes.get(i).getImage() %>"></td>
-						<td><%=plannedRes.get(i).getRoom_name() %></td>
+						<td rowspan="5" style="width:50%;"><img src="<%=plannedRes.get(i).getImage() %>"></td>
+						<td colspan="2"><%=plannedRes.get(i).getRoom_name() %></td>
 					</tr>
 					<tr>
-						<td><%=plannedRes.get(i).getCheck_in() %> ~ <%=plannedRes.get(i).getCheck_out() %></td>
+						<td style="text-align:end;">예약일 | </td>
+						<td style="text-align:start;"><%=plannedRes.get(i).getReserve_date() %></td>
 					</tr>
 					<tr>
-						<td><%=plannedRes.get(i).getState() %></td>
+						<td style="text-align:end;">체크인 | </td>
+						<td style="text-align:start;"><%=plannedRes.get(i).getCheck_in() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크아웃 | </td>
+						<td style="text-align:start;"><%=plannedRes.get(i).getCheck_out() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약상태 | </td>
+						<td style="text-align:start;"><%=plannedRes.get(i).getState() %></td>
 					</tr>
 				</table>
 			</fieldset>
@@ -109,14 +119,24 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 			<fieldset class="reserveCard">
 				<table>
 					<tr>
-						<td rowspan="3"><img src="<%=waitingList.get(i).getImage() %>"></td>
-						<td><%=waitingList.get(i).getRoom_name() %></td>
+						<td rowspan="5" style="width:50%;"><img src="<%=waitingList.get(i).getImage() %>"></td>
+						<td colspan="2"><%=waitingList.get(i).getRoom_name() %></td>
 					</tr>
 					<tr>
-						<td><%=waitingList.get(i).getCheck_in() %> - <%=waitingList.get(i).getCheck_out() %></td>
+						<td style="text-align:end;">예약일 | </td>
+						<td style="text-align:start;"><%=waitingList.get(i).getReserve_date() %></td>
 					</tr>
 					<tr>
-						<td><%=waitingList.get(i).getState() %></td>
+						<td style="text-align:end;">체크인 | </td>
+						<td style="text-align:start;"><%=waitingList.get(i).getCheck_in() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">체크아웃 | </td>
+						<td style="text-align:start;"><%=waitingList.get(i).getCheck_out() %></td>
+					</tr>
+					<tr>
+						<td style="text-align:end;">예약상태 | </td>
+						<td style="text-align:start;"><%=waitingList.get(i).getState() %></td>
 					</tr>
 				</table>
 			</fieldset>
