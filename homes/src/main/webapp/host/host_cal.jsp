@@ -199,11 +199,16 @@
 }
 
 .holi {
-	background-color: #cd280e;
+	background-color: tomato;
+	brder:1px solid #cd280e;
+	border-radius:30px;
+	color:white;
 }
 
 .hol_selected {
-	background-color: lightpink;
+	background-color: lightcoral;
+	border-radius:30px;
+	
 }
 
 .choosen{
@@ -211,8 +216,10 @@
 }
 
 .holi_line {
-	background-color: #cd280e;
+	background-color: tomato;
+	color:white;
 	opacity: 0.8;
+	border-radius:30px;
 }
 </style>
 <%
