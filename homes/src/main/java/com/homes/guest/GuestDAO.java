@@ -602,11 +602,11 @@ public class GuestDAO {
 	}
 
 	// 메세지 내용 보기 메소드
-	public MsgDTO getMsgContent(int msgidx) {
+	public MsgDTO getMsgContent(int msgidx, String userid) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 
-			setMsgRead(msgidx);
+			setMsgRead(msgidx, userid);
 
 			String sql = "SELECT * FROM HOMES_MSG WHERE IDX=?";
 			ps = conn.prepareStatement(sql);
@@ -643,18 +643,18 @@ public class GuestDAO {
 	}
 
 	// 메세지 상태 읽음으로 변경하는 메소드
-	public void setMsgRead(int msgidx) {
+	public void setMsgRead(int msgidx, String userid) {
 		boolean close = false;
 		try {
 			if (conn.isClosed()) {
 				conn = com.homes.db.HomesDB.getConn();
 				close = true;
 			}
-
-			String sql = "UPDATE HOMES_MSG SET READ_STATE = 1 WHERE IDX = ?";
+			String sql = "UPDATE HOMES_MSG SET READ_STATE = 1 WHERE IDX = ? and RECEIVER_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, msgidx);
-
+			ps.setString(2, userid);
+			
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

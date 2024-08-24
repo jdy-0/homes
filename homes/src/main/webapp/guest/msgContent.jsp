@@ -64,7 +64,7 @@ if(msgidx_s == null || msgidx_s== ""){
 	msgidx_s = "0";
 }
 int msgidx = Integer.parseInt(msgidx_s);
-MsgDTO msgdto = gdao.getMsgContent(msgidx);
+MsgDTO msgdto = gdao.getMsgContent(msgidx, userid);
 %>
 <section>
 <%-- <%@include file="/guest/msgNav.jsp" %> --%>
