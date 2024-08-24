@@ -109,10 +109,10 @@ li{
 
 .contentWrapper {
 	display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     width: 100%;
-/*     display: flex;
-    justify-content: space-between;*/
+     display: flex;
+    justify-content: space-between;
     align-items: flex-start; /*상단 정렬*/
     margin-bottom: 20px; /*아래쪽 여백 추가*/ 
 }
@@ -131,7 +131,7 @@ li{
 }
 .resByRoom{
 	margin: 10px auto;
-    width: 50%;
+    width: 80%;
     border: 2px solid #cd280e;
     border-radius: 10px;
     padding: 20px;

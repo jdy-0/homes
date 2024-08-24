@@ -25,7 +25,7 @@ ArrayList<RoomDTO> arr = (ArrayList<RoomDTO>) session.getAttribute("room_arr");
 <%@ include file="/header.jsp" %>
 <section>
 <%@include file="hostheader.jsp" %>
-<div>
+<div style="width: 70%; margin:10px auto;">
 <%
 		if(arr==null||arr.size()==0){
 			%>
@@ -86,6 +86,7 @@ roomNames.forEach(function(roomName) {
                 // 현재 display 상태를 확인하고 토글합니다.
                 if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
                     contentWrapper.style.display = "flex";
+                    contentWrapper.style.justifyContent = "space-around";
                 } else {
                     contentWrapper.style.display = "none";
                 }
