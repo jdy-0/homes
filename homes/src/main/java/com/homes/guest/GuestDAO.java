@@ -698,31 +698,6 @@ public class GuestDAO {
 		}
 	}
 
-	// 보낸 메세지 삭제하기
-	public int dltSendMsg(int msgidx) {
-		try {
-			conn = com.homes.db.HomesDB.getConn();
-			String sql = "UPDATE HOMES_MSG SET SENDER_STATE = 0 WHERE IDX = ?";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, msgidx);
-
-			int count = ps.executeUpdate();
-
-			return count;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ERROR;
-		} finally {
-			try {
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-			}
-		}
-	}
-
 	// 총 이용회수와 가입 기간 구하기
 	public int[] getCountandPeriod(int idx) {
 		try {
