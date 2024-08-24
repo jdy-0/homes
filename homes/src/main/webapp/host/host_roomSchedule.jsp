@@ -47,7 +47,7 @@ if (rarr == null || rarr.size() == 0) {
                 </jsp:include> 
             </article>
         </div>
-        <div id="hr">
+        <!-- <div id="hr"> -->
             <hr>
         </div>
 <%
@@ -56,5 +56,6 @@ if (rarr == null || rarr.size() == 0) {
 %>
 </div>
 </section>
+<%@include file="/footer.jsp" %>
 </body>
 </html>

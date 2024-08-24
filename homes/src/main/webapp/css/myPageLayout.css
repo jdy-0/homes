@@ -183,7 +183,7 @@ form{
 	margin:30px auto; width:90%; border-spacing:10px;
 }
 #myReview table td{
-	width:50%; border:3px solid #cd280e; padding:15px; border-radius:10px;
+	width:50%; border:3px solid #cd280e; padding:15px; border-radius:10px; background: floralwhite;
 }
 #myReview table td div div{
 	padding-left:20px;

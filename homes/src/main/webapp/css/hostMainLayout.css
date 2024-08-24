@@ -169,6 +169,23 @@ li{
 #roomselect li{
 	list-style:none;
 }
+/*room_schedule css*/
+#div111{
+	width: 100%;
+    margin: 10px auto;
+    border: 3px solid #ca3101;
+    height: 570px;
+    border-radius: 10px;
+    background: floralwhite;
+}
+#div111 article{
+	width: 50%;
+    text-align: center;
+}
+#div111 article img{
+	width: 80%;
+    height: 450px;
+}
 /* #host_main_article form img{
 	width: 800px;
 	height: 700px;

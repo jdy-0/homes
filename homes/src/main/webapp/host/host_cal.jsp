@@ -20,6 +20,7 @@
 
 .date-picker>div {
 	float: left;
+	margin-top:60px;
 }
 
 .date-picker>div>div {
