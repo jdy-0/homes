@@ -25,13 +25,14 @@ ArrayList<RoomDTO> arr = (ArrayList<RoomDTO>) session.getAttribute("room_arr");
 <%@ include file="/header.jsp" %>
 <section>
 <%@include file="hostheader.jsp" %>
-<div style="width: 70%; margin:10px auto;">
+<div style="width: 70%; margin:10px auto; display:block;">
 <%
 		if(arr==null||arr.size()==0){
 			%>
 				<h3>등록된 숙소가 없습니다.</h3>
 			<%
 		}else{
+				
 			int a = arr.size();
 			for(int i=0;i<arr.size();i++){
 				ArrayList<RoomDTO> scarr = scdao.getScheduleByRoomidx(arr.get(i).getRoom_idx());
@@ -39,8 +40,11 @@ ArrayList<RoomDTO> arr = (ArrayList<RoomDTO>) session.getAttribute("room_arr");
 					
 				
 				%>
-				<div class = "resByRoom" id="resByRoom<%=i%>">
+				<div class = "resByRoom" id="resByRoom<%=i%>" style="display:block;">
 				<h2 class = "roomName"><%=arr.get(i).getRoom_name() %>: <%=scarr.size() %>건 </h2> 
+				
+				<div>
+				
 <%
 				for(int j=0; j<scarr.size(); j++){
 					
@@ -61,9 +65,14 @@ ArrayList<RoomDTO> arr = (ArrayList<RoomDTO>) session.getAttribute("room_arr");
 					</div>
 				<%} %>
 				</div>
+				
+				</div>
 				<%
 			}
-		}
+				%>
+				
+				<%
+			}
 	}
 	%>
 </div>
@@ -89,7 +98,7 @@ roomNames.forEach(function(roomName) {
                     contentWrapper.style.display = "flex";
                     contentWrapper.style.justifyContent = "space-around";
 
-                    contentWrapper.style.display = "block";
+                    contentWrapper.style.display = "flex";
 
                 } else {
                     contentWrapper.style.display = "none";
