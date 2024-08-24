@@ -118,7 +118,7 @@ li{
 }
 .contenWrapper article{
    
-   flex: 1; /* 모든 article이 동일한 비율로 차지하도록 설정 */
+    flex: 1; /* 모든 article이 동일한 비율로 차지하도록 설정 */
     margin-right: 20px; /* 각 article 사이의 간격 */
     height: 200px; /* 고정 높이 설정 */
     box-sizing: border-box; /* 패딩과 테두리가 요소의 전체 너비에 포함되도록 설정 */
@@ -136,7 +136,20 @@ li{
     border-radius: 10px;
     padding: 20px;
     background-color:floralwhite;
+    display:flex;
 }
+
+
+.manageByRoom{
+	margin: 10px auto;
+    width: 50%;
+    border: 2px solid #cd280e;
+    border-radius: 10px;
+    padding: 20px;
+    background-color:floralwhite;
+    display:flex;
+}
+
 
 /*호스트메인페이지 = 숙소관리*/
 
