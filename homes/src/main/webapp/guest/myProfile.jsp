@@ -83,6 +83,11 @@ GuestDTO dto = gdao.getUserProfile(userid);
 </section>
 <%@include file="/footer.jsp" %>
 <script>
+function selectedMenu(){
+	document.getElementById("manageAccount").style.backgroundColor = 'white';
+	document.getElementById("manageAccount").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
 function changeImg(){
 	document.getElementById('profileImgFile').click();
 }

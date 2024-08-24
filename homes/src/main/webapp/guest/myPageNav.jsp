@@ -15,28 +15,28 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 	<nav>
 		<ul id="ul_menu">
 			<!-- <li><a href="mypage.jsp">My Page</a></li> -->
-			<li><a href="" id="board" class="fa fa-caret-down" aria-hidden="true">계정관리</a>
+			<li id="manageAccount"><a href="" id="board" class="fa fa-caret-down" aria-hidden="true">계정관리</a>
    				<ul id="ul_account s-d"  class="ul_submenu dropdown" >
         			<li><a href="/homes/guest/myProfile.jsp">나의 정보</a></li>
-        			<li><a href="javascript:openPwdCheck();">비밀번호 변경</a></li>
+        			<li><a href="/homes/guest/updatePwd.jsp">비밀번호 변경</a></li>
     			</ul>
 			</li>
-			<li><a href="" id="board">나의 예약</a>
+			<li id="manageReservation"><a href="" id="board">나의 예약</a>
     			<ul id="ul_myreserve s-d" class="ul_submenu dropdown">
         			<li><a href="/homes/guest/myReservation.jsp">예약 내역 보기</a></li>
         			<li><a href="/homes/guest/myResereHistory.jsp">지난 여행</a></li>
         			<li><a href="/homes/guest/myCancel.jsp">취소 내역 보기</a></li>
     			</ul>
 			</li>
-			<li><a href="" id="board">LIKE</a>
+<!-- 			<li id="manageLike"><a href="" id="board">LIKE</a>
     			<ul id="ul_myLike s-d" class="ul_submenu dropdown">
         			<li><a href="/homes/guest/myLike.jsp">내가 찜한 목록</a></li>
     			</ul>
-			</li>
-			<li><a href="" id="board">나의 활동</a>
+			</li> -->
+			<li id="manageActivity"><a href="" id="board">나의 활동</a>
     			<ul id="ul_myActivity s-d" class="ul_submenu dropdown">
         			<li><a href="/homes/guest/myReview.jsp">내가 쓴 리뷰</a></li>
-        			<li><a href="/homes/guest/msg.jsp">쪽지</a></li>
+        			<li><a href="/homes/guest/myLike.jsp">내가 찜한 숙소</a></li>
     			</ul>
 			</li>
 			<li><a href="/homes/host/hostmain.jsp">HOSTING</a></li>
@@ -72,10 +72,7 @@ function showSubMenu(submenuId){
 	        submenu.style.display = "none";
 	    }
 }
-function openPwdCheck(){
-	var option='width=500, height=300, resizable=no, top=200, left=470';
-	window.open('/homes/guest/pwdCk_popup.jsp','PwdCheck',option);
-}
+
 
 
 

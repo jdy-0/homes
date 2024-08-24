@@ -119,6 +119,11 @@
 </section>
 <%@include file="/footer.jsp" %>
 <script>
+function selectedMenu(){
+	document.getElementById("manageActivity").style.backgroundColor = 'white';
+	document.getElementById("manageActivity").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
 /*좋아요 해제하기 위한 함수*/
 function dltLike(like_idx){
 	var idx = like_idx;

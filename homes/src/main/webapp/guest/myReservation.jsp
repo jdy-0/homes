@@ -169,6 +169,11 @@ function showDiv(divId){
 		}
 	} */
 }
+function selectedMenu(){
+	document.getElementById("manageReservation").style.backgroundColor = 'white';
+	document.getElementById("manageReservation").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
 </script>
 </body>
 </html>

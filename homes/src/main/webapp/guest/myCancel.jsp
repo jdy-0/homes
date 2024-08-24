@@ -51,5 +51,12 @@
 </article>
 </section>
 <%@include file="/footer.jsp" %>
+<script>
+function selectedMenu(){
+	document.getElementById("manageReservation").style.backgroundColor = 'white';
+	document.getElementById("manageReservation").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
+</script>
 </body>
 </html>

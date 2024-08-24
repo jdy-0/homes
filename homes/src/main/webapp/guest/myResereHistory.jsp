@@ -16,7 +16,7 @@
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
 <article id="myReserveHistory" class="myPageContent_ar">
-	<h2 class="myReserve_h">지난 여행</h2>
+	<h2 class="myReserve_h">지난 예약</h2>
 	<div id="lastReserve">
 	<%
 	int useridx = (Integer)session.getAttribute("useridx");
@@ -52,5 +52,12 @@
 </article>
 </section>
 <%@include file="/footer.jsp" %>
+<script>
+function selectedMenu(){
+	document.getElementById("manageReservation").style.backgroundColor = 'white';
+	document.getElementById("manageReservation").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
+</script>
 </body>
 </html>

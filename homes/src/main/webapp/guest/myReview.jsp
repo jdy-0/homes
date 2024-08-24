@@ -66,6 +66,11 @@
 </section>
 <%@include file="/footer.jsp" %>
 <script>
+function selectedMenu(){
+	document.getElementById("manageActivity").style.backgroundColor = 'white';
+	document.getElementById("manageActivity").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
 function openFullReview(divId){
 	
 	var div = document.getElementById(divId);
