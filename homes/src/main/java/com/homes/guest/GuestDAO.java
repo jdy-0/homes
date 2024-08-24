@@ -187,10 +187,9 @@ public class GuestDAO {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, idx);
 			rs = ps.executeQuery();
-			String img = "";
+			String img = "default_profile.svg";
 			if (rs.next()) {
 				img = rs.getString("img");
-
 			}
 			return img;
 		} catch (Exception e) {
@@ -215,7 +214,7 @@ public class GuestDAO {
 	        return false; // 파일이 없으면 업로드 X
 	    }
 
-	    String fileName = idx + ".jpg"; //파일 이름을 useridx로 저장
+	    String fileName = idx + ".jpg"; //파일 이름을 userid로 저장
 	    String filePath = uploadDir + File.separator + fileName;
 
 	    // 이미 해당 사용자의 사진 파일이 있으면 덮어쓰기
