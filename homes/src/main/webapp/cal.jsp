@@ -306,6 +306,9 @@
     }
     
     function chooseDate(year, month, day, dayElement) {
+    	if(dayElement.classList.contains('selected')){
+	 		return;
+	 	}
     	
         document.querySelectorAll('.none').forEach(span => span.classList.remove('selected'));
         dayElement.classList.add('selected');
@@ -363,9 +366,15 @@
 /*             calendar.style.display = 'none';
  */            
         } else if (document.querySelectorAll('.selected').length ==2){
-
+			
+        	
         	date_from_to[1] = dayElement;
+        	
+        	
+        		
+        	
 
+		
             const firstDateId = selectedDates[0].id.replaceAll('d', '');
             const lastDateId = selectedDates[1].id.replaceAll('d', '');
 
@@ -400,9 +409,17 @@
             });
          	to.value = makeIdToDate(dayElement.id);
         	
-           
+         	if (new Date(makeIdToDate(date_from_to[0].id)).getTime() > new Date(makeIdToDate(date_from_to[1].id)).getTime()) {
+        	    [selectedDates[0], selectedDates[1]] = [selectedDates[1], selectedDates[0]];
+        	    [date_from_to[0], date_from_to[1]] = [date_from_to[1], date_from_to[0]];
+        	    
+        	    from.value = makeIdToDate(date_from_to[0].id);
+        	    to.value = makeIdToDate(date_from_to[1].id);
+        	}
 
         } else {
+        	
+
 
         	const length = selectedDates.length;
         	
@@ -456,9 +473,14 @@
     }
     
  function againChooseDate(year, month, day, dayElement) {
+	    
+	 
+
+	 
         document.querySelectorAll('.none').forEach(span => span.classList.remove('selected'));
-        dayElement.classList.add('selected');
         
+        dayElement.classList.add('selected');
+
         /* alert(date_from_to[0].id);
         alert(date_from_to[1].id); */
 

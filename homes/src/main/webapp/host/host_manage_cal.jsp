@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ page import="com.homes.host.ScheduleDTO"%>
 <%@ page import="java.util.*"%>
 <jsp:useBean id="sdao" class="com.homes.host.ScheduleDAO"></jsp:useBean>
+<%request.setCharacterEncoding("UTF-8"); %>
 <style>
 .date {
 	width: 200px;
@@ -250,15 +252,24 @@ span{
 }
 </style>
 <%
+
 String s_room = request.getParameter("room");
+
 
 int room=0;
 if(s_room!=null && !s_room.equals("")){
 	room = Integer.parseInt(s_room);
 }
+String start = request.getParameter("start");
+String end = request.getParameter("end");
+String reason = request.getParameter("reason");
 
-String seq = request.getParameter("seq");
-ArrayList<ScheduleDTO> cal_arr = sdao.showAllSchdule(room);
+if(reason.length()==3){
+	reason = "예약";
+} else if(reason.length()==2){
+	reason = "휴무";
+}
+
 String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 %>
 
@@ -269,22 +280,18 @@ String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
 
 
 
-	if(cal_arr!=null || cal_arr.size()!=0){
-		
-	
-		for(int j=0; j<cal_arr.size(); j++){
+
 		%>
-		<input type="hidden" class="<%=cal_arr.get(j).getReason() %>"
-			data-type="start" value="<%=cal_arr.get(j).getStart_day()%>" readonly>
-		<input type="hidden" class="<%=cal_arr.get(j).getReason() %>"
-			data-type="end" value="<%=cal_arr.get(j).getEnd_day()%>" readonly>
+		<input type="hidden" class="<%=reason %>"
+			data-type="start" value="<%=start%>" readonly>
+		<input type="hidden" class="<%=reason %>"
+			data-type="end" value="<%=end%>" readonly>
 		<%
-		}
-	}
+
 		%>
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year">초기화</span> <span class="submit">휴무 등록</span>
+			<span><%=reason %></span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
@@ -307,7 +314,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const nextMonthBtn = calendar.querySelector('.next-month');
     const side_cal = calendar.querySelector('.side_cal');
     
-    const reset = calendar.querySelector('.month-year');
     const submit = calendar.querySelector('.submit');
 
     var index =1;
@@ -317,14 +323,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let nextDate = new Date();
     var loc = 0;
     
-    reset.addEventListener('click', () => {
-        
-    	side_cal.querySelectorAll('.hol_selected').forEach(span => span.classList.replace('hol_selected','none'));
-/*     	side_cal.querySelectorAll('.choosen').forEach(span => span.classList.remove	('choosen'));
- */    	
-        /* holiday */
-    });
-    
+
     
     function getAllhol_selected(){
     	
@@ -379,12 +378,39 @@ document.addEventListener("DOMContentLoaded", function() {
     	
     }
     
-    submit.addEventListener('click', () => {
-        
-    	const range_date = getAllhol_selected();
-    	makeHidden(range_date);
+	function moveToCheckInDate(){
+    	dateCheck();
+
+		for(var i=0; i<cals.length; i++){
+			
+			cals[i].style.display='none';
+		}
+        if(loc+2==cals.length){
+        	renderCalendar(nextDate);
+
+            cals[loc+1].style.display='block';
+
+        } else {
+            cals[loc+1].style.display='block';
+            cals[loc+2].style.display='block';
+        }
+   
+    	loc++;
+	}
+	
+    function getMonBetMon(start){
     	
-    });
+    	const today = new Date();
+
+    	const year = start.getFullYear();
+    	const today_year = today.getFullYear();
+    	
+    	const month = start.getMonth();
+    	const today_month = today.getMonth();
+    	
+    	return (year-today_year)*12 + (month-today_month);
+    	
+    }
     
     atStart();
     
@@ -393,6 +419,12 @@ document.addEventListener("DOMContentLoaded", function() {
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
+    	const startVal = calendar.querySelector('input[data-type="end"]');
+    	const start = new Date(startVal.value);
+        for(var i =0; i< getMonBetMon(start)-1; i++){
+	        moveToCheckInDate();
+
+		}
     }
     
 
@@ -502,51 +534,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		
     } 
     
-    
 
-    prevMonthBtn.addEventListener('click', () => {
-    	if(loc==0) return;
-		nextDate.setMonth(nextDate.getMonth()- 1);
-
-		
-		for(var i=0; i<cals.length; i++){
-			cals[i].style.display='none';
-		}
- 		cals[loc+1].style.display='none';
-		cals[loc].style.display='block';
-		cals[loc-1].style.display='block';
-
-    	loc--;
-
-
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-    	dateCheck();
-
-		for(var i=0; i<cals.length; i++){
-			
-			cals[i].style.display='none';
-		}
-
-        
-        if(loc+2==cals.length){
-        	renderCalendar(nextDate);
-
-            cals[loc+1].style.display='block';
-
-        } else {
-            cals[loc+1].style.display='block';
-            cals[loc+2].style.display='block';
-        }
-   
-    	loc++;
-
-        
-/* 		alert((loc+9)%12);
- */		
-
-    });
     
 	function dateCheck(){
 		var checkDate = nextDate.getDate();
@@ -625,10 +613,10 @@ document.addEventListener("DOMContentLoaded", function() {
         	}
         	
         	
-        	
+/*         	
         	dow_span.addEventListener('click', () => {   	
 				chooseWeeks(dow_span,one_month_cal);
-            });
+            }); */
 
 		}
 		one_month_cal.appendChild(weekdays);
@@ -687,9 +675,9 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.id = 'd' + year + (month + 1).toString().padStart(2, '0') + (day.toString().padStart(2, '0'));
  
 
-            dayElement.addEventListener('click', () => {   	
+ /*            dayElement.addEventListener('click', () => {   	
 				chooseDate(year, month, day, dayElement);
-            });
+            }); */
             monthContainer.appendChild(dayElement);
             
             if(cals.length==1 && day<currentDate.getDate()){
@@ -701,7 +689,6 @@ document.addEventListener("DOMContentLoaded", function() {
         one_month_cal.appendChild(monthContainer);
         setAllSchedule();
 
-        attachTag(one_month_cal);
     }
     
     const ClickedDates = [];
@@ -715,16 +702,11 @@ document.addEventListener("DOMContentLoaded", function() {
 					|| dayElement.matches('.holi_line')) {
 			  if (!dayElement.matches('.selected') && !dayElement.matches('.disabled') && !dayElement.matches('.line')) {
 				const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
-				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 휴무 일정을 삭제하시겠습니까?");
+				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 일정을 삭제하시겠습니까?");
 				if(checkDel){
-					location.href='host_roomSchedule_Delete_ok.jsp?type=1&room=<%=room%>&date='+longDate; 
+					location.href='host_roomSchedule_Delete_ok.jsp?room=<%=room%>&date='+longDate; 
 				}
-			  } else if(dayElement.matches('.selected') || dayElement.matches('.line')){
-				  const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
-					const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 휴무 일정을 삭제하시겠습니까?");
-					if(checkDel){
-						location.href='host_roomSchedule_Delete_ok.jsp?type=2&room=<%=room%>&date='+longDate; 
-					}			  }
+			  }
 			        return;  // 일치하면 함수 종료
 		}	
 		// line none 클릭마다 변환

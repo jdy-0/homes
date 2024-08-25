@@ -48,7 +48,6 @@ if (rarr == null || rarr.size() == 0) {
             </article>
         </div>
         <!-- <div id="hr"> -->
-            <hr>
         </div>
 <%
     }
