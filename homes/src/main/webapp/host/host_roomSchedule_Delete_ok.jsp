@@ -13,8 +13,17 @@ long date=0;
 if(s_date!=null && !s_date.equals("")){
 	date = Long.parseLong(s_date);
 }
-
-int count = scdao.delSelectedRange(date, room);
+int type = 0;
+String s_type = request.getParameter("type");
+if(s_type!=null && !s_type.equals("")){
+	type = Integer.parseInt(s_type);
+}
+int count = -1;
+if(type==1){
+	count = scdao.delSelectedRange(date, room);
+} else if(type==2){
+	count = -1;
+}
 
 if(count>0){
 %>

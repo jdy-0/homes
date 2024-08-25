@@ -33,9 +33,9 @@
 	<ul>
 		
 		<li><a href="/homes/host/hostmain.jsp">숙소 정보 관리</a></li>
-		<li><a href="/homes/host/hostbooking.jsp">숙소 스케줄 관리</a></li>
-		<li><a href="/homes/host/host_roomSchedule.jsp">휴무 등록</a></li>
-		<li><a href="/homes/host/hostmanage.jsp">숙소 이용 현황</a></li>
+		<li><a href="/homes/host/hostbooking.jsp">숙소 예약 승인</a></li>
+		<li><a href="/homes/host/host_roomSchedule.jsp">휴무 관리</a></li>
+		<li><a href="/homes/host/hostmanage.jsp">숙소 스케줄</a></li>
 		<li><a href="/homes/host/hostinsert.jsp">숙소 등록 요청</a></li>
 				
 		<li><a href="/homes/host/hostschedule_veiw_test.jsp">매출 관리</a></li>

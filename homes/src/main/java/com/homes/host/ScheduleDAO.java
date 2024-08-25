@@ -119,7 +119,42 @@ public class ScheduleDAO {
 	            }
 	        }
 		}
-	
+		public int delSelectedResRange(long time,int room_idx) {
+	       try {
+	          conn = com.homes.db.HomesDB.getConn(); 
+	          String sql = " delete from UNAVAILABLE_SCHEDULE u "
+	            		+ " where u.room_idx = ? And ? BETWEEN START_DAY AND END_DAY "; 
+	          PreparedStatement ps = conn.prepareStatement(sql);
+	          ps.setInt(1, room_idx);
+	          ps.setDate(2, new java.sql.Date(time));
+	          int count = ps.executeUpdate();
+	          return count;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return -1;
+	        } finally {
+	            // 자원 해제 (메모리 누수 방지)
+	            try {
+	            	if (rs != null) rs.close(); 
+	            	if (ps != null) ps.close();
+	            	if (conn != null) conn.close();
+	            } catch (Exception e2) {
+	            	e2.printStackTrace();
+	            }
+	        }
+		}
+		
+		public int checkDelSelectedRes(Connection conn, int room_idx, java.sql.Date selDate) {
+			try {
+				String sql = " select count(*) from reservation r join reservation_detail rd on r.reserve_idx = rd.reserve_idx"
+						+ "		where room_idx = ?";
+				
+				return 0;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return -1;
+			}
+		}
 	
 	
 }
