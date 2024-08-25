@@ -200,7 +200,7 @@ if (arr == null || arr.size() == 0) {
 %>
            </div>
 <%
-        }
+        }//test
     } 
 } 
 %>
