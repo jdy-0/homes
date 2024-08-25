@@ -504,22 +504,23 @@ window.onclick = function(event) {
     <div class="modal-content">
         <span class="close-btn" onclick="closeEditReviewModal()">&times; 닫기</span>
         <h2>리뷰 수정</h2>
-        <form id="edit-review-form" method="post" action="editReview_ok.jsp" accept-charset="UTF-8">
-            <input type="hidden" id="edit-review-id" name="review_id" value="">
-            <input type="hidden" id="edit-room-idx" name="room_idx" value="">
-            <textarea id="edit-review-text" name="review_content" placeholder="수정할 내용을 입력하세요..." required></textarea>
-            
-            <!-- 별점 선택 -->
-            <div class="star-rating">
-                <input type="radio" id="edit-star5" name="rate" value="5"><label for="edit-star5">★</label>
-                <input type="radio" id="edit-star4" name="rate" value="4"><label for="edit-star4">★</label>
-                <input type="radio" id="edit-star3" name="rate" value="3"><label for="edit-star3">★</label>
-                <input type="radio" id="edit-star2" name="rate" value="2"><label for="edit-star2">★</label>
-                <input type="radio" id="edit-star1" name="rate" value="1"><label for="edit-star1">★</label>
-            </div>
-            
-            <button type="submit">수정 완료</button>
-        </form>
+<form id="edit-review-form" method="post" action="editReview_ok.jsp" accept-charset="UTF-8">
+    <input type="hidden" id="edit-review-id" name="review_id" value="">
+    <input type="hidden" id="edit-room-idx" name="room_idx" value="">
+    <textarea id="edit-review-text" name="review_content" placeholder="수정할 내용을 입력하세요..." required></textarea>
+    
+    <!-- 별점 선택 -->
+    <div class="star-rating">
+        <input type="radio" id="edit-star5" name="rate" value="5"><label for="edit-star5">★</label>
+        <input type="radio" id="edit-star4" name="rate" value="4"><label for="edit-star4">★</label>
+        <input type="radio" id="edit-star3" name="rate" value="3"><label for="edit-star3">★</label>
+        <input type="radio" id="edit-star2" name="rate" value="2"><label for="edit-star2">★</label>
+        <input type="radio" id="edit-star1" name="rate" value="1"><label for="edit-star1">★</label>
+    </div>
+    
+    <button type="button" onclick="submitEditReview()">수정 완료</button>
+</form>
+
     </div>
 </div>
 <%@ include file="/footer.jsp"%>
@@ -607,9 +608,23 @@ function closeReportModal() {
 }
 
 function submitReview() {
+    var reviewContent = document.querySelector('textarea[name="review"]').value.trim();
+    var rate = document.querySelector('input[name="rate"]:checked');
+
+    if (reviewContent === "") {
+        alert("후기를 작성하세요.");
+        return false;
+    }
+
+    if (!rate) {
+        alert("별점을 선택하세요.");
+        return false;
+    }
+
     alert("후기 제출 완료!!");
     return true;
 }
+
 
 function submitReport() {
     const reason = document.querySelector('input[name="report_reason"]:checked');
@@ -654,8 +669,22 @@ function closeEditReviewModal() {
 
 // 리뷰 수정 폼을 제출하는 함수
 function submitEditReview() {
+    var reviewContent = document.getElementById('edit-review-text').value.trim();
+    var rate = document.querySelector('input[name="rate"]:checked');
+
+    if (reviewContent === "") {
+        alert("수정할 내용을 입력하세요.");
+        return false;
+    }
+
+    if (!rate) {
+        alert("별점을 선택하세요.");
+        return false;
+    }
+
     document.getElementById('edit-review-form').submit();
 }
+
 
 function deleteReview(reviewId, roomIdx) {
     if (confirm("정말로 이 후기를 삭제하시겠습니까?")) {
