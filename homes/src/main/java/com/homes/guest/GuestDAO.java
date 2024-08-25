@@ -75,7 +75,7 @@ public class GuestDAO {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 
-			String sql = "INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, '/homes/guest/profileimg/default_profile.svg', 1)";
+			String sql = "INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, 'default_profile.svg', 1)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, dto.getId());
 			ps.setString(2, dto.getPwd());
@@ -1014,7 +1014,6 @@ public class GuestDAO {
 				int review_idx = rs.getInt("idx");
 				int room_idx = rs.getInt("room_idx");
 				int rate = rs.getInt("rate");
-				//member_id
 				String content = rs.getString("content");
 				String room_name = rs.getString("room_name");
 				String room_img = rs.getString("image");
