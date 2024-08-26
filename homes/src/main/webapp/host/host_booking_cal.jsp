@@ -103,6 +103,7 @@
 
 .days span {
 	cursor: pointer;
+	border-radius: 30px;
 }
 
 .days span:hover {
@@ -114,6 +115,7 @@
     background-color: palegoldenrod;
     color: black;
     border-radius:30px;
+    
 }
 
 .line {
@@ -200,6 +202,8 @@
 
 .holi {
 	background-color: #cd280e;
+	    	color : white;
+	
 }
 
 .hol_selected {
@@ -213,6 +217,8 @@
 .holi_line {
 	background-color: #cd280e;
 	opacity: 0.8;
+	    	color : white;
+	
 }
 </style>
 <%
