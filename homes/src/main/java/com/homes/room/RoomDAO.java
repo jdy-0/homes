@@ -168,8 +168,9 @@ public class RoomDAO {
 			String sql="select count(*) "
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
-					+ "where rg.parent_idx=(select region_idx from region where region_idx=?) "
-					+ "or rg.region_idx=?";
+					+ "where (rg.parent_idx=(select region_idx from region where region_idx=?) "
+					+ "or rg.region_idx=?) "
+					+ "and r.state=1";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
 			ps.setInt(2, p_region_idx);
@@ -208,7 +209,8 @@ public class RoomDAO {
 					+ "from unavailable_schedule u "
 					+ "where to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
 					+ "or to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
-					+ ")";
+					+ ") "
+					+ "and r.state=1";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
 			ps.setInt(2, p_region_idx);
@@ -249,7 +251,8 @@ public class RoomDAO {
 					+ "from room r "
 					+ "join region rg on r.region_idx=rg.region_idx "
 					+ "where (( rg.lev=2 and rg.parent_idx=? ) "
-					+ "or ( rg.lev=1 and rg.region_idx=? ))) a "
+					+ "or ( rg.lev=1 and rg.region_idx=? )) "
+					+ "and r.state=1) a "
 					+ "where rnum >=? and rnum <=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
@@ -312,8 +315,8 @@ public class RoomDAO {
 					+ "from unavailable_schedule u "
 					+ "where to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
 					+ "or to_date(?, 'YYYY-MM-DD') between u.start_day and u.end_day "
-					+ ")"
-					+ ") a "
+					+ ") "
+					+ "and r.state=1) a "
 					+ "where rnum between ? and ?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, p_region_idx);
@@ -364,7 +367,7 @@ public class RoomDAO {
 	public int roomCount() {
 		try {
 			conn=com.homes.db.HomesDB.getConn();
-			String sql="select count(*) from room";
+			String sql="select count(*) from room where state=1";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			int count=0;
@@ -404,7 +407,7 @@ public class RoomDAO {
 			
 			conn=com.homes.db.HomesDB.getConn();
 			for(int i=0;i<6;i++) {
-				String sql="select * from (select rownum as rnum, r.* from room r) a where rnum="+rnum[i];
+				String sql="select * from (select rownum as rnum, r.* from room r where r.state=1) a where rnum="+rnum[i];
 				ps=conn.prepareStatement(sql);
 				rs=ps.executeQuery();
 				if(rs.next()) {
