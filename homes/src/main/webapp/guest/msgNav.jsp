@@ -18,16 +18,16 @@ if(session.getAttribute("useridx")==null){
 	</fieldset> -->
 	<nav>
 		<ul id="ul_msgMenu">
-			<li ><a href="/homes/guest/writeMsg.jsp" id="writeMsg_a">메세지 보내기</a></li>
-			<li><a href="/homes/guest/msg.jsp" id="msgList_a">메세지 전체</a></li> 
+			<li ><a href="/homes/guest/writeMsg.jsp" id="writeMsg_a">메시지 보내기</a></li>
+			<li><a href="/homes/guest/msg.jsp" id="msgList_a">메시지 전체</a></li> 
 			<%
 			String userid_msg = (String)session.getAttribute("userid");
 			GuestDAO dao = new GuestDAO();
 			
 			int totalUnreadMsg = dao.countUnreadMsg(userid_msg);
 			%>
-			<li><a href="/homes/guest/unreadMsgList.jsp" id="unreadMsg_a">안 읽은 메세지 (<%=totalUnreadMsg %>)</a></li>
-			<li><a href="/homes/guest/sendMsgList.jsp" id="sendMstList_a">보낸 메세지</a></li>
+			<li><a href="/homes/guest/unreadMsgList.jsp" id="unreadMsg_a">안 읽은 메시지 (<%=totalUnreadMsg %>)</a></li>
+			<li><a href="/homes/guest/sendMsgList.jsp" id="sendMstList_a">보낸 메시지</a></li>
 		</ul>		
 	</nav>
 </article>
