@@ -3,6 +3,8 @@
     pageEncoding="UTF-8"%>
 <jsp:useBean id="resdao" class="com.homes.guest.ReservationDAO"></jsp:useBean>
 <jsp:useBean id="resdto" class="com.homes.guest.ReservationDTO"></jsp:useBean>
+<jsp:useBean id="msgdto" class="com.homes.guest.MsgDTO"></jsp:useBean>
+<jsp:useBean id="gdao" class="com.homes.guest.GuestDAO"></jsp:useBean>
 <%-- <jsp:setProperty property="*" name="resdto"/>
  --%>
  <jsp:useBean id="resddto" class="com.homes.guest.Reservation_detailDTO"></jsp:useBean>
@@ -12,6 +14,8 @@
 <%
 request.setCharacterEncoding("UTF-8");
 response.setCharacterEncoding("UTF-8");
+
+String id = (String)session.getAttribute("userid");
 
 int useridx =Integer.parseInt(session.getAttribute("useridx").toString());
 resdto.setMember_idx(useridx);
@@ -27,6 +31,11 @@ java.sql.Date check_out = java.sql.Date.valueOf(request.getParameter("check_out"
 resdto.setCheck_in(check_in);
 resdto.setCheck_out(check_out);
 resdto.setRequest(request.getParameter("request"));
+
+msgdto.setContent("예약이 대기중입니다.");
+
+msgdto.setReceiver_id("호수트");
+msgdto.setSender_id(id);
 
 int count = resdao.insertReservation(resdto);
 String msg = count>0?"예약에 성공하셨습니다.":"시스템 문제로 예약에 실패하셨습니다.";
