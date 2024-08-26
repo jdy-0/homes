@@ -17,13 +17,14 @@
 <body>
 <%@ include file="/header.jsp" %>
 
+
+<section>
+<%@include file="hostheader.jsp" %>
 <%
 Object o_useridx = session.getAttribute("useridx");
 int useridx = (Integer) o_useridx;
 ArrayList<RoomDTO> rarr= roomdao.HomesList(useridx);
 %>
-<section>
-<%@include file="hostheader.jsp" %>
 <div>
 <%
 if (rarr == null || rarr.size() == 0) {

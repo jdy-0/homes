@@ -721,7 +721,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			  } else if(dayElement.matches('.selected') || dayElement.matches('.line')){
 				  const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
-					const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 휴무 일정을 삭제하시겠습니까?");
+					const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 예약 일정을 삭제하시겠습니까?");
 					if(checkDel){
 						location.href='host_roomSchedule_Delete_ok.jsp?type=2&room=<%=room%>&date='+longDate; 
 					}			  }

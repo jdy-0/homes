@@ -106,8 +106,8 @@
 	
 	if (name == null || name.isEmpty()) {
 	%><script>
-			window.open('/homes/guest/login_popup.jsp', 'popup',
-					'width=400,height=300,top=100,left=100');
+    alert('로그인 후 이용가능합니다.');
+    window.location.href = '/homes/index.jsp';
 		</script>
 	<%
 	return;

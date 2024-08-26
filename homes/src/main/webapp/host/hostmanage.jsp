@@ -17,15 +17,16 @@
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
 </head>
+
+<body>
+<%@ include file="/header.jsp" %>
+<section>
+<%@include file="hostheader.jsp" %>
 <%
 int roomidx = Integer.parseInt(String.valueOf(session.getAttribute("useridx")));
 ArrayList<RoomDTO> arr = (ArrayList<RoomDTO>) session.getAttribute("room_arr");
 
 %>
-<body>
-<%@ include file="/header.jsp" %>
-<section>
-<%@include file="hostheader.jsp" %>
 <div style="width: 100%; margin:10px auto; display:block;">
 <%
 		if(arr==null||arr.size()==0){
