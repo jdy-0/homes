@@ -47,7 +47,7 @@ if(useridx!=0||useridx!=null){
 			%>
 				<div id="no_room_div">
 				<h3>등록된 숙소가 없습니다. 등록하시겠습니까?</h3>
-				<form name="insertfm" action="hostinsert.jsp"> 
+				<form name="insertfm" action="hostinsert.jsp" style="text-align:center;"> 
 				<input type="submit" value="숙소 등록하기" class="btstyle">				
 				</form>
 				</div>
