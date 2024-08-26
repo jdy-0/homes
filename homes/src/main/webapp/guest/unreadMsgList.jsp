@@ -28,7 +28,7 @@
 	
 	if(msgList==null || msgList.size()==0){
 		%>
-		<h2 style="text-align:center;">읽지 않은 메세지가 없습니다.</h2>
+		<h2 style="text-align:center;">읽지 않은 메시지가 없습니다.</h2>
 		<%
 	}else{
 		%>

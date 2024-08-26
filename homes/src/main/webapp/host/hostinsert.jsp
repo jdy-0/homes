@@ -122,7 +122,7 @@ wf.setCrpath(crpath);
 %>
 <section>
 <%@include file="hostheader.jsp"%>
-<article id="article_insert_room" class="container">
+<article id="article_insert_room" class="container" style="margin:10px 10%;">
 <!-- <fieldset class="label_fs">
 		<h3>숙소 등록</h3>
 </fieldset>	 -->

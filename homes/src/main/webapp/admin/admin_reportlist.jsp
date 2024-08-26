@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.homes.report.ReportDAO" %>
 <%@ page import="com.homes.report.ReportDTO" %>
+<jsp:useBean id="adao" class="com.homes.admin.AdminTestDAO"></jsp:useBean>
 
 <!DOCTYPE html>
 <html>
@@ -72,8 +73,8 @@
     %>
     <tr>
         <td><%= report.getId() %></td>
-        <td><%= report.getCommentId() %></td>
-        <td><%= report.getRoomIdx() %></td>
+        <td><%= adao.reportId(report.getCommentId()) %></td>
+        <td><%= adao.getRoom(report.getRoomIdx()).getRoom_name()  %></td>
         <td><%= report.getReportReason() %></td>
         <td><%= report.getReportDate() %></td>
         <td><button type="button" class="rbutton" onclick="showReportModal('<%= report.getId() %>', '<%= report.getCommentId() %>', '<%= report.getRoomIdx() %>', '<%= report.getReportReason() %>')">확인</button></td>
