@@ -17,6 +17,9 @@
 </head>
 <body>
 <%@ include file="/header.jsp"%>
+
+<section>
+<%@include file="hostheader.jsp" %>
 <%	
 Integer useridx=0 ;
 useridx = session.getAttribute("useridx")==null || session.getAttribute("useridx").equals("")?0:(Integer)session.getAttribute("useridx");
@@ -38,8 +41,6 @@ if(useridx!=0||useridx!=null){
 	session.setAttribute("room_arr", room_arr);
 }
 %>
-<section>
-<%@include file="hostheader.jsp" %>
 <article id="host_main_article">
 		<%
 		if(arr==null||arr.size()==0){

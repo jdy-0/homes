@@ -144,11 +144,22 @@ public class ScheduleDAO {
 	        }
 		}
 		
-		public int checkDelSelectedRes(Connection conn, int room_idx, java.sql.Date selDate) {
+		public int checkDelSelectedRes(long time,int room_idx) {
 			try {
-				String sql = " select count(*) from reservation r join reservation_detail rd on r.reserve_idx = rd.reserve_idx"
-						+ "		where room_idx = ?";
-				
+		        conn = com.homes.db.HomesDB.getConn(); 
+				String sql = " SELECT r.reserve_idx "
+						+ "FROM reservation r "
+						+ "JOIN reservation_detail rd ON r.reserve_idx = rd.reserve_idx "
+						+ "WHERE r.state = '예약완료' "
+						+ "AND r.room_idx = ? "
+						+ "AND ? BETWEEN rd.check_in AND rd.check_out ";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, room_idx);
+				ps.setDate(2, new Date(time));
+				rs = ps.executeQuery();
+				if (rs.next()) {
+		            return rs.getInt(1); // return the count of matching reservations
+		        }
 				return 0;
 			} catch (Exception e) {
 				e.printStackTrace();
