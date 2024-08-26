@@ -1114,4 +1114,33 @@ public class AdminTestDAO {
 			}
 		}
 	}
+	
+	//report
+	/**댓글 id로 회원 id 가져오기*/
+	public String reportId(int id) {
+		try {
+			conn=com.homes.db.HomesDB.getConn();
+			String sql="select distinct member_id from reviews rv "
+					+ "left outer join reports rp on rv.idx=rp.comment_id "
+					+ "where comment_id="+id;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			String member_id="";
+			if(rs.next()) {
+				member_id = rs.getString("member_id");
+			}
+			return member_id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(ps!=null) ps.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 }
