@@ -12,10 +12,16 @@
     font-weight: normal;
     font-style: normal;
 }
-body{background-color:#e2dccc;}
+@font-face {
+    font-family: 'goorm-sans-bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+body{background-color:floralwhite;}
 fieldset{
 	width:480px;
-	font-family: 'SBAggroB';
+	font-family: 'goorm-sans-bold';
 	margin:100px auto;
 	border:0;
 }
@@ -27,28 +33,28 @@ legend{
 	margin:20px auto;
 	display:flex;
 	justify-content: space-between;
-	font-family: 'SBAggroB';
+	font-family: 'goorm-sans-bold';
 	font-size:25px;
 	align-items: center;
 }
 #userId{
 	width:300px;
 	outline:none;
-	border:3px solid black;
-	font-family: 'SBAggroB';
+	border:3px solid palegoldenrod;
+	font-family: 'goorm-sans-bold';
 	font-size:23px;
 	padding:5px;
 }
 #button{
-	border:3px solid black;
-	background-color:#dec022;
-	font-family: 'SBAggroB';
+	border:0px;
+	background-color:palegoldenrod;
+	font-family: 'goorm-sans-bold';
 	font-size:23px;
 	padding:10px;
+	border-radius:5px;
 }
 #button:hover{
-	background-color:#e2dccc;
-	transition:0.5s;
+	opacity:0.5;
 }
 </style>
 </head>
