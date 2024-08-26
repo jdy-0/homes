@@ -42,7 +42,7 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 	
 	if(msgList==null || msgList.size()==0){
 		%>
-		<h2>메세지가 없습니다.</h2>
+		<h2>메시지가 없습니다.</h2>
 		<%
 	}else{
 		%>
