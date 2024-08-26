@@ -287,12 +287,14 @@ function FileSelect(event) {
                 	<div id="reviewbox">
                 	<% 
                 	for(int i=0;i<arr.size();i++){
+                		int rate = arr.get(i).getRate();
 					%>
 					
 					
 					<div class="reviews">
 							<p>작성자 :<label><%=arr.get(i).getMember_id() %></label></p>
-							<p>별점 :<%=arr.get(i).getRate() %></p>
+							
+							<p>별점 :<%for(int j=1;j<=rate;j++){%>&#9733;<%} %></p>
 							<p>내용 :<label><%=arr.get(i).getContent() %></label></p>
 							
 					</div>
