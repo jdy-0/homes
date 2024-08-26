@@ -21,6 +21,7 @@ new MultipartRequest(request,savepath,(int)wf.getFreeSize(),"UTF-8");
 String room_idx=(String)session.getAttribute("room_idx");
 String room_path=(String)mr.getParameter("room_path");//비교할 경로
 String room_name=(String)mr.getParameter("room_name");//가져온 room의 이름(이미지 이름으로 사용할것)
+
 Enumeration<String> room_Imgname=mr.getFileNames();
 
 String paramName=room_Imgname.nextElement();//넘어온 파일의 이름(update재료)
@@ -30,11 +31,11 @@ String room_imgname = mr.getOriginalFileName(paramName);
 String setPath= wf.getImgFile()+room_imgname;
 
 System.out.println("///////////////////////////");
-System.out.println(setPath);
-System.out.println(room_idx);
-System.out.println(room_path);
+System.out.println(setPath+"  set할 경로");
+System.out.println(room_idx+"  룸의 idx");
+System.out.println(room_path+"  등록할 room_경로");
 
-int count = rdao.RoomMainImg_update(setPath,room_idx, room_path);
+int count = rdao.RoomMainImg_update(setPath,room_idx);
 
 if(count>=1){
 	%>

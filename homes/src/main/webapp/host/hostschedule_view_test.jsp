@@ -170,7 +170,7 @@ if (arr == null || arr.size() == 0) {
 <%
             for (int j = 0; j < scarr.size(); j++) {
 %>
-                <div class="manage" style="display: flex;" >
+                <div class="manage" style="display:none;" >
                
                     <article id="main">
                         <img src="<%= scarr.get(j).getImage() %>">

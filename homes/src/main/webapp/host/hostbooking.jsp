@@ -90,8 +90,7 @@ if(roomArr==null && roomArr.size()<=0){
 			        
 			        <jsp:include page="host_booking_cal.jsp"/>
 			        </article>
-			    </div>
-			    				
+			    </div>		
 				<%
 
 			}

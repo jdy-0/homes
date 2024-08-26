@@ -257,7 +257,7 @@ function FileSelect(event) {
 						for(int i =0;i < imgCount && i < 4;i++){
 							%>
 							<div class="small-image">
-								<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1">
+								<img src="<%=arrImg.get(i)%>" alt="서브 숙소 이미지 1"  >
 							</div>
 	
 							<%		
@@ -266,7 +266,7 @@ function FileSelect(event) {
 					}else{
 						%>
 						<div class="small-image">
-						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1">
+						<img src="homes\img\no-image.jpg" alt="서브 숙소 이미지 1" onerror="this.src='/homes/img/no_image.jpg'">
 						</div>
 					<%
 					}
