@@ -161,7 +161,8 @@ section{font-family: 'goorm-sans-bold';}
 				<%
 				Calendar now=Calendar.getInstance();
 				int y=now.get(Calendar.YEAR);
-					for(int i=y;i>=1990;i--){
+				//연나이로 20세부터 가입 가능하도록 포문 조건 부여
+					for(int i=y-19;i>=1900;i--){
 						%>
 						<option value="<%=i%>"><%=i%></option>
 						<%
