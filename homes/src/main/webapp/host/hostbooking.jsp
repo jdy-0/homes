@@ -14,7 +14,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
-
+<style>
+	
+</style>
 </head>
 <body>
 <%@ include file="../header.jsp" %>
