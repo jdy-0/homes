@@ -75,7 +75,7 @@ public class GuestDAO {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 
-			String sql = "INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, '/homes/guest/profileimg/default_profile.svg', 1)";
+			String sql = "INSERT INTO HOMES_MEMBER VALUES(HOMES_MEMBER_IDX.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, 'default_profile.svg', 1)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, dto.getId());
 			ps.setString(2, dto.getPwd());
@@ -187,10 +187,9 @@ public class GuestDAO {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, idx);
 			rs = ps.executeQuery();
-			String img = "";
+			String img = "default_profile.svg";
 			if (rs.next()) {
 				img = rs.getString("img");
-
 			}
 			return img;
 		} catch (Exception e) {
@@ -215,7 +214,7 @@ public class GuestDAO {
 	        return false; // 파일이 없으면 업로드 X
 	    }
 
-	    String fileName = idx + ".jpg"; //파일 이름을 useridx로 저장
+	    String fileName = idx + ".jpg"; //파일 이름을 userid로 저장
 	    String filePath = uploadDir + File.separator + fileName;
 
 	    // 이미 해당 사용자의 사진 파일이 있으면 덮어쓰기
@@ -603,11 +602,11 @@ public class GuestDAO {
 	}
 
 	// 메세지 내용 보기 메소드
-	public MsgDTO getMsgContent(int msgidx) {
+	public MsgDTO getMsgContent(int msgidx, String userid) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
 
-			setMsgRead(msgidx);
+			setMsgRead(msgidx, userid);
 
 			String sql = "SELECT * FROM HOMES_MSG WHERE IDX=?";
 			ps = conn.prepareStatement(sql);
@@ -644,18 +643,18 @@ public class GuestDAO {
 	}
 
 	// 메세지 상태 읽음으로 변경하는 메소드
-	public void setMsgRead(int msgidx) {
+	public void setMsgRead(int msgidx, String userid) {
 		boolean close = false;
 		try {
 			if (conn.isClosed()) {
 				conn = com.homes.db.HomesDB.getConn();
 				close = true;
 			}
-
-			String sql = "UPDATE HOMES_MSG SET READ_STATE = 1 WHERE IDX = ?";
+			String sql = "UPDATE HOMES_MSG SET READ_STATE = 1 WHERE IDX = ? and RECEIVER_ID = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, msgidx);
-
+			ps.setString(2, userid);
+			
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -699,32 +698,7 @@ public class GuestDAO {
 		}
 	}
 
-	// 보낸 메세지 삭제하기
-	public int dltSendMsg(int msgidx) {
-		try {
-			conn = com.homes.db.HomesDB.getConn();
-			String sql = "UPDATE HOMES_MSG SET SENDER_STATE = 0 WHERE IDX = ?";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, msgidx);
-
-			int count = ps.executeUpdate();
-
-			return count;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ERROR;
-		} finally {
-			try {
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-			}
-		}
-	}
-
-	// 총 이용회수와 가입 기간 구하기
+	// 총 이용횟수와 가입 기간 구하기
 	public int[] getCountandPeriod(int idx) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
@@ -759,42 +733,16 @@ public class GuestDAO {
 		}
 	}
 
-	public int getCountUse(int idx) {
-		try {
-			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT COUNT(*) FROM RESERVATION WHERE MEMBER_IDX=? AND STATE='이용완료'";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, idx);
-			rs = ps.executeQuery();
-			rs.next();
-			int count = rs.getInt(1);
-			return count;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-			}
-		}
-	}
-
 	// 예약 내역 확인
 	public ArrayList<ReservationDTO> getReserveHistory(int member_idx, String state) {
 		try {
 			conn = com.homes.db.HomesDB.getConn();
-			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT "
+			String sql = "SELECT RES.RESERVE_IDX, R.IMAGE, R.ROOM_NAME, RES.STATE, RES_DE.CHECK_IN, RES_DE.CHECK_OUT, res.reserve_date "
 					+ "FROM ROOM R, RESERVATION RES, RESERVATION_DETAIL RES_DE "
 					+ "WHERE RES.ROOM_IDX = R.ROOM_IDX " + "    AND RES.MEMBER_IDX=? "
 					+ "	AND RES.MEMBER_IDX = RES_DE.MEMBER_IDX " + "    AND RES.RESERVE_IDX = RES_DE.RESERVE_IDX "
 					+ "	AND RES.STATE = ? "
-					+ "ORDER BY res_de.check_in DESC";
+					+ "ORDER BY res.reserve_idx DESC";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_idx);
 			ps.setString(2, state);
@@ -807,8 +755,10 @@ public class GuestDAO {
 				//String state = rs.getString("state");
 				java.sql.Date check_in = rs.getDate("check_in");
 				java.sql.Date check_out = rs.getDate("check_out");
+				java.sql.Date reserve_date = rs.getDate("reserve_date");
+				/* java.sql.Date reserve_date = rs.getDate(("reserve_date"); */
 
-				ReservationDTO dto = new ReservationDTO(reserve_idx, image, room_name, state, check_in, check_out);
+				ReservationDTO dto = new ReservationDTO(reserve_idx, image, room_name, state, check_in, check_out, reserve_date);
 				arr.add(dto);
 			}
 			return arr;
@@ -1064,7 +1014,6 @@ public class GuestDAO {
 				int review_idx = rs.getInt("idx");
 				int room_idx = rs.getInt("room_idx");
 				int rate = rs.getInt("rate");
-				//member_id
 				String content = rs.getString("content");
 				String room_name = rs.getString("room_name");
 				String room_img = rs.getString("image");
@@ -1092,4 +1041,5 @@ public class GuestDAO {
 			} catch (Exception e2) {}
 		}
 	}
+	
 }

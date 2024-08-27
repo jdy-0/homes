@@ -93,12 +93,8 @@
             document.getElementById('select_location').addEventListener('change', updateLocationDetails);
         });
         
-        //인원 최소 최대값 수정
-
-               
-       
-    </script>
-    
+        //인원 최소 최대값 수정      
+    </script>  
 </head>
 <body>
 	<%@include file="/header.jsp"%>
@@ -110,8 +106,8 @@
 	
 	if (name == null || name.isEmpty()) {
 	%><script>
-			window.open('/homes/guest/login_popup.jsp', 'popup',
-					'width=400,height=300,top=100,left=100');
+    alert('로그인 후 이용가능합니다.');
+    window.location.href = '/homes/index.jsp';
 		</script>
 	<%
 	return;
@@ -126,10 +122,10 @@ wf.setCrpath(crpath);
 %>
 <section>
 <%@include file="hostheader.jsp"%>
-<article id="article_insert_room" class="container">
-<fieldset class="label_fs">
+<article id="article_insert_room" class="container" style="margin:10px 10%;">
+<!-- <fieldset class="label_fs">
 		<h3>숙소 등록</h3>
-</fieldset>	
+</fieldset>	 -->
 
 <form name="fminsertroom" style="display: flex;" action="hostinsert_ok.jsp" method="post" enctype="multipart/form-data" onsubmit="return validateMinMax();" >
 	<fieldset id="insert_mainImg_fs">
@@ -140,7 +136,7 @@ wf.setCrpath(crpath);
 		<img id="selectedImage" src="default-image.jpg" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />		
 	</fieldset>
 	<fieldset id="insert_room_fs" style="border:0;">
-		<h2>숙소 정보</h2>
+		<h2>숙소 정보를 입력해주세요</h2>
 		<table>
 			<tr>
 				<th>숙소이름</th>

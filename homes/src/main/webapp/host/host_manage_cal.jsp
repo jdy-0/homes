@@ -1,9 +1,10 @@
-<%@page import="com.homes.guest.ReservationDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ page import="com.homes.host.ScheduleDTO"%>
 <%@ page import="java.util.*"%>
 <jsp:useBean id="sdao" class="com.homes.host.ScheduleDAO"></jsp:useBean>
+<%request.setCharacterEncoding("UTF-8"); %>
 <style>
 .date {
 	width: 200px;
@@ -21,6 +22,7 @@
 
 .date-picker>div {
 	float: left;
+	margin-top:60px;
 }
 
 .date-picker>div>div {
@@ -103,7 +105,6 @@
 
 .days span {
 	cursor: pointer;
-	border-radius: 30px;
 }
 
 .days span:hover {
@@ -115,7 +116,6 @@
     background-color: palegoldenrod;
     color: black;
     border-radius:30px;
-    
 }
 
 .line {
@@ -191,23 +191,53 @@
 
 /* ----------------test---------------------- */
 .small_start {
-	position: relative; /* 절대 위치 지정 */
-	top: -20px; /* 상단에 위치 */
+	position: absolute; /* 절대 위치 지정 */
+	top:-15%; /* 상단에 위치 */
 	left: 0; /* 왼쪽에 위치 */
-	font-size: 0.25em; /* 작은 글자 크기 조정 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
 	color: gray; /* 작은 글자의 색상 설정 */
 	background: white; /* 배경색을 설정하여 가독성 향상 */
 	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+.small_end {
+	position: absolute; /* 절대 위치 지정 */
+	top:-15%; /* 상단에 위치 */
+	right: -10%; /* 왼쪽에 위치 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
+	color: gray; /* 작은 글자의 색상 설정 */
+	background: white; /* 배경색을 설정하여 가독성 향상 */
+	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+.small_hol{
+	position: absolute; /* 절대 위치 지정 */
+	top:-25%; /* 상단에 위치 */
+	right: 35%; /* 왼쪽에 위치 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
+	color: gray; /* 작은 글자의 색상 설정 */
+	background: white; /* 배경색을 설정하여 가독성 향상 */
+	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+span{
+	position : relative;
 }
 
 .holi {
-	background-color: #cd280e;
-	    	color : white;
-	
+	background-color: tomato;
+	brder:1px solid #cd280e;
+	border-radius:30px;
+	color:white;
 }
 
 .hol_selected {
-	background-color: lightpink;
+	background-color: lightcoral;
+	border-radius:30px;
+	
 }
 
 .choosen{
@@ -215,53 +245,62 @@
 }
 
 .holi_line {
-	background-color: #cd280e;
+	background-color: tomato;
+	color:white;
 	opacity: 0.8;
-	    	color : white;
-	
+	border-radius:30px;
 }
 </style>
 <%
-ReservationDTO resdto = (ReservationDTO) request.getAttribute("resdto");
-int room=resdto.getRoom_idx();
 
-ArrayList<ScheduleDTO> cal_arr = sdao.showAllSchdule(room);
+String s_room = request.getParameter("room");
+
+
+int room=0;
+if(s_room!=null && !s_room.equals("")){
+	room = Integer.parseInt(s_room);
+}
+String start = request.getParameter("start");
+String end = request.getParameter("end");
+String reason = request.getParameter("reason");
+
+if(reason.length()==3){
+	reason = "예약";
+} else if(reason.length()==2){
+	reason = "휴무";
+}
+
 String uuid = UUID.randomUUID().toString(); // 고유 ID 생성
-
-
 %>
 
 <div class="date-picker">
 
 	<div class="calendar" id="calendar_<%=uuid %>" style="display: block;">
-		
-		<input type="hidden" 
-			data-type="start" value="<%=resdto.getCheck_in()%>">
-		<input type="hidden" 
-			data-type="end" value="<%=resdto.getCheck_out()%>">
-			
-		<form action="hostbooking_ok.jsp" name="hostbooking" >
-			<input type="hidden" name="reserve_idx" value="<%=resdto.getReserve_idx()%>">
-			<input type="hidden" name="state" value="">
-			<input type="hidden" name="room_idx" value="<%=resdto.getRoom_idx()%>">
-			<input type="hidden" name = "check_in"
-				data-type="start" value="<%=resdto.getCheck_in()%>">
-			<input type="hidden" 
-				data-type="end" name = "check_out" value="<%=resdto.getCheck_out()%>">
-			<input type="hidden" name="price" value="<%=resdto.getPrice()%>">
-		</form>
-		
-		
+		<%
+
+
+
+
+		%>
+		<input type="hidden" class="<%=reason %>"
+			data-type="start" value="<%=start%>" readonly>
+		<input type="hidden" class="<%=reason %>"
+			data-type="end" value="<%=end%>" readonly>
+		<%
+
+		%>
 		<div class="month">
 			<button class="prev-month">‹</button>
-			<span class="month-year accept">수락</span> <span class="month-year decline">거절</span>
+			<span><%=reason %></span>
 			<button class="next-month">›</button>
 		</div>
 		<div class="side_cal">
 			<!-- 날짜가 여기에 동적으로 추가됩니다 -->
 		</div>
 
-
+		<form action="host_roomSchedule_ok.jsp" name="host_roomSchedule">
+			<input type="hidden" name="room" value="<%=room%>">
+		</form>
 	</div>
 </div>
 
@@ -275,11 +314,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const nextMonthBtn = calendar.querySelector('.next-month');
     const side_cal = calendar.querySelector('.side_cal');
     
-    const accept = calendar.querySelector('.accept');
-    const decline = calendar.querySelector('.decline');
-    
-    const form = calendar.querySelector('form[name="hostbooking"]');
-    const state = form.querySelector('input[name="state"]');
+    const submit = calendar.querySelector('.submit');
 
     var index =1;
 	var cals = [];
@@ -288,41 +323,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let nextDate = new Date();
     var loc = 0;
     
-    accept.addEventListener('click', () => {
-    	const check = confirm('예약을 승인하시겠습니까?');
-    	if(check){
-    		state.value="예약완료";
-        	form.submit();
-    	}
-    });
-    
-    decline.addEventListener('click', () => {
-    	const check = confirm('예약을 거절하시겠습니까?');
-    	if(check){
-    		state.value="승인거절";
-        	form.submit();
-    	}    
-    });
 
-		function moveToCheckInDate(){
-	    	dateCheck();
-	
-			for(var i=0; i<cals.length; i++){
-				
-				cals[i].style.display='none';
-			}
-	        if(loc+2==cals.length){
-	        	renderCalendar(nextDate);
-	
-	            cals[loc+1].style.display='block';
-	
-	        } else {
-	            cals[loc+1].style.display='block';
-	            cals[loc+2].style.display='block';
-	        }
-	   
-	    	loc++;
-		}
     
     function getAllhol_selected(){
     	
@@ -334,7 +335,6 @@ document.addEventListener("DOMContentLoaded", function() {
     		hol_sel_date.push(new Date(makeIdToDate(hol.id)));
     		
     	});
-		alert('길이'+hol_sel_date.length);
     	var s_date = hol_sel_date[0];
     	var e_date = hol_sel_date[0];
     	
@@ -362,11 +362,42 @@ document.addEventListener("DOMContentLoaded", function() {
 		return range_date;
     }
     
+    function makeHidden(range_date){
+    	var form = calendar.querySelector('form[name="host_roomSchedule"]');
+    	
+    	range_date.forEach((r,index)=>{
+    		const input = document.createElement('input');
+        	input.value=r;
+        	input.type='hidden';
+        	input.name = 'range_'+index;
+        	
+        	form.appendChild(input);
+    	});
+    	form.submit();
+    	
+    	
+    }
+    
+	function moveToCheckInDate(){
+    	dateCheck();
 
-    
-    atStart();
-    
-    
+		for(var i=0; i<cals.length; i++){
+			
+			cals[i].style.display='none';
+		}
+        if(loc+2==cals.length){
+        	renderCalendar(nextDate);
+
+            cals[loc+1].style.display='block';
+
+        } else {
+            cals[loc+1].style.display='block';
+            cals[loc+2].style.display='block';
+        }
+   
+    	loc++;
+	}
+	
     function getMonBetMon(start){
     	
     	const today = new Date();
@@ -381,16 +412,16 @@ document.addEventListener("DOMContentLoaded", function() {
     	
     }
     
+    atStart();
+    
     
     function atStart(){
     	renderCalendar(currentDate);
         dateCheck();
         renderCalendar(nextDate);
-        
-    	const startVal = calendar.querySelectorAll('input[data-type="start"]')[0];
+    	const startVal = calendar.querySelector('input[data-type="end"]');
     	const start = new Date(startVal.value);
-    	
-		for(var i =0; i< getMonBetMon(start); i++){
+        for(var i =0; i< getMonBetMon(start)-1; i++){
 	        moveToCheckInDate();
 
 		}
@@ -403,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function() {
     	const startInputs = calendar.querySelectorAll('input[data-type="start"]');
         const endInputs = calendar.querySelectorAll('input[data-type="end"]');
         
-        
         let all_sch = [];
         startInputs.forEach((input, index) => {
             const startDate = input.value;
@@ -415,10 +445,40 @@ document.addEventListener("DOMContentLoaded", function() {
 			one_sch[2] = reason;
 			all_sch.push(one_sch);
         });
-
+        
+/*         all_sch.forEach((one_sch) =>{
+        	alert(one_sch[0]);
+        	alert(one_sch[1]);
+        });  
+         */
         return all_sch;
     }
     
+    function attachTag(one_month_cal){
+    	
+    	one_month_cal.querySelectorAll('.selected').forEach((sel,index) => {
+            const smallStart = document.createElement('em');
+        	 if (index % 2 === 0) {
+             		smallStart.className = 'small_start';
+        	        smallStart.textContent = 'in';
+        	    } else {
+        	    	smallStart.className = 'small_end';
+        	    	smallStart.textContent = 'out';
+        	    }
+        	 sel.appendChild(smallStart);
+            
+        });
+    	
+    	one_month_cal.querySelectorAll('.holi').forEach(sel => {
+            const smallStart = document.createElement('em');
+        	smallStart.className = 'small_hol';
+            smallStart.textContent = '휴';
+            sel.appendChild(smallStart);
+
+        });
+    	
+
+    }
     
     function checkHoliday(dayElement,reason){
     	
@@ -474,6 +534,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		
     } 
     
+
     
 	function dateCheck(){
 		var checkDate = nextDate.getDate();
@@ -485,6 +546,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	}
 	
+	function chooseWeeks(tag) {
+	    const Element = tag.parentElement;
+	    const parentElement = Element.parentElement;
+	    const className = tag.textContent;
+	    const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.choosen):not(.holi_line)';
+
+	    function isSpans_holSelected(spans) {
+	    	let check = true;
+	        spans.forEach(span => {
+	            if (!span.classList.contains('hol_selected')) {
+	            	check =  false;
+	            }
+	        });
+	        return check;
+	    }
+
+	    // Select spans based on the className
+	    let spans;
+	    switch (className) {
+	        case '일':
+	            spans = parentElement.querySelectorAll('.sun' + selector);
+	            break;
+	        case '월':
+	            spans = parentElement.querySelectorAll('.mon' + selector);
+	            break;
+	        case '화':
+	            spans = parentElement.querySelectorAll('.tue' + selector);
+	            break;
+	        case '수':
+	            spans = parentElement.querySelectorAll('.wed' + selector);
+	            break;
+	        case '목':
+	            spans = parentElement.querySelectorAll('.thur' + selector);
+	            break;
+	        case '금':
+	            spans = parentElement.querySelectorAll('.fri' + selector);
+	            break;
+	        case '토':
+	            spans = parentElement.querySelectorAll('.sat' + selector);
+	            break;
+	        default:
+	            alert('잘못된 접근');
+	            return;
+	    }
+		
+	    if (isSpans_holSelected(spans)) {
+	        spans.forEach(span => span.classList.replace('hol_selected', 'none'));
+	    } else {
+	        spans.forEach(span => span.classList.replace('none', 'hol_selected'));
+	    }
+	}
 	
     function addWeekdays(one_month_cal){
 
@@ -501,10 +613,10 @@ document.addEventListener("DOMContentLoaded", function() {
         	}
         	
         	
-        	
+/*         	
         	dow_span.addEventListener('click', () => {   	
 				chooseWeeks(dow_span,one_month_cal);
-            });
+            }); */
 
 		}
 		one_month_cal.appendChild(weekdays);
@@ -562,6 +674,10 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.textContent = day;
             dayElement.id = 'd' + year + (month + 1).toString().padStart(2, '0') + (day.toString().padStart(2, '0'));
  
+
+ /*            dayElement.addEventListener('click', () => {   	
+				chooseDate(year, month, day, dayElement);
+            }); */
             monthContainer.appendChild(dayElement);
             
             if(cals.length==1 && day<currentDate.getDate()){
@@ -575,6 +691,60 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
     
+    const ClickedDates = [];
+    
+    function chooseDate(year, month, day, dayElement) {
+    	
+		// span태그 + none클래스 : => remove selected
+		const selector = ':not(.disabled):not(.selected):not(.line):not(.holi):not(.holi_line)';
+
+			  if (dayElement.matches('.disabled') ||dayElement.matches('.selected') || dayElement.matches('.line') || dayElement.matches('.holi') 
+					|| dayElement.matches('.holi_line')) {
+			  if (!dayElement.matches('.selected') && !dayElement.matches('.disabled') && !dayElement.matches('.line')) {
+				const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
+				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 일정을 삭제하시겠습니까?");
+				if(checkDel){
+					location.href='host_roomSchedule_Delete_ok.jsp?room=<%=room%>&date='+longDate; 
+				}
+			  }
+			        return;  // 일치하면 함수 종료
+		}	
+		// line none 클릭마다 변환
+    	/* if (dayElement.classList.contains('choosen')) {
+            dayElement.classList.replace('choosen', 'hol_selected');
+            
+        } else */ if (dayElement.classList.contains('none')){
+            dayElement.classList.replace('none', 'hol_selected');
+        } else {
+            dayElement.classList.replace('hol_selected', 'none');
+
+        }
+     }
+        
+		
+    function rangeChoosen(dayElement){
+    	var count = true;
+        count=!count;
+        if(count){
+        	ClickedDates[1] = new Date(makeIdToDate(dayElement.id));
+        } else {
+        	ClickedDates[0] = new Date(makeIdToDate(dayElement.id));
+            const allDays = side_cal.querySelectorAll('span');
+            allDays.forEach(dayElement => {
+                const dayId = dayElement.id;
+                if(dayId!=null && dayId!="")
+
+                if (dayId) {
+                    const currentDate = new Date(makeIdToDate(dayId))
+
+                    if (currentDate >= ClickedDates[0] && currentDate <=  ClickedDates[1]) {
+                        dayElement.classList.add('choosen');
+                    }
+                }
+            });
+        	
+        }
+    }
     
         
 		function makeIdToDate(id){

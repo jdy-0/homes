@@ -7,7 +7,6 @@
 <jsp:useBean id="homedto" class="com.homes.room.RoomDTO"></jsp:useBean>
 <jsp:useBean id="homedao" class="com.homes.room.RoomDAO"></jsp:useBean>
 <jsp:useBean id="rdao" class="com.homes.region.RegionDAO"></jsp:useBean>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,69 +14,23 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/hostMainLayout.css">
-<!--     <style>
-        img {
-            width: 400px;
-            height: 300px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        div {
-            border: 1px solid black;
-            text-align: center;
-            padding: 10px;  /* 패딩 추가 */
-        }
-        .container {
-            display: flex;
-            gap: 10px;  /* 열 사이의 간격을 조정합니다 (선택적) */
-        }
-        .column {
-            flex: 1; /* 열의 비율을 설정합니다 */
-            padding: 20px;
-            background-color: lightgray;
-            border: 1px solid #ccc;
-        }
-        .column:nth-child(1) {
-            background-color: lightcoral;
-        }
-        .column:nth-child(2) {
-            background-color: lightseagreen;
-        }
-        .column:nth-child(3) {
-            background-color: lightsteelblue;
-            
-        }123123123
-            text-align: left;
-        }
-        #roomselect h2{
-        	text-align: center;
-        }
-        input[type="number"] {
-            font-size: 14px; /* 폰트 크기 설정 */
-            padding: 2px; /* 입력 필드 내 여백 설정 */
-            width: 50px; /* 적절한 너비 설정 */
-            box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 설정 */
-        }
-        
-    </style> -->
-
 </head>
 <body>
 <%@ include file="/header.jsp"%>
+
+<section>
+<%@include file="hostheader.jsp" %>
 <%	
-
-//Integer useridx = (Integer)session.getAttribute("useridx");
-
 Integer useridx=0 ;
 useridx = session.getAttribute("useridx")==null || session.getAttribute("useridx").equals("")?0:(Integer)session.getAttribute("useridx");
 if (useridx == null || useridx == 0) {
-	System.out.println(useridx);
 
 %>
     <script>
     window.location.href = '/homes/guest/login.jsp';
     </script>
 <%
+return;
 }
 
 ArrayList<RoomDTO> arr= homedao.HomesList(useridx);
@@ -88,19 +41,14 @@ if(useridx!=0||useridx!=null){
 	session.setAttribute("room_arr", room_arr);
 }
 %>
-
-
-
-<section>
-<%@include file="hostheader.jsp" %>
 <article id="host_main_article">
 		<%
 		if(arr==null||arr.size()==0){
 			%>
 				<div id="no_room_div">
 				<h3>등록된 숙소가 없습니다. 등록하시겠습니까?</h3>
-				<form name="insertfm" action="hostinsert.jsp"> 
-				<input type="submit" value="숙소 등록하기" class="button">				
+				<form name="insertfm" action="hostinsert.jsp" style="text-align:center;"> 
+				<input type="submit" value="숙소 등록하기" class="btstyle">				
 				</form>
 				</div>
 			<%
@@ -113,7 +61,7 @@ if(useridx!=0||useridx!=null){
 			<form name="updatefm" action="host_update_image_ok.jsp?room_idx<%=arr.get(i).getRoom_idx()%>"> 
 			<div class="container">
 				<div>
-					<img id="selectedImage" src ="<%=arr.get(i).getImage()%>" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />
+					<img class="selectedImage" src ="<%=arr.get(i).getImage()%>" alt="Selected Image"  onerror="this.src='/homes/img/no_image.jpg'" />
 				</div>
 				<div id="roomselect">
 					<h2><%=arr.get(i).getRoom_name() %></h2>
@@ -151,12 +99,10 @@ if(useridx!=0||useridx!=null){
 					<input type="file" multiple="multiple" accept="image/*" name='subpicture'>
 				</div> -->
 				<div>
-					<input type="submit" value="수정">
+					<input type="submit" value="수정" class="btstyle">
 				</div>
 			</div>
 			</form>
-			<br>
-			<hr>
 			<%
 			}
 		}

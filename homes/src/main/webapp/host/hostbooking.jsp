@@ -51,7 +51,7 @@ if(roomArr==null && roomArr.size()<=0){
 				
 				<div class="contentWrapper" style="display:none">				
 					<article class="booking">
-						<table>
+						<table class="bookingTable">
 							<tr>
 								<th>예약번호</th>
 								<td><%=resdto.getReserve_idx() %></td>
@@ -78,7 +78,7 @@ if(roomArr==null && roomArr.size()<=0){
 							</tr>
 							<tr>
 								<th>요청 사항</th>
-								<td><%= resdto.getRequest() != null ? resdto.getRequest() : "" %></td>
+								<td style="width: 75%;"><%= resdto.getRequest() != null ? resdto.getRequest() : "" %></td>
 							</tr>
 						</table>
 			            
@@ -92,8 +92,7 @@ if(roomArr==null && roomArr.size()<=0){
 			        
 			        <jsp:include page="host_booking_cal.jsp"/>
 			        </article>
-			    </div>
-			    				
+			    </div>		
 				<%
 
 			}
@@ -110,19 +109,19 @@ if(roomArr==null && roomArr.size()<=0){
 		%>
 		 </div>
 		
-		<hr>
+		
 		<%
 
 	}
 }
 %>	
-
+<!-- 
     
 	
     <div id="hr">
-        <!-- hr 요소를 추가하려면 아래에 넣으세요 -->
+        hr 요소를 추가하려면 아래에 넣으세요
     </div>
-    <hr>
+    <hr> -->
 </section>
 </body>
 
@@ -141,7 +140,7 @@ roomNames.forEach(function(roomName) {
             contentWrappers.forEach(function(contentWrapper) {
                 // 현재 display 상태를 확인하고 토글합니다.
                 if (contentWrapper.style.display === "none" || contentWrapper.style.display === "") {
-                    contentWrapper.style.display = "block";
+                    contentWrapper.style.display = "flex";
                 } else {
                     contentWrapper.style.display = "none";
                 }

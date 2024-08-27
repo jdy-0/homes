@@ -13,10 +13,7 @@
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
-<article id="myPageMain" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님이 쓴 리뷰</h3>
-	</fieldset>
+<article id="myReview" class="myPageContent_ar">
 	<div>
 		<%
 		ArrayList<HashMap<String, Object>> myReview = gdao.getMyReview(userid);
@@ -26,7 +23,7 @@
 			<%
 		}else{
 			%>
-			<table style="margin:30px auto; width:90%; border-spacing:10px;">
+			<table>
 				<tr>
 				<%
 				for(int i=0; i<myReview.size(); i++){
@@ -34,20 +31,21 @@
 					int rate = (Integer)myReview.get(i).get("rate");
 					int room_idx = (Integer)myReview.get(i).get("room_idx");
 					%>
-					<td style="width:50%; border:5px solid black; padding:5px;">
+					<td>
 					<div style="display:flex;">
-						<img src="<%=myReview.get(i).get("room_img")%>" style="width:100px; height:100px;">
+						<img src="<%=myReview.get(i).get("room_img")%>">
 						<div>
 							<div style="display:flex;">							
 							<p><a href="/homes/rooms/information.jsp?room_idx=<%=room_idx%>"><%=myReview.get(i).get("room_name") %></a></p>
-							<p><%for(int j=1; j<=rate; j++){%>&#127775;<%} %></p>
+							<p style="color:yellow;"><%for(int j=1; j<=rate; j++){%>&#9733;<%} %></p>
 							</div>
-							<p><%=content.length()>15?content.substring(0, 15):content+"..." %><a href="javascript:openFullReview('full_<%=i%>');">[전체보기]</a></p>
+							<p><%=content.length()>15?content.substring(0, 15)+"...":content %><a href="javascript:openFullReview('full_<%=i%>');">[전체보기]</a></p>
+							<div style="display:none;" id="full_<%=i%>">
+								<p><%=content%></p>
+							</div>
 						</div>
 					</div>
-					<div style="display:none;" id="full_<%=i%>">
-					<p><%=content%></p>
-					</div>
+					
 					</td>
 					<%
 					if(i%2==1){
@@ -68,6 +66,11 @@
 </section>
 <%@include file="/footer.jsp" %>
 <script>
+function selectedMenu(){
+	document.getElementById("manageActivity").style.backgroundColor = 'white';
+	document.getElementById("manageActivity").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
 function openFullReview(divId){
 	
 	var div = document.getElementById(divId);

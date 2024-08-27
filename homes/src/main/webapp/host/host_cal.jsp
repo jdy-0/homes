@@ -20,6 +20,7 @@
 
 .date-picker>div {
 	float: left;
+	margin-top:60px;
 }
 
 .date-picker>div>div {
@@ -188,21 +189,53 @@
 
 /* ----------------test---------------------- */
 .small_start {
-	position: relative; /* 절대 위치 지정 */
-	top: -20px; /* 상단에 위치 */
+	position: absolute; /* 절대 위치 지정 */
+	top:-15%; /* 상단에 위치 */
 	left: 0; /* 왼쪽에 위치 */
-	font-size: 0.25em; /* 작은 글자 크기 조정 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
 	color: gray; /* 작은 글자의 색상 설정 */
 	background: white; /* 배경색을 설정하여 가독성 향상 */
 	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+.small_end {
+	position: absolute; /* 절대 위치 지정 */
+	top:-15%; /* 상단에 위치 */
+	right: -10%; /* 왼쪽에 위치 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
+	color: gray; /* 작은 글자의 색상 설정 */
+	background: white; /* 배경색을 설정하여 가독성 향상 */
+	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+.small_hol{
+	position: absolute; /* 절대 위치 지정 */
+	top:-25%; /* 상단에 위치 */
+	right: 35%; /* 왼쪽에 위치 */
+	font-size: 0.20em; /* 작은 글자 크기 조정 */
+	color: gray; /* 작은 글자의 색상 설정 */
+	background: white; /* 배경색을 설정하여 가독성 향상 */
+	padding: 2px; /* 약간의 여백 추가 */
+	border-radius: 50px;	
+}
+
+span{
+	position : relative;
 }
 
 .holi {
-	background-color: #cd280e;
+	background-color: tomato;
+	brder:1px solid #cd280e;
+	border-radius:30px;
+	color:white;
 }
 
 .hol_selected {
-	background-color: lightpink;
+	background-color: lightcoral;
+	border-radius:30px;
+	
 }
 
 .choosen{
@@ -210,8 +243,10 @@
 }
 
 .holi_line {
-	background-color: #cd280e;
+	background-color: tomato;
+	color:white;
 	opacity: 0.8;
+	border-radius:30px;
 }
 </style>
 <%
@@ -389,18 +424,23 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function attachTag(one_month_cal){
     	
-    	one_month_cal.querySelectorAll('.selected').forEach(sel => {
+    	one_month_cal.querySelectorAll('.selected').forEach((sel,index) => {
             const smallStart = document.createElement('em');
-        	smallStart.className = 'small_start';
-            smallStart.textContent = index++;
-            sel.appendChild(smallStart);
-
+        	 if (index % 2 === 0) {
+             		smallStart.className = 'small_start';
+        	        smallStart.textContent = 'in';
+        	    } else {
+        	    	smallStart.className = 'small_end';
+        	    	smallStart.textContent = 'out';
+        	    }
+        	 sel.appendChild(smallStart);
+            
         });
     	
     	one_month_cal.querySelectorAll('.holi').forEach(sel => {
             const smallStart = document.createElement('em');
-        	smallStart.className = 'small_start';
-            smallStart.textContent = '휴무';
+        	smallStart.className = 'small_hol';
+            smallStart.textContent = '휴';
             sel.appendChild(smallStart);
 
         });
@@ -675,11 +715,16 @@ document.addEventListener("DOMContentLoaded", function() {
 					|| dayElement.matches('.holi_line')) {
 			  if (!dayElement.matches('.selected') && !dayElement.matches('.disabled') && !dayElement.matches('.line')) {
 				const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
-				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 일정을 삭제하시겠습니까?");
+				const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 휴무 일정을 삭제하시겠습니까?");
 				if(checkDel){
-					location.href='host_roomSchedule_Delete_ok.jsp?room=<%=room%>&date='+longDate; 
+					location.href='host_roomSchedule_Delete_ok.jsp?type=1&room=<%=room%>&date='+longDate; 
 				}
-			  }
+			  } else if(dayElement.matches('.selected') || dayElement.matches('.line')){
+				  const longDate = new Date(makeIdToDate(dayElement.id)).getTime();
+					const checkDel = confirm(makeIdToDate(dayElement.id)+"이 포함된 예약 일정을 삭제하시겠습니까?");
+					if(checkDel){
+						location.href='host_roomSchedule_Delete_ok.jsp?type=2&room=<%=room%>&date='+longDate; 
+					}			  }
 			        return;  // 일치하면 함수 종료
 		}	
 		// line none 클릭마다 변환

@@ -7,13 +7,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/homes/css/mainLayout.css">
 <style>
-section{margin: 250px 0px 300px 0px; font-family: 'SBAggroB';}
+header{display:none;}
+footer{display:none;}
+section{margin: 250px 0px 300px 0px; font-family: 'goorm-sans-bold';}
 #findAcc{
 	margin:0px auto;
 	width:500px;
-	border:5px solid black;
-/* 	border-radius:50px;
- */}
+	border:5px solid palegoldenrod;
+}
 .fs{
 	width:50%;
 	text-align:center;
@@ -39,25 +40,28 @@ section{margin: 250px 0px 300px 0px; font-family: 'SBAggroB';}
 	font-size:25px;
 }
 .text{
-	border:4px solid black;
-	font-family: 'SBAggroB';
+	border:2px solid palegoldenrod;
+	font-family: 'goorm-sans-bold';
 	font-size:20px;
 	padding:5px;
 	width:200px;
 }
 .btstyle{
-	border:4px solid black;
-	background-color:#dec022;
-	font-family: 'SBAggroB';
+	border:0;
+	border-radius:5px;
+	background-color:#ca3101;
+	font-family: 'goorm-sans-bold';
 	font-size:20px;
-	padding:5px;
+	color:lemonchiffon;
+	padding:10px;
 }
+.btstyle:hover{opacity:0.5;}
 #pwd_hint_q{
 	width:250px;
 	font-family: 'SBAggroB';
 	font-size:18px;
 	padding:5px;
-	border:4px solid black;
+	border:4px solid palegoldenrod;
 }
 </style>
 <%
@@ -72,10 +76,10 @@ if(request.getParameter("divId")!=null){
 <section>
 <article id="findAcc">
 	<div style="display:flex;">
-	<fieldset class="fs" id="fs_findID" style="border-right:5px solid black;">
+	<fieldset class="fs" id="fs_findID" style="border-right:3px solid palegoldenrod;">
 	<h2><a href="javascript:openDiv('findID');">아이디찾기</a></h2>
 	</fieldset>
-	<fieldset class="fs" id="fs_findPWD" style="background-color:lightgray; border-bottom:5px solid black;">
+	<fieldset class="fs" id="fs_findPWD" style="background-color:lightgray; border-bottom:3px solid palegoldenrod;">
 	<h2><a href="javascript:openDiv('findPWD');">비밀번호찾기</a></h2>
 	</fieldset>
 	</div>
@@ -201,6 +205,21 @@ function openDiv(divId){
 				//fs.style.backgroundColor="lightgray";
 			}
 		}
+	}
+	
+	
+	var fsId = divId.includes("ID")?"fs_findID":"fs_findPWD";
+	
+	if(fsId == 'fs_findID'){
+		document.getElementById('fs_findID').style.backgroundColor = 'floralwhite';
+		document.getElementById('fs_findPWD').style.backgroundColor = 'lightgray';
+		document.getElementById('fs_findID').style.borderBottom = '0px';
+		document.getElementById('fs_findPWD').style.borderBottom = '5px solid palegoldenrod';
+	}else{
+		document.getElementById('fs_findID').style.backgroundColor = 'lightgray';
+		document.getElementById('fs_findPWD').style.backgroundColor = 'floralwhite';
+		document.getElementById('fs_findID').style.borderBottom = '5px solid palegoldenrod';
+		document.getElementById('fs_findPWD').style.borderBottom = '0px';
 	}
 }
 window.onload=function(){

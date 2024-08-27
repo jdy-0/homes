@@ -114,7 +114,7 @@ if(useridx!=0){
 	%>
 	<script>
 		window.alert('아이디 또는 비밀번호를 확인해주세요.');
-		window.location.href='login.jsp';
+		window.location.href='login_popup.jsp';
 	</script>
 	<%
 }

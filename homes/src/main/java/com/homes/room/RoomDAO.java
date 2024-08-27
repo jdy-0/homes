@@ -138,10 +138,10 @@ public class RoomDAO {
                // String map_url = rs.getString("map_url");
                 String image = rs.getString("image");
                 int room_max = rs.getInt("room_max");
-
+                int room_min = rs.getInt("room_min");
                 room = new RoomDTO(room_idx, host_idx, region_idx, room_name, goodthing, addr_detail, price, image);
                 room.setRoom_max(room_max);
-                
+                room.setRoom_min(room_min);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -719,20 +719,18 @@ public class RoomDAO {
 			} catch (Exception e2) {}
 		}
 	}
-	public int RoomMainImg_update(String setPath,String Room_idx,String Img_Path) {
+	public int RoomMainImg_update(String setPath,String Room_idx) {
 		int result=0;
 		try {
 			conn=com.homes.db.HomesDB.getConn();
 			String sql ="update room set image = ? "
-					+ "where room_idx = ? and "
-					+ "image= ?";
+					+ "where room_idx = ? ";
 			
 			ps=conn.prepareStatement(sql);
 			
 			
 			ps.setString(1, setPath);
 			ps.setString(2, Room_idx);
-			ps.setString(3, Img_Path);
 			
 			
 			

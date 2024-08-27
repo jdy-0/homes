@@ -13,35 +13,6 @@
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/adminLayout.css">
 <style>
-.admin{
-	display: flex;
-    align-items: stretch;
-    padding: 0;
-    margin: 0;
-    border-bottom: 5px solid black;
-    width: 100%;
-    height: auto;
-    font-family: 'SBAggroB';
-}
-.title{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-}
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-}
 .content {
     flex-grow: 1;
     padding: 20px;
@@ -52,9 +23,6 @@
     margin-bottom: 20px;
     border-radius: 5px;
 }
-</style>
-<style>
-
 .buttons>button {
 	font-weight: bold; 
 	margin-top: 10px;
@@ -65,13 +33,13 @@
 }
 
 .card_cover {
-	display: flex;
-	margin-top: 20px;
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
 }
 
 .card_cover .rg_img {
 	cursor: pointer;
-	border: 1px solid #ccc;
 	width: 300px;
 	height: 200px;
 	position: relative;
@@ -88,6 +56,17 @@ img {
 .card_cover .rg_value {
 	padding : 10px;
 }
+input[type="submit"]{
+    background-color: #cd280e;
+    padding: 10px;
+    width: 150px;
+    border-radius: 5px;
+    border: 0;
+    color: lemonchiffon;
+    font-size: 20px;
+    font-family: 'goorm-sans-bold';
+}
+input[type="submit"]:hover{opacity:0.5;}
 </style>
 <%
 	String region_idx_s=request.getParameter("param");
@@ -147,7 +126,6 @@ window.onload = setInitialBackground;
 
 		</div>
     	<label for="region_sum" class="label">
-       	<span>지역사진</span>
        </label>
         <div class="card_cover">
         	<div class="rg_img">       		

@@ -13,74 +13,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/adminLayout.css">
-<!-- <style>
-.admin{
-	display: flex;
-    align-items: stretch;
-    padding: 0;
-    margin: 0;
-    border-bottom: 5px solid black;
-    width: 100%;
-    height: auto;
-    font-family: 'SBAggroB';
-}
-.title{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-}
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-}
-.content {
-    flex-grow: 1;
-    padding: 20px;
-}
-.card {
-    background-color: #f4f4f4;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-</style>
-<style>
-.content h2{
-	text-align: center;
-}
-.content table {
-	width: 550px;
-	margin: 0px auto;
-	border-top: 3px double black;
-	border-bottom: 3px double black;
-}
-.content table th{
-	background-color: #dec022;
-}
-
-.content table td{
-	text-align: center;
-}
-.rbutton {
-    width: 70px;
-    background-color: #dec022;
-    border: 3px solid black;
-    font-family: 'SBAggroB';
-    padding: 10px;
-    font-size: 15px;
-    text-align: center;
-}
-</style> -->
 <script>
 function openrfStatus(param) {
 	location.href='/homes/admin/admin_refund_accept_ok.jsp?param='+param;
@@ -101,16 +33,16 @@ function openrfStatus(param) {
 
 	<div class="content">
 		<h2>환불 승인 관리</h2>
-		<table>
-			<thead>
+		<table id="refund_list">
+			<thead style="font-size:18px; font-family: 'goorm-sans-bold';">
 				<tr>
-					<th>예약번호</th>
+					<th>No.</th>
 					<th>숙소명</th>
 					<th>예약자</th>
 					<th>체크인</th>
 					<th>체크아웃</th>
-					<th>결제날짜</th>
-					<th>환불요청날짜</th>
+					<th>결제일</th>
+					<th>환불요청일</th>
 					<th>결제금액</th>
 					<th>환불금액</th>
 					<th>승인</th>
@@ -129,15 +61,18 @@ function openrfStatus(param) {
 				<%
 			}else{
 				for(int i=0;i<arr.size();i++){
+					String checkin = arr.get(i).getCheck_in();
+					String checkout = arr.get(i).getCheck_out();
 					%>
+					
 					<tr>				
 						<td><%=arr.get(i).getReserve_idx()  %></td>
 						<td><%=arr.get(i).getRoom_name() %></td>
-						<td><%=arr.get(i).getNickname()  %></td>
-						<td><%=arr.get(i).getCheck_in()  %></td>
-						<td><%=arr.get(i).getCheck_out()  %></td>
-						<td><%=arr.get(i).getPayment_date()  %></td>
-						<td><%=arr.get(i).getRefund_date()  %></td>
+						<td style="text-align:center;"><%=arr.get(i).getNickname()  %></td>
+						<td style="font-size:12px;"><%=checkin.substring(0,10)  %></td>
+						<td style="font-size:12px;"><%=checkout.substring(0, 10)  %></td>
+						<td style="font-size:12px;"><%=arr.get(i).getPayment_date()  %></td>
+						<td style="font-size:12px;"><%=arr.get(i).getRefund_date()  %></td>
 						<td><%=arr.get(i).getPrice()  %></td>
 						<td><%=arr.get(i).getAmount()  %></td>
 						<td><input type="button"  value="승인" class="rbutton" onclick="openrfStatus(<%=arr.get(i).getReserve_idx() %>)"></td>

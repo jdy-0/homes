@@ -42,7 +42,7 @@ if(session.getAttribute("useridx")==null || session.getAttribute("useridx")=="")
 	
 	if(msgList==null || msgList.size()==0){
 		%>
-		<h2>메세지가 없습니다.</h2>
+		<h2>메시지가 없습니다.</h2>
 		<%
 	}else{
 		%>
@@ -125,7 +125,6 @@ function selectedMenu(){
 	document.getElementById("msgList_a").style.opacity='1';
 }
 window.onload=selectedMenu;
-
 function checkAllMsg(){
 	if(document.getElementById("checkAll").checked == true){
 		for(var i=0; i<document.msgList_fm.msgCheck.length; i++){

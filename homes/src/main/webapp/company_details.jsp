@@ -11,9 +11,9 @@
         <h1>회사 세부 정보</h1>
         
         <h2>회사명: Homes</h2>
-        <h2>대표자: ㅇㅇㅇ</h2>
+        <h2>대표자: 송하영</h2>
         <h2>사업자 등록번호: 123-45-67890</h2>
-        <h2>주소: 서울특별시 서대문구</h2>
+        <h2>주소: 서울특별시 마포구 월드컵북로21 2층 B호</h2>
         <h2>연락처</h2>
         <ul>
             <li>전화번호: 02-1234-5678</li>
@@ -42,13 +42,6 @@
             <li>글로벌 숙박 플랫폼과의 협력</li>
             <li>지역 관광청 및 여행사와의 제휴</li>
             <li>유명 브랜드와의 마케팅 협력</li>
-        </ul>
-        
-        <h2>기타 정보</h2>
-        <ul>
-            <li>사업자 정보 확인: <a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=1234567890" class="highlight">사업자 정보 확인 링크</a></li>
-            <li>개인정보 처리 방침: <a href="privacy_policy.jsp" class="highlight">개인정보 처리 방침 보기</a></li>
-            <li>이용 약관: <a href="terms_of_service.jsp" class="highlight">이용 약관 보기</a></li>
         </ul>
     </div>
 </body>

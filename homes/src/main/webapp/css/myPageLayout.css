@@ -1,21 +1,14 @@
 @charset "UTF-8";
 section{
-	/* display:flex; */
 	font-family: 'SBAggroB';
 }
+/*마이페이지 메뉴바*/
 #myPageNav{
 	width:100%;
 }
-/* .label_fs{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-	text-align:start;
-} */
 .myPageContent_ar{
 	width:100%;
+	text-align:center;
 }
 #myPageMain_fs{
 	margin:80px auto;
@@ -23,11 +16,6 @@ section{
 	text-align:center;
 	border:0;
 }
-/* #myPageMain_fs img{ 
-	width:250px;
-	height:250px;
-	padding: 20px;
-} */
 #img_div{
     width: 320px;
     height: 320px;
@@ -69,20 +57,8 @@ input[type="file"] {display: none;}
 	text-decoration:none;
 }
 #ul_menu li:hover{
-	border-radius:5px;
-	
+	border-radius:5px;	
 }
-/*    header.dg_hd nav > ul > li .dropdown {
-       display: none; opacity: 0; visibility: hidden; margin-top: -20px; position: absolute; background: white; width: 180px; z-index: 4; 
-       border-radius: 10px; left: 50%; transform: translateX(-50%); box-shadow: 0px 3px 15px -1px rgba(0, 0, 0, 0.2); transition: all 0.2s linear;
-   }
-   header.dg_hd nav > ul > li .dropdown::before {
-       content: ''; position: absolute; top: -6px; left: calc(50% - 5px); width: 0; height: 0; border-left: 10px solid transparent; 
-       border-right: 10px solid transparent; border-bottom: 10px solid white; z-index: 3;
-   }
-   header.dg_hd nav > ul > li:hover .dropdown, header.dg_hd nav > ul > li .dropdown.show {
-       display: block; visibility: visible; opacity: 1; margin-top: 0; padding: 10px 5px;
-   } */
 .ul_submenu{
     display: block;
     padding: 0;
@@ -156,8 +132,8 @@ form{
 	outline:none;
 	border:4px solid black;
 }
-.button{
-	/*width:100px;*/
+/* .button{
+	width:100px;
 	padding:10px;
 	font-size:20px;
 	background-color:#dec022;
@@ -168,4 +144,83 @@ form{
 }
 .button:hover{
 	background-color:#dec022;
+} */
+/*나의 예약*/
+.reserveCard{
+    background: floralwhite;
+    border: 3px solid #cd280e;
+    border-radius: 10px;
+    margin: 40px auto;
+    width: 50%;
 }
+/* .myPageContent_ar h2{
+	text-align:center;
+	background-color:#cd280e;
+	color:cornsilk;
+	width:150px;
+	padding:10px;
+	border-radius:10px;
+	margin:10px auto;
+	font-size:20px;
+} */
+.myPageContent_ar a{
+	color: black;
+	text-decoration:none;
+}
+.reserveCard table{
+	width: 90%;
+}
+.reserveCard table td:first-child{
+	/* width:50%; */
+	padding: 20px 10px;
+	text-align:start;
+}
+
+.reserveCard table td:last-child{
+	width:30%;
+}
+.reserveCard table img{
+	width: 100%;
+}
+/*myReview*/
+#myReview table{
+	margin:30px auto; width:90%; border-spacing:10px;
+}
+#myReview table td{
+	width:50%; border:3px solid #cd280e; padding:15px; border-radius:10px; background: floralwhite;
+}
+#myReview table td div div{
+	padding-left:20px;
+}
+#myReview table td div img{width:40%; height:250px;}
+.myReserve_h{
+	background-color: #cd280e;
+	width:150px;
+	text-align:center;
+	margin:20px auto;
+	padding:10px;
+	border-radius:10px;
+	color:cornsilk;
+}
+.alert_h{
+	margin:100px auto;
+}
+
+/*reserve_detial*/
+/* #myReserveDetail div{
+	width:60%; margin:30px auto; border:3px solid #cd280e;
+}
+#myReserveDetail div div:first-child{
+    border: 0;
+    background-color: #cd280e;
+    padding: 1px 10px;
+}
+#myReserveDetail div div:nth-child(2){
+    border: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0px;
+}
+#myReserveDetail div div:nth-child(3){
+	display:flex; justify-content: space-between;
+} */

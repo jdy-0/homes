@@ -13,30 +13,37 @@
 #list table{
 	margin:20px auto;
 	width:90%;
-	border-spacing:10px;
+	border-spacing:30px;
 }
 #list table td{
 	width:50%;
 	text-align:center;
 	vertical-align: top;
-	border:5px solid black;
+	border:3px solid #cd280e;
+	background-color:floralwhite;
+	border-radius:10px;
 }
 #list table td a{
 	text-decoration:none;
-	color:black;
-	font-size:20px;
+	color:red;
+	font-size:30px;
 }
+#list table td a:hover{opacity:0.5;}
 #list table td fieldset{
 	margin:10px auto;
 	border:0;
     width: 90%;   
 }
 #list table td img{
-	width:90%;
+	width: 95%;
+    height: 500px;
+}
+#list table td img:hover{
+	opacity:0.5;
 }
 .div_text{
 	display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 90%;
     height:90%;
     margin: 5px auto;
@@ -45,20 +52,17 @@
 	text-align: left;
     margin-left: 20px;
 }
-#pushHeart a{
-	font-size:100px;
-}
+
 </style>
 </head>
 <body>
 <%@include file="/header.jsp" %>
 <section>
 <%@include file="/guest/myPageNav.jsp" %>
-<article id="myReserveHistory" class="myPageContent_ar">
-	<fieldset class="label_fs">
-		<h3><%=session.getAttribute("usernickname") %>님이 찜한 HOMES</h3>
-	</fieldset>
+<article id="myLike" class="myPageContent_ar">
 	<%
+	String redheart = "&hearts;";
+	
 	ArrayList<LikeDTO> mylikes = gdao.getMyLike(userid);
 	if(mylikes == null || mylikes.size()==0){
 		%>
@@ -75,10 +79,12 @@
 			for(int i=0; i<mylikes.size(); i++){
 				%>				
 				<td>
-				<a href="/homes/rooms/information.jsp?room_idx=<%=mylikes.get(i).getRoom_idx()%>">
+				
 				<fieldset>
 					<div>
-					<img src="<%=mylikes.get(i).getRoom_image() %>" alt="room_img" style="width:300px;">
+					<a href="/homes/rooms/information.jsp?room_idx=<%=mylikes.get(i).getRoom_idx()%>">
+					<img src="<%=mylikes.get(i).getRoom_image() %>" alt="room_img">
+					</a>
 					</div>
 					<div class="div_text">
 						<div>
@@ -88,11 +94,11 @@
 							<p><%=mylikes.get(i).getRegion_name() %></p>
 						</div>
 						<div id="pushHeart">
-							<a href="javascript:dltLike('<%=mylikes.get(i).getIdx()%>');">&#10084;</a>
+							<a href="javascript:dltLike('<%=mylikes.get(i).getIdx()%>');">&hearts;</a>
 						</div>
 					</div>
 				</fieldset>
-				</a>
+				
 				</td>
 				<%
 				if(i%2==1){
@@ -113,6 +119,12 @@
 </section>
 <%@include file="/footer.jsp" %>
 <script>
+function selectedMenu(){
+	document.getElementById("manageActivity").style.backgroundColor = 'white';
+	document.getElementById("manageActivity").style.borderRadius = '5px';
+}
+window.onload=selectedMenu;
+/*좋아요 해제하기 위한 함수*/
 function dltLike(like_idx){
 	var idx = like_idx;
 	
@@ -121,7 +133,6 @@ function dltLike(like_idx){
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.onload = function(){
 		if(xhr.status === 200){
-			alert(idx+'찜 목록 해제');
 			location.reload();
 		}else{
 			alert('찜 해제 실패');

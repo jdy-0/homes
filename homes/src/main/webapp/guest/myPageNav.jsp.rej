@@ -1,0 +1,9 @@
+diff a/homes/src/main/webapp/guest/myPageNav.jsp b/homes/src/main/webapp/guest/myPageNav.jsp	(rejected hunks)
+@@ -15,6 +15,7 @@
+ 	<nav>
+ 		<ul id="ul_menu">
+ 			<!-- <li><a href="mypage.jsp">My Page</a></li> -->
++			<li id="manageAccount"><a href="" id="board" class="fa fa-caret-down" aria-hidden="true">계정관리</a>
+    				<ul id="ul_account s-d"  class="ul_submenu dropdown" >
+         			<li><a href="/homes/guest/myProfile.jsp">나의 정보</a></li>
+         			<li><a href="/homes/guest/updatePwd.jsp">비밀번호 변경</a></li>

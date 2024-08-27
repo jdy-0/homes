@@ -12,47 +12,7 @@
 <link rel="stylesheet" type="text/css" href="../css/mainLayout.css">
 <link rel="stylesheet" type="text/css" href="/homes/css/adminLayout.css">
 <link rel="stylesheet" type="text/css" href="css/hostAcceptRoom.css">
-<!-- <style>
-.admin{
-	display: flex;
-    align-items: stretch;
-    padding: 0;
-    margin: 0;
-    border-bottom: 5px solid black;
-    width: 100%;
-    height: auto;
-    font-family: 'SBAggroB';
-}
-.title{
-	background-color:#dec022;
-	color:black;
-	border-bottom:5px solid black;
-	margin:0px;
-	font-family: 'SBAggroB';
-}
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-}
-.content {
-    flex-grow: 1;
-    padding: 20px;
-}
-.card {
-    background-color: #f4f4f4;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-</style> -->
+
 <%
 	String room_idx_s=request.getParameter("param");
 	int room_idx=Integer.parseInt(room_idx_s);
@@ -82,7 +42,7 @@
 		</fieldset>
 		<fieldset id="insert_room_fs" style="border:0;">
 			<h2>숙소 정보</h2>
-			<table>
+			<table id="host_accept_table">
 				<tr>
 					<th>숙소이름</th>
 					<td>

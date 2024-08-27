@@ -44,19 +44,32 @@ if(cks!=null){
 			<th>비밀번호</th>
 			<td><input type="password" name="pwd" class="login_text"></td>
 		</tr>
-		<tr>
+<%-- 		<tr>
 			<td colspan="3" align="center">
 			<input type="checkbox" name="saveID" value="on" <%=saveID.equals("")?"":"checked" %> style="width:50px; height:30px;"> ID 기억하기
-			<input type="button" value="닫기" onclick="window.close();" class="login_close_bt">
 			</td>
-		</tr>
+		</tr> --%>
 	</table>
+	<div>	
+		<div style="align-items: center;">
+			<input type="checkbox" name="saveID" value="on" <%=saveID.equals("")?"":"checked" %> style="width:50px; height:30px;"> 
+			<p>ID 기억하기</p>
+		</div>
+		<a href="javascript:goTo('findAccount');">ID/비밀번호 찾기</a>
+		<a href="/homes/guest/homesJoin.jsp">회원가입</a>
+	</div>
 </fieldset>
-<div>
+<!-- <div>
 	<label>아직 회원이 아니신가요?</label>
 	<a href="/homes/guest/homesJoin.jsp">[회원가입]</a>
-</div>
+</div> -->
 </form>
 </section>
+<script>
+function goTo(href){
+	opener.location.href = '/homes/guest/'+href+'.jsp';
+	self.close();
+}
+</script>
 </body>
 </html>
