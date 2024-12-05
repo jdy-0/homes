@@ -66,8 +66,7 @@
   - 환불 승인
 
 ## 📊 ERD
-![homes_erd](http//github.com/user-attachments/assets/f8d0f7bb-4268-4436-8626-1b928637c3dc)
-
+![homes_erd](https://github.com/user-attachments/assets/0776dc72-5d12-405d-86f4-c704412adc02)
 
 ## 🎥 시연 영상
 첨부예정
